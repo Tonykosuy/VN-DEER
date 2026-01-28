@@ -1182,6 +1182,61 @@
             gap: 4px;
         }
 
+        /* Convoy cards */
+        .convoy-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin: 8px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--blue-500);
+        }
+
+        .convoy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .convoy-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--gray-800);
+        }
+
+        .convoy-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .convoy-badge.arriving {
+            background: var(--green-100);
+            color: var(--green-600);
+        }
+
+        .convoy-badge.enroute {
+            background: var(--blue-100);
+            color: var(--blue-600);
+        }
+
+        .convoy-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-bottom: 6px;
+        }
+
+        .convoy-eta {
+            font-size: 11px;
+            color: var(--blue-600);
+            font-weight: 600;
+        }
+
         /* Household list */
         .household-item {
             display: flex;
@@ -1450,8 +1505,49 @@
                 </div>
             </div>
 
+            <!-- Volunteer Convoy Info -->
+            <div class="section-title">🚛 Đoàn thiện nguyện đang đến</div>
+            <div class="convoy-card">
+                <div class="convoy-header">
+                    <div class="convoy-name">Đoàn Hà Nội - Yên Bái #1</div>
+                    <div class="convoy-badge arriving">Đang đến</div>
+                </div>
+                <div class="convoy-details">
+                    <span>📍 Hướng: Xã Hạ</span>
+                    <span>👥 15 người</span>
+                    <span>📦 200 phần quà</span>
+                </div>
+                <div class="convoy-eta">⏱️ Dự kiến đến: 30 phút</div>
+            </div>
+            <div class="convoy-card">
+                <div class="convoy-header">
+                    <div class="convoy-name">Đoàn TP.HCM - Yên Bái #2</div>
+                    <div class="convoy-badge arriving">Đang đến</div>
+                </div>
+                <div class="convoy-details">
+                    <span>📍 Hướng: Xã Thượng</span>
+                    <span>👥 20 người</span>
+                    <span>📦 300 phần quà</span>
+                </div>
+                <div class="convoy-eta">⏱️ Dự kiến đến: 1 giờ</div>
+            </div>
+            <div class="convoy-card">
+                <div class="convoy-header">
+                    <div class="convoy-name">Đoàn Đà Nẵng - Yên Bái #3</div>
+                    <div class="convoy-badge enroute">Trên đường</div>
+                </div>
+                <div class="convoy-details">
+                    <span>📍 Hướng: Xã Đông</span>
+                    <span>👥 12 người</span>
+                    <span>📦 150 phần quà</span>
+                </div>
+                <div class="convoy-eta">⏱️ Dự kiến đến: 2 giờ 30 phút</div>
+            </div>
+            <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn...')">Xem tất cả đoàn thiện
+                nguyện →</div>
+
             <!-- News and Announcements Section -->
-            <div class="section-title">� Tin tức & Thông báo</div>
+            <div class="section-title">📢 Tin tức & Thông báo</div>
             <div class="news-card">
                 <div class="news-icon alert">🚨</div>
                 <div class="news-content">
