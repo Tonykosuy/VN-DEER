@@ -1411,7 +1411,9 @@
         <!-- Login Screen -->
         <div class="screen active" id="screen-login">
             <div class="login-header">
-                <div class="login-logo">🆘</div>
+                <div class="logo-placeholder" style="margin-bottom: 16px;">
+                    <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
+                </div>
                 <div class="login-title">Xác Minh & Điều Phối</div>
                 <div class="login-subtitle">Cứu Trợ Khẩn Cấp</div>
             </div>
@@ -1435,34 +1437,90 @@
                 <button class="back-btn" onclick="showScreen('login')">←</button>
                 <h2>Đăng ký tài khoản</h2>
             </div>
-            <div style="padding: 16px;">
-                <div class="form-group"><label class="form-label">Họ và tên</label><input type="text" class="form-input"
-                        placeholder="Nguyễn Văn A"></div>
-                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input"
-                        placeholder="email@example.com"></div>
-                <div class="form-group"><label class="form-label">Số điện thoại</label><input type="tel"
-                        class="form-input" placeholder="0912 345 678"></div>
-                <div class="form-group"><label class="form-label">Vai trò</label>
-                    <select class="form-input">
+            <div style="text-align: center; padding: 16px 16px 8px;">
+                <div class="logo-placeholder" style="margin: 0 auto 16px;">
+                    <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
+                </div>
+            </div>
+            <div style="padding: 0 16px 16px;">
+                <div class="form-group">
+                    <label class="form-label">Họ và tên <span style="color: var(--red-500);">*</span></label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email <span style="color: var(--red-500);">*</span></label>
+                    <input type="email" id="reg-email" class="form-input" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại <span style="color: var(--red-500);">*</span></label>
+                    <input type="tel" id="reg-phone" class="form-input" placeholder="0912 345 678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu <span style="color: var(--red-500);">*</span></label>
+                    <input type="password" id="reg-password" class="form-input" placeholder="Nhập mật khẩu">
+                </div>
+                <button class="btn btn-primary" onclick="submitRegistration()">Tiếp tục →</button>
+            </div>
+        </div>
+
+        <!-- Personal Info Screen (after registration) -->
+        <div class="screen" id="screen-personal-info">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('register')">←</button>
+                <h2>Thông tin cá nhân</h2>
+            </div>
+            <div style="text-align: center; padding: 16px;">
+                <div style="font-size: 48px; margin-bottom: 8px;">📋</div>
+                <div style="font-size: 14px; color: var(--gray-600);">Bổ sung thông tin để hoàn tất đăng ký</div>
+            </div>
+            <div style="padding: 0 16px 16px;">
+                <div class="form-group">
+                    <label class="form-label">Ngày sinh</label>
+                    <input type="date" id="personal-dob" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Giới tính</label>
+                    <select id="personal-gender" class="form-input">
+                        <option value="">-- Chọn giới tính --</option>
+                        <option>Nam</option>
+                        <option>Nữ</option>
+                        <option>Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Số CCCD/CMND</label>
+                    <input type="text" id="personal-cccd" class="form-input" placeholder="012345678901">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Địa chỉ thường trú</label>
+                    <textarea id="personal-address" class="form-input" rows="2"
+                        placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vai trò đăng ký <span style="color: var(--red-500);">*</span></label>
+                    <select id="personal-role" class="form-input">
                         <option>Tình nguyện viên gọi điện</option>
                         <option>Đoàn thiện nguyện</option>
                         <option>Nhân viên phát quà</option>
+                        <option>Điều phối viên</option>
                     </select>
                 </div>
-                <button class="btn btn-primary" onclick="showScreen('login'); showToast('Đăng ký thành công!')">Đăng
-                    ký</button>
+                <div class="form-group">
+                    <label class="form-label">Kinh nghiệm tình nguyện</label>
+                    <textarea id="personal-exp" class="form-input" rows="2"
+                        placeholder="Mô tả ngắn về kinh nghiệm (nếu có)"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="completeRegistration()">Hoàn tất đăng ký</button>
             </div>
         </div>
 
         <!-- Home Screen -->
         <div class="screen" id="screen-home">
-            <div class="header" style="padding-bottom: 30px;">
-                <!-- Logo placeholder - centered -->
+            <div class="header" style="padding-bottom: 20px;">
+                <!-- Logo - centered -->
                 <div class="logo-placeholder" id="logo-container">
                     <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
                 </div>
-                <h1 style="font-size: 18px;">Hệ Thống Cứu Trợ Khẩn Cấp</h1>
-                <p>Xin chào, Tình Nguyện Viên!</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card sos">
@@ -1889,16 +1947,17 @@
                     <textarea id="case-address" class="form-input" rows="2" placeholder="Thôn, xã, huyện..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Nguồn thông tin</label>
+                    <label class="form-label">Nguồn thông tin <span style="color: var(--red-500);">*</span></label>
                     <select id="case-source" class="form-input">
-                        <option>Facebook</option>
-                        <option>Zalo</option>
-                        <option>Danh sách địa phương</option>
-                        <option>Người dân báo</option>
+                        <option value="">-- Chọn nguồn thông tin --</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="zalo">Zalo</option>
+                        <option value="local">Danh sách địa phương</option>
+                        <option value="citizen">Người dân báo</option>
                     </select>
                 </div>
                 <p style="font-size: 11px; color: var(--gray-500); margin-bottom: 12px;">
-                    <span style="color: var(--red-500);">*</span> Các trường bắt buộc phải điền
+                    <span style="color: var(--red-500);">*</span> Tất cả các trường đều bắt buộc phải điền
                 </p>
                 <button class="btn btn-danger" onclick="submitCase()">🆘 Gửi báo cáo</button>
             </div>
@@ -2146,6 +2205,49 @@
             showScreen(screen);
         }
 
+        function submitRegistration() {
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const password = document.getElementById('reg-password').value.trim();
+
+            const errors = [];
+            if (!name) errors.push('Họ và tên');
+            if (!email) errors.push('Email');
+            if (!phone) errors.push('Số điện thoại');
+            if (!password) errors.push('Mật khẩu');
+
+            if (errors.length > 0) {
+                alert('⚠️ Vui lòng điền đầy đủ các trường bắt buộc:\n\n• ' + errors.join('\n• '));
+                return;
+            }
+
+            showScreen('personal-info');
+        }
+
+        function completeRegistration() {
+            const role = document.getElementById('personal-role').value;
+
+            if (!role) {
+                alert('⚠️ Vui lòng chọn vai trò đăng ký!');
+                return;
+            }
+
+            // Clear all registration forms
+            document.getElementById('reg-name').value = '';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-phone').value = '';
+            document.getElementById('reg-password').value = '';
+            document.getElementById('personal-dob').value = '';
+            document.getElementById('personal-gender').value = '';
+            document.getElementById('personal-cccd').value = '';
+            document.getElementById('personal-address').value = '';
+            document.getElementById('personal-exp').value = '';
+
+            showToast('🎉 Đăng ký thành công!');
+            showScreen('login');
+        }
+
         function renderCaseLists() {
             const list = document.getElementById('emergency-list');
             const statusLabels = { sos: 'SOS', medical: 'Y Tế', safe: 'An toàn' };
@@ -2236,14 +2338,16 @@
             const name = document.getElementById('case-name').value.trim();
             const phone = document.getElementById('case-phone').value.trim();
             const address = document.getElementById('case-address').value.trim();
+            const source = document.getElementById('case-source').value;
 
             const errors = [];
             if (!name) errors.push('Tên chủ hộ');
             if (!phone) errors.push('Số điện thoại');
             if (!address) errors.push('Địa chỉ');
+            if (!source) errors.push('Nguồn thông tin');
 
             if (errors.length > 0) {
-                alert('⚠️ Vui lòng điền đầy đủ các trường bắt buộc:\n\n• ' + errors.join('\n• '));
+                alert('⚠️ Vui lòng điền đầy đủ TẤT CẢ các trường bắt buộc:\n\n• ' + errors.join('\n• '));
                 return;
             }
 
@@ -2251,6 +2355,7 @@
             document.getElementById('case-name').value = '';
             document.getElementById('case-phone').value = '';
             document.getElementById('case-address').value = '';
+            document.getElementById('case-source').value = '';
 
             showToast('✅ Đã gửi báo cáo thành công!');
             showScreen('home');
