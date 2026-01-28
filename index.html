@@ -1945,6 +1945,11 @@
                 <div class="form-group">
                     <label class="form-label">Địa chỉ <span style="color: var(--red-500);">*</span></label>
                     <textarea id="case-address" class="form-input" rows="2" placeholder="Thôn, xã, huyện..."></textarea>
+                    <button type="button" class="btn btn-outline"
+                        style="margin-top: 8px; padding: 10px; font-size: 12px;" onclick="getGPSLocation()">
+                        📍 Lấy vị trí GPS hiện tại
+                    </button>
+                    <div id="gps-status" style="font-size: 11px; color: var(--gray-500); margin-top: 6px;"></div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nguồn thông tin <span style="color: var(--red-500);">*</span></label>
@@ -2359,6 +2364,68 @@
 
             showToast('✅ Đã gửi báo cáo thành công!');
             showScreen('home');
+        }
+
+        function getGPSLocation() {
+            const statusEl = document.getElementById('gps-status');
+            const addressEl = document.getElementById('case-address');
+
+            if (!navigator.geolocation) {
+                statusEl.innerHTML = '<span style="color: var(--red-500);">❌ Trình duyệt không hỗ trợ GPS</span>';
+                return;
+            }
+
+            statusEl.innerHTML = '<span style="color: var(--blue-500);">⏳ Đang lấy vị trí GPS...</span>';
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    statusEl.innerHTML = '<span style="color: var(--blue-500);">⏳ Đang chuyển đổi tọa độ thành địa chỉ...</span>';
+
+                    try {
+                        // Use OpenStreetMap Nominatim for reverse geocoding (free)
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=vi`);
+                        const data = await response.json();
+
+                        if (data && data.display_name) {
+                            addressEl.value = data.display_name;
+                            statusEl.innerHTML = `<span style="color: var(--green-500);">✅ Đã lấy địa chỉ (${lat.toFixed(5)}, ${lng.toFixed(5)})</span>`;
+                        } else {
+                            // Fallback to coordinates
+                            addressEl.value = `Tọa độ: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                            statusEl.innerHTML = '<span style="color: var(--yellow-600);">⚠️ Không tìm được địa chỉ, đã điền tọa độ</span>';
+                        }
+                    } catch (error) {
+                        // Fallback to coordinates if API fails
+                        addressEl.value = `Tọa độ GPS: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                        statusEl.innerHTML = '<span style="color: var(--yellow-600);">⚠️ Lỗi kết nối, đã điền tọa độ GPS</span>';
+                    }
+                },
+                (error) => {
+                    let errorMsg = '';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg = '❌ Bạn đã từ chối quyền truy cập vị trí';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg = '❌ Không thể xác định vị trí';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg = '❌ Hết thời gian chờ lấy vị trí';
+                            break;
+                        default:
+                            errorMsg = '❌ Lỗi không xác định';
+                    }
+                    statusEl.innerHTML = `<span style="color: var(--red-500);">${errorMsg}</span>`;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
         }
 
         function showCaseDetail(id) { const c = cases.find(x => x.id === id); alert(`${c.name}\n📍 ${c.address}\n📞 ${c.phone}\n👥 ${c.people} người\n📊 Nguồn: ${c.source}`); }
