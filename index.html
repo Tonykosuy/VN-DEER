@@ -1752,8 +1752,24 @@
                 <button class="btn btn-outline" style="margin-top: 8px;" onclick="resetScan()">🔄 Quét mã khác</button>
             </div>
 
-            <div class="section-title">📜 Lịch sử phát quà hôm nay</div>
-            <div style="padding: 0 16px;" id="gift-history"></div>
+            <!-- Gift receiving instructions -->
+            <div class="card" style="margin-top: 16px;">
+                <div class="card-title">� Hướng dẫn nhận quà</div>
+                <div style="font-size: 12px; color: var(--gray-600); line-height: 1.6;">
+                    <p style="margin-bottom: 8px;">1. Đưa mã QR trên CCCD/VNeID/BHYT vào khung quét</p>
+                    <p style="margin-bottom: 8px;">2. Chờ hệ thống xác nhận mã hợp lệ</p>
+                    <p style="margin-bottom: 8px;">3. Nhận quà từ tình nguyện viên</p>
+                </div>
+                <div
+                    style="background: var(--red-50); border: 2px solid var(--red-500); border-radius: 8px; padding: 10px; margin-top: 12px;">
+                    <div style="color: var(--red-600); font-weight: 700; font-size: 13px; text-align: center;">
+                        🚫 CHÚ Ý: MỖI MÃ CHỈ ĐƯỢC NHẬN QUÀ 1 LẦN DUY NHẤT!
+                    </div>
+                    <div style="color: var(--red-500); font-size: 11px; text-align: center; margin-top: 4px;">
+                        Hệ thống sẽ từ chối nếu mã đã được sử dụng trước đó.
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Add Case Screen -->
@@ -1764,20 +1780,30 @@
                 <div style="font-size: 18px; font-weight: 700;">Báo cáo ca cứu trợ</div>
             </div>
             <div style="padding: 0 16px 16px;">
-                <div class="form-group"><label class="form-label">Tên chủ hộ</label><input type="text"
-                        class="form-input" placeholder="Nguyễn Văn A"></div>
-                <div class="form-group"><label class="form-label">Số điện thoại</label><input type="tel"
-                        class="form-input" placeholder="0912 345 678"></div>
-                <div class="form-group"><label class="form-label">Địa chỉ</label><textarea class="form-input" rows="2"
-                        placeholder="Thôn, xã, huyện..."></textarea></div>
-                <div class="form-group"><label class="form-label">Nguồn thông tin</label>
-                    <select class="form-input">
+                <div class="form-group">
+                    <label class="form-label">Tên chủ hộ <span style="color: var(--red-500);">*</span></label>
+                    <input type="text" id="case-name" class="form-input" placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại <span style="color: var(--red-500);">*</span></label>
+                    <input type="tel" id="case-phone" class="form-input" placeholder="0912 345 678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Địa chỉ <span style="color: var(--red-500);">*</span></label>
+                    <textarea id="case-address" class="form-input" rows="2" placeholder="Thôn, xã, huyện..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nguồn thông tin</label>
+                    <select id="case-source" class="form-input">
                         <option>Facebook</option>
                         <option>Zalo</option>
                         <option>Danh sách địa phương</option>
                         <option>Người dân báo</option>
                     </select>
                 </div>
+                <p style="font-size: 11px; color: var(--gray-500); margin-bottom: 12px;">
+                    <span style="color: var(--red-500);">*</span> Các trường bắt buộc phải điền
+                </p>
                 <button class="btn btn-danger" onclick="submitCase()">🆘 Gửi báo cáo</button>
             </div>
         </div>
@@ -2108,6 +2134,30 @@
 
         function showHouseholdDetail(name, phone, address, people, status) {
             alert(`${name}\n📞 ${phone}\n📍 ${address}\n👥 ${people} người\n📋 Tình trạng: ${status}`);
+        }
+
+        function submitCase() {
+            const name = document.getElementById('case-name').value.trim();
+            const phone = document.getElementById('case-phone').value.trim();
+            const address = document.getElementById('case-address').value.trim();
+
+            const errors = [];
+            if (!name) errors.push('Tên chủ hộ');
+            if (!phone) errors.push('Số điện thoại');
+            if (!address) errors.push('Địa chỉ');
+
+            if (errors.length > 0) {
+                alert('⚠️ Vui lòng điền đầy đủ các trường bắt buộc:\n\n• ' + errors.join('\n• '));
+                return;
+            }
+
+            // Clear form
+            document.getElementById('case-name').value = '';
+            document.getElementById('case-phone').value = '';
+            document.getElementById('case-address').value = '';
+
+            showToast('✅ Đã gửi báo cáo thành công!');
+            showScreen('home');
         }
 
         function showCaseDetail(id) { const c = cases.find(x => x.id === id); alert(`${c.name}\n📍 ${c.address}\n📞 ${c.phone}\n👥 ${c.people} người\n📊 Nguồn: ${c.source}`); }
