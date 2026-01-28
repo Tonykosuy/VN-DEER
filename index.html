@@ -999,6 +999,341 @@
             align-items: center;
             gap: 6px;
         }
+
+        /* Logo placeholder */
+        .logo-placeholder {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 16px;
+            border: 3px dashed var(--gray-300);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-50);
+            overflow: hidden;
+        }
+
+        .logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-placeholder .placeholder-text {
+            font-size: 10px;
+            color: var(--gray-400);
+            text-align: center;
+        }
+
+        /* Compact workflow grid */
+        .workflow-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .workflow-btn-compact {
+            padding: 10px 6px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .workflow-btn-compact:active {
+            transform: scale(0.95);
+        }
+
+        .workflow-btn-compact .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .workflow-btn-compact .text {
+            font-size: 9px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .workflow-btn-compact.verify {
+            background: linear-gradient(135deg, var(--blue-500), #2563eb);
+            color: white;
+        }
+
+        .workflow-btn-compact.map {
+            background: linear-gradient(135deg, var(--green-500), var(--green-600));
+            color: white;
+        }
+
+        .workflow-btn-compact.id {
+            background: linear-gradient(135deg, var(--purple-500), #7c3aed);
+            color: white;
+        }
+
+        .workflow-btn-compact.register {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+        }
+
+        .workflow-btn-compact.cases {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: white;
+        }
+
+        /* Region cards */
+        .region-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            margin: 10px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 5px solid;
+        }
+
+        .region-card:active {
+            transform: scale(0.98);
+        }
+
+        .region-card.critical {
+            border-left-color: var(--red-500);
+        }
+
+        .region-card.high {
+            border-left-color: #f97316;
+        }
+
+        .region-card.medium {
+            border-left-color: var(--yellow-500);
+        }
+
+        .region-card.low {
+            border-left-color: var(--green-500);
+        }
+
+        .region-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .region-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--gray-800);
+        }
+
+        .region-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .region-badge.critical {
+            background: var(--red-100);
+            color: var(--red-600);
+        }
+
+        .region-badge.high {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .region-badge.medium {
+            background: var(--yellow-100);
+            color: var(--yellow-600);
+        }
+
+        .region-badge.low {
+            background: var(--green-100);
+            color: var(--green-600);
+        }
+
+        .region-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .region-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Household list */
+        .household-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .household-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        .household-status.critical {
+            background: var(--red-500);
+        }
+
+        .household-status.high {
+            background: #f97316;
+        }
+
+        .household-status.medium {
+            background: var(--yellow-500);
+        }
+
+        .household-status.low {
+            background: var(--green-500);
+        }
+
+        .household-info {
+            flex: 1;
+        }
+
+        .household-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-800);
+        }
+
+        .household-detail {
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .household-arrow {
+            color: var(--gray-400);
+            font-size: 16px;
+        }
+
+        /* News and Tips cards */
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 8px 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .news-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .news-icon.alert {
+            background: var(--red-100);
+        }
+
+        .news-icon.info {
+            background: var(--blue-500);
+            background: #dbeafe;
+        }
+
+        .news-icon.success {
+            background: var(--green-100);
+        }
+
+        .news-icon.warning {
+            background: var(--yellow-100);
+        }
+
+        .news-content {
+            flex: 1;
+        }
+
+        .news-title {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+        }
+
+        .news-desc {
+            font-size: 11px;
+            color: var(--gray-500);
+            line-height: 1.4;
+        }
+
+        .news-time {
+            font-size: 10px;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 8px 16px;
+            color: white;
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .tip-content {
+            font-size: 12px;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        .tip-content ul {
+            margin: 8px 0 0 16px;
+            padding: 0;
+        }
+
+        .tip-content li {
+            margin-bottom: 4px;
+        }
+
+        .see-more-btn {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            margin: 8px 16px;
+            background: var(--gray-100);
+            border-radius: 10px;
+            color: var(--gray-600);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .see-more-btn:hover {
+            background: var(--gray-200);
+        }
     </style>
 </head>
 
@@ -1052,57 +1387,129 @@
 
         <!-- Home Screen -->
         <div class="screen" id="screen-home">
-            <div class="header">
-                <h1>🆘 Hệ Thống Cứu Trợ</h1>
+            <div class="header" style="padding-bottom: 30px;">
+                <!-- Logo placeholder - centered -->
+                <div class="logo-placeholder" id="logo-container">
+                    <!-- Replace the placeholder text with an img tag when you have a logo -->
+                    <!-- <img src="your-logo.png" alt="Logo"> -->
+                    <span class="placeholder-text">Thêm<br>Logo</span>
+                </div>
+                <h1 style="font-size: 18px;">Hệ Thống Cứu Trợ Khẩn Cấp</h1>
                 <p>Xin chào, Tình Nguyện Viên!</p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card sos">
-                    <div class="number">12</div>
-                    <div class="label">🔴 Vùng Đỏ</div>
+                    <div class="number">40</div>
+                    <div class="label">🔴 Khẩn cấp</div>
                 </div>
                 <div class="stat-card medical">
-                    <div class="number">8</div>
-                    <div class="label">🟡 Vùng Vàng</div>
+                    <div class="number">35</div>
+                    <div class="label">🟡 Cần hỗ trợ</div>
                 </div>
                 <div class="stat-card safe">
                     <div class="number">25</div>
-                    <div class="label">🟢 Vùng Xanh</div>
+                    <div class="label">🟢 Đã cứu trợ</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-title">📋 Quy trình hệ thống</div>
-                <div class="workflow-grid">
-                    <button class="workflow-btn verify" onclick="showScreen('verify')">
+            <!-- Compact Workflow Grid -->
+            <div class="card" style="padding: 12px;">
+                <div class="workflow-grid-compact">
+                    <button class="workflow-btn-compact verify" onclick="showScreen('verify')">
                         <span class="icon">📞</span>
-                        <span class="text">1. Xác minh & Sàng lọc</span>
+                        <span class="text">Xác minh</span>
                     </button>
-                    <button class="workflow-btn map" onclick="showScreen('map')">
+                    <button class="workflow-btn-compact map" onclick="showScreen('map')">
                         <span class="icon">🗺️</span>
-                        <span class="text">2. Bản đồ Điều phối</span>
+                        <span class="text">Bản đồ</span>
                     </button>
-                    <button class="workflow-btn id" onclick="showScreen('identify')">
+                    <button class="workflow-btn-compact id" onclick="showScreen('identify')">
                         <span class="icon">🪪</span>
-                        <span class="text">3. Định danh Minh bạch</span>
+                        <span class="text">Định danh</span>
                     </button>
-                    <button class="workflow-btn register" onclick="showScreen('volunteer-register')">
+                    <button class="workflow-btn-compact register" onclick="showScreen('volunteer-register')">
                         <span class="icon">🚛</span>
-                        <span class="text">Đăng ký Thiện nguyện</span>
+                        <span class="text">Đăng ký</span>
+                    </button>
+                    <button class="workflow-btn-compact cases" onclick="showScreen('case-list')">
+                        <span class="icon">📋</span>
+                        <span class="text">Danh sách</span>
                     </button>
                 </div>
             </div>
 
-            <div class="section-title">📊 Nguồn dữ liệu Crawler</div>
-            <div style="padding: 0 16px; display: flex; flex-wrap: wrap; gap: 4px;">
-                <span class="data-source">📱 Facebook (234)</span>
-                <span class="data-source">💬 Zalo (156)</span>
-                <span class="data-source">📋 Địa phương (89)</span>
-                <span class="data-source">🌐 MXH khác (45)</span>
+            <!-- News and Announcements Section -->
+            <div class="section-title">� Tin tức & Thông báo</div>
+            <div class="news-card">
+                <div class="news-icon alert">🚨</div>
+                <div class="news-content">
+                    <div class="news-title">Cảnh báo: Mưa lớn tiếp tục tại Yên Bái</div>
+                    <div class="news-desc">Dự báo mưa lớn 100-200mm trong 24h tới. Người dân cần di chuyển đến nơi an
+                        toàn.</div>
+                    <div class="news-time">⏰ 30 phút trước</div>
+                </div>
             </div>
+            <div class="news-card">
+                <div class="news-icon success">✅</div>
+                <div class="news-content">
+                    <div class="news-title">Đoàn cứu trợ Hà Nội đã đến Xã Thượng</div>
+                    <div class="news-desc">Phát 500 phần quà cho bà con vùng lũ. Tiếp tục di chuyển đến Xã Hạ.</div>
+                    <div class="news-time">⏰ 1 giờ trước</div>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-icon warning">⚠️</div>
+                <div class="news-content">
+                    <div class="news-title">Khu vực Xã Đông đang thiếu thuốc y tế</div>
+                    <div class="news-desc">Cần các đoàn có thuốc kháng sinh, thuốc tiêu chảy ưu tiên hướng đến khu vực
+                        này.</div>
+                    <div class="news-time">⏰ 2 giờ trước</div>
+                </div>
+            </div>
+            <div class="see-more-btn" onclick="showToast('Đang tải thêm tin tức...')">Xem thêm tin tức →</div>
 
-            <div class="section-title">🆘 Ca khẩn cấp cần xử lý</div>
-            <div style="padding: 0 16px;" id="emergency-list"></div>
+            <!-- Survival Tips Section -->
+            <div class="section-title">💡 Mẹo sinh tồn khi bão lũ</div>
+            <div class="tip-card">
+                <div class="tip-header">
+                    <span>🌊</span> Khi nước lũ dâng cao
+                </div>
+                <div class="tip-content">
+                    <ul>
+                        <li>Di chuyển lên tầng cao hoặc nóc nhà</li>
+                        <li>Mang theo nước sạch và đèn pin</li>
+                        <li>Không cố bơi qua dòng nước chảy xiết</li>
+                        <li>Gọi cứu hộ: <b>113 hoặc 114</b></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tip-card" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                <div class="tip-header">
+                    <span>⚡</span> An toàn điện trong mưa bão
+                </div>
+                <div class="tip-content">
+                    <ul>
+                        <li>Ngắt cầu dao điện khi nước vào nhà</li>
+                        <li>Không chạm vào thiết bị điện khi tay ướt</li>
+                        <li>Tránh xa cột điện, dây điện đứt</li>
+                        <li>Không sử dụng điện thoại khi đang sạc</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tip-card" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                <div class="tip-header">
+                    <span>🏥</span> Sơ cứu & Y tế cơ bản
+                </div>
+                <div class="tip-content">
+                    <ul>
+                        <li>Uống nước đã đun sôi để tránh bệnh tiêu hóa</li>
+                        <li>Rửa tay thường xuyên với xà phòng</li>
+                        <li>Xử lý vết thương bằng cồn 70 độ</li>
+                        <li>Đưa người bị hạ thân nhiệt vào chỗ ấm</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="see-more-btn" onclick="showToast('Đang tải thêm mẹo...')">Xem thêm mẹo sinh tồn →</div>
         </div>
 
         <!-- 1. Verification Screen -->
@@ -1363,6 +1770,86 @@
             </div>
         </div>
 
+        <!-- Case List Screen - 4 Regions -->
+        <div class="screen" id="screen-case-list">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Danh sách các ca báo cáo</h2>
+            </div>
+            <div class="card">
+                <div class="card-title">📍 Chọn khu vực để xem danh sách hộ</div>
+                <p style="font-size: 12px; color: var(--gray-600);">Các ca được chia theo 4 khu vực, màu sắc thể hiện
+                    mức độ khẩn cấp.</p>
+            </div>
+
+            <!-- Region 1: Critical -->
+            <div class="region-card critical" onclick="showRegionDetail('xa-ha')">
+                <div class="region-header">
+                    <div class="region-name">🔴 Xã Hạ</div>
+                    <div class="region-badge critical">Cực kỳ khẩn cấp</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>10 hộ</span></div>
+                    <div class="region-stat">🚨 <span>Chưa có đoàn</span></div>
+                    <div class="region-stat">💧 <span>Ngập 2m</span></div>
+                </div>
+            </div>
+
+            <!-- Region 2: High -->
+            <div class="region-card high" onclick="showRegionDetail('xa-thuong')">
+                <div class="region-header">
+                    <div class="region-name">🟠 Xã Thượng</div>
+                    <div class="region-badge high">Khẩn cấp cao</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>10 hộ</span></div>
+                    <div class="region-stat">🚛 <span>1 đoàn đang đến</span></div>
+                    <div class="region-stat">💧 <span>Ngập 1.5m</span></div>
+                </div>
+            </div>
+
+            <!-- Region 3: Medium -->
+            <div class="region-card medium" onclick="showRegionDetail('xa-dong')">
+                <div class="region-header">
+                    <div class="region-name">🟡 Xã Đông</div>
+                    <div class="region-badge medium">Cần hỗ trợ</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>10 hộ</span></div>
+                    <div class="region-stat">🏥 <span>Thiếu thuốc</span></div>
+                    <div class="region-stat">💧 <span>Ngập 1m</span></div>
+                </div>
+            </div>
+
+            <!-- Region 4: Low -->
+            <div class="region-card low" onclick="showRegionDetail('xa-tay')">
+                <div class="region-header">
+                    <div class="region-name">🟢 Xã Tây</div>
+                    <div class="region-badge low">Ổn định</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>10 hộ</span></div>
+                    <div class="region-stat">✅ <span>Đã được hỗ trợ</span></div>
+                    <div class="region-stat">💧 <span>Nước rút</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Household Detail Screen -->
+        <div class="screen" id="screen-household-detail">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('case-list')">←</button>
+                <h2 id="region-detail-title">Danh sách hộ dân</h2>
+            </div>
+            <div class="card" id="region-summary">
+                <!-- Populated by JS -->
+            </div>
+            <div class="section-title">📋 Danh sách 10 hộ trong khu vực</div>
+            <div style="padding: 0 16px;" id="household-list">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
         <!-- Profile Screen -->
         <div class="screen" id="screen-profile">
             <div class="profile-header">
@@ -1422,14 +1909,99 @@
             { name: 'Trần Văn Hùng', cccd: '023456789012', time: '10:15', count: 1, priority: 'Trẻ nhỏ' },
             { name: 'Lê Thị Mai', cccd: '034567890123', time: '09:45', count: 1, priority: 'Phụ nữ mang thai' },
         ];
+
+        // Region data with 10 households each
+        const regions = {
+            'xa-ha': {
+                name: 'Xã Hạ',
+                level: 'critical',
+                levelText: 'Cực kỳ khẩn cấp',
+                description: 'Khu vực ngập nặng nhất, nước dâng 2m. Chưa có đoàn cứu trợ đến.',
+                floodLevel: '2m',
+                convoys: 0,
+                households: [
+                    { id: 1, name: 'Hộ Nguyễn Văn An', phone: '0912345001', address: 'Thôn 1, Xã Hạ', people: 6, status: 'Người già, trẻ nhỏ' },
+                    { id: 2, name: 'Hộ Trần Thị Bình', phone: '0912345002', address: 'Thôn 1, Xã Hạ', people: 4, status: 'Cần thuốc gấp' },
+                    { id: 3, name: 'Hộ Lê Văn Cường', phone: '0912345003', address: 'Thôn 2, Xã Hạ', people: 5, status: 'Thiếu lương thực' },
+                    { id: 4, name: 'Hộ Phạm Thị Dung', phone: '0912345004', address: 'Thôn 2, Xã Hạ', people: 7, status: 'Phụ nữ mang thai' },
+                    { id: 5, name: 'Hộ Hoàng Văn Em', phone: '0912345005', address: 'Thôn 3, Xã Hạ', people: 3, status: 'Người tàn tật' },
+                    { id: 6, name: 'Hộ Vũ Thị Phương', phone: '0912345006', address: 'Thôn 3, Xã Hạ', people: 5, status: 'Thiếu nước sạch' },
+                    { id: 7, name: 'Hộ Đặng Văn Giang', phone: '0912345007', address: 'Thôn 4, Xã Hạ', people: 4, status: 'Nhà bị sập' },
+                    { id: 8, name: 'Hộ Bùi Thị Hạnh', phone: '0912345008', address: 'Thôn 4, Xã Hạ', people: 6, status: 'Cô lập hoàn toàn' },
+                    { id: 9, name: 'Hộ Ngô Văn Kiên', phone: '0912345009', address: 'Thôn 5, Xã Hạ', people: 5, status: 'Người già ốm nặng' },
+                    { id: 10, name: 'Hộ Lý Thị Lan', phone: '0912345010', address: 'Thôn 5, Xã Hạ', people: 4, status: 'Trẻ sơ sinh' }
+                ]
+            },
+            'xa-thuong': {
+                name: 'Xã Thượng',
+                level: 'high',
+                levelText: 'Khẩn cấp cao',
+                description: 'Nước ngập 1.5m, 1 đoàn cứu trợ đang trên đường đến.',
+                floodLevel: '1.5m',
+                convoys: 1,
+                households: [
+                    { id: 11, name: 'Hộ Trương Văn Minh', phone: '0923456001', address: 'Thôn 1, Xã Thượng', people: 5, status: 'Thiếu lương thực' },
+                    { id: 12, name: 'Hộ Đỗ Thị Ngọc', phone: '0923456002', address: 'Thôn 1, Xã Thượng', people: 4, status: 'Người già' },
+                    { id: 13, name: 'Hộ Phan Văn Oanh', phone: '0923456003', address: 'Thôn 2, Xã Thượng', people: 6, status: 'Trẻ nhỏ bị ốm' },
+                    { id: 14, name: 'Hộ Lưu Thị Phượng', phone: '0923456004', address: 'Thôn 2, Xã Thượng', people: 3, status: 'Cần nước sạch' },
+                    { id: 15, name: 'Hộ Mai Văn Quang', phone: '0923456005', address: 'Thôn 3, Xã Thượng', people: 7, status: 'Gia đình đông' },
+                    { id: 16, name: 'Hộ Đinh Thị Rosé', phone: '0923456006', address: 'Thôn 3, Xã Thượng', people: 4, status: 'Phụ nữ mang thai' },
+                    { id: 17, name: 'Hộ Cao Văn Sơn', phone: '0923456007', address: 'Thôn 4, Xã Thượng', people: 5, status: 'Thiếu thuốc' },
+                    { id: 18, name: 'Hộ Tô Thị Thảo', phone: '0923456008', address: 'Thôn 4, Xã Thượng', people: 4, status: 'Mất liên lạc' },
+                    { id: 19, name: 'Hộ Hà Văn Uy', phone: '0923456009', address: 'Thôn 5, Xã Thượng', people: 6, status: 'Người tàn tật' },
+                    { id: 20, name: 'Hộ Châu Thị Vân', phone: '0923456010', address: 'Thôn 5, Xã Thượng', people: 3, status: 'Người già neo đơn' }
+                ]
+            },
+            'xa-dong': {
+                name: 'Xã Đông',
+                level: 'medium',
+                levelText: 'Cần hỗ trợ',
+                description: 'Nước ngập 1m, đang thiếu thuốc y tế và vật tư sơ cứu.',
+                floodLevel: '1m',
+                convoys: 2,
+                households: [
+                    { id: 21, name: 'Hộ Trịnh Văn Xuân', phone: '0934567001', address: 'Thôn 1, Xã Đông', people: 4, status: 'Cần thuốc kháng sinh' },
+                    { id: 22, name: 'Hộ Dương Thị Yến', phone: '0934567002', address: 'Thôn 1, Xã Đông', people: 5, status: 'Trẻ bị tiêu chảy' },
+                    { id: 23, name: 'Hộ Kiều Văn Anh', phone: '0934567003', address: 'Thôn 2, Xã Đông', people: 3, status: 'Người cao tuổi' },
+                    { id: 24, name: 'Hộ Mạc Thị Bích', phone: '0934567004', address: 'Thôn 2, Xã Đông', people: 6, status: 'Thiếu lương thực' },
+                    { id: 25, name: 'Hộ Âu Văn Công', phone: '0934567005', address: 'Thôn 3, Xã Đông', people: 4, status: 'Cần bông băng' },
+                    { id: 26, name: 'Hộ La Thị Diệu', phone: '0934567006', address: 'Thôn 3, Xã Đông', people: 5, status: 'Bị cảm cúm' },
+                    { id: 27, name: 'Hộ Tạ Văn Hiệp', phone: '0934567007', address: 'Thôn 4, Xã Đông', people: 7, status: 'Gia đình đông' },
+                    { id: 28, name: 'Hộ Từ Thị Hồng', phone: '0934567008', address: 'Thôn 4, Xã Đông', people: 4, status: 'Cần thuốc đau bụng' },
+                    { id: 29, name: 'Hộ Liễu Văn Khánh', phone: '0934567009', address: 'Thôn 5, Xã Đông', people: 3, status: 'Người già ốm' },
+                    { id: 30, name: 'Hộ Quách Thị Liên', phone: '0934567010', address: 'Thôn 5, Xã Đông', people: 5, status: 'Thiếu nước sạch' }
+                ]
+            },
+            'xa-tay': {
+                name: 'Xã Tây',
+                level: 'low',
+                levelText: 'Ổn định',
+                description: 'Nước đã rút, các hộ đã được hỗ trợ cơ bản. Cần theo dõi.',
+                floodLevel: 'Đã rút',
+                convoys: 3,
+                households: [
+                    { id: 31, name: 'Hộ Sầm Văn Long', phone: '0945678001', address: 'Thôn 1, Xã Tây', people: 4, status: 'Đã nhận quà' },
+                    { id: 32, name: 'Hộ Nông Thị Mai', phone: '0945678002', address: 'Thôn 1, Xã Tây', people: 5, status: 'Đã nhận quà' },
+                    { id: 33, name: 'Hộ Tăng Văn Nghĩa', phone: '0945678003', address: 'Thôn 2, Xã Tây', people: 3, status: 'Ổn định' },
+                    { id: 34, name: 'Hộ Mã Thị Oanh', phone: '0945678004', address: 'Thôn 2, Xã Tây', people: 6, status: 'Đã nhận quà' },
+                    { id: 35, name: 'Hộ Triệu Văn Phúc', phone: '0945678005', address: 'Thôn 3, Xã Tây', people: 4, status: 'Ổn định' },
+                    { id: 36, name: 'Hộ Lộc Thị Quỳnh', phone: '0945678006', address: 'Thôn 3, Xã Tây', people: 5, status: 'Đã nhận quà' },
+                    { id: 37, name: 'Hộ Vi Văn Sỹ', phone: '0945678007', address: 'Thôn 4, Xã Tây', people: 4, status: 'Ổn định' },
+                    { id: 38, name: 'Hộ Hứa Thị Trang', phone: '0945678008', address: 'Thôn 4, Xã Tây', people: 3, status: 'Đã nhận quà' },
+                    { id: 39, name: 'Hộ Thạch Văn Vinh', phone: '0945678009', address: 'Thôn 5, Xã Tây', people: 5, status: 'Ổn định' },
+                    { id: 40, name: 'Hộ Cầm Thị Xuân', phone: '0945678010', address: 'Thôn 5, Xã Tây', people: 4, status: 'Đã nhận quà' }
+                ]
+            }
+        };
+
         let callCount = 5, callsList = [], completedCalls = 0, spamCalls = 0, currentCallId = null, map = null, selectedStatus = null;
 
-        document.addEventListener('DOMContentLoaded', () => { renderCaseLists(); renderGiftHistory(); });
+        document.addEventListener('DOMContentLoaded', () => { renderGiftHistory(); });
 
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-' + screenId).classList.add('active');
-            const hideNav = ['login', 'register', 'verify', 'call-list', 'record-form', 'volunteer-register'].includes(screenId);
+            const hideNav = ['login', 'register', 'verify', 'call-list', 'record-form', 'volunteer-register', 'case-list', 'household-detail'].includes(screenId);
             document.getElementById('bottom-nav').style.display = hideNav ? 'none' : 'flex';
             if (screenId === 'map' && !map) setTimeout(initMap, 100);
         }
@@ -1470,6 +2042,60 @@
                         <div class="history-count-label">lần nhận</div>
                     </div>
                 </div>`).join('');
+        }
+
+        function showRegionDetail(regionId) {
+            const region = regions[regionId];
+            if (!region) return;
+
+            // Update title
+            document.getElementById('region-detail-title').textContent = region.name;
+
+            // Update summary card
+            const levelColors = {
+                critical: 'var(--red-500)',
+                high: '#f97316',
+                medium: 'var(--yellow-500)',
+                low: 'var(--green-500)'
+            };
+
+            document.getElementById('region-summary').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div class="card-title" style="margin: 0;">📍 ${region.name}</div>
+                    <div class="region-badge ${region.level}">${region.levelText}</div>
+                </div>
+                <p style="font-size: 12px; color: var(--gray-600); line-height: 1.5; margin-bottom: 10px;">${region.description}</p>
+                <div style="display: flex; gap: 16px; font-size: 11px; color: var(--gray-500);">
+                    <span>💧 Mức ngập: <b>${region.floodLevel}</b></span>
+                    <span>🚛 Đoàn: <b>${region.convoys}</b></span>
+                    <span>👥 Hộ: <b>${region.households.length}</b></span>
+                </div>
+            `;
+
+            // Render household list
+            renderHouseholds(region.households, region.level);
+
+            // Show the screen
+            showScreen('household-detail');
+        }
+
+        function renderHouseholds(households, level) {
+            const list = document.getElementById('household-list');
+            list.innerHTML = households.map(h => `
+                <div class="household-item" onclick="showHouseholdDetail('${h.name}', '${h.phone}', '${h.address}', ${h.people}, '${h.status}')">
+                    <div class="household-status ${level}"></div>
+                    <div class="household-info">
+                        <div class="household-name">${h.name}</div>
+                        <div class="household-detail">📍 ${h.address} • 👥 ${h.people} người</div>
+                        <div class="household-detail">📋 ${h.status}</div>
+                    </div>
+                    <div class="household-arrow">›</div>
+                </div>
+            `).join('');
+        }
+
+        function showHouseholdDetail(name, phone, address, people, status) {
+            alert(`${name}\n📞 ${phone}\n📍 ${address}\n👥 ${people} người\n📋 Tình trạng: ${status}`);
         }
 
         function showCaseDetail(id) { const c = cases.find(x => x.id === id); alert(`${c.name}\n📍 ${c.address}\n📞 ${c.phone}\n👥 ${c.people} người\n📊 Nguồn: ${c.source}`); }
