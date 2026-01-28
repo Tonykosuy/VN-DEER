@@ -636,11 +636,20 @@
 
         #qr-reader {
             width: 100% !important;
+            height: 100% !important;
             border: none !important;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         #qr-reader video {
             border-radius: 10px;
+        }
+
+        #qr-reader__scan_region {
+            display: flex !important;
+            justify-content: center !important;
         }
 
         .scanner-frame {
@@ -648,7 +657,12 @@
             height: 180px;
             border: 3px solid var(--green-500);
             border-radius: 14px;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            pointer-events: none;
         }
 
         .scanner-line {
@@ -1390,9 +1404,7 @@
             <div class="header" style="padding-bottom: 30px;">
                 <!-- Logo placeholder - centered -->
                 <div class="logo-placeholder" id="logo-container">
-                    <!-- Replace the placeholder text with an img tag when you have a logo -->
-                    <!-- <img src="your-logo.png" alt="Logo"> -->
-                    <span class="placeholder-text">Thêm<br>Logo</span>
+                    <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
                 </div>
                 <h1 style="font-size: 18px;">Hệ Thống Cứu Trợ Khẩn Cấp</h1>
                 <p>Xin chào, Tình Nguyện Viên!</p>
