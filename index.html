@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🆘 Hệ Thống Xác Minh & Điều Phối Cứu Trợ Khẩn Cấp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-700: #15803d;
+            --red-50: #fef2f2;
+            --red-100: #fee2e2;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --yellow-50: #fefce8;
+            --yellow-100: #fef9c3;
+            --yellow-500: #eab308;
+            --yellow-600: #ca8a04;
+            --blue-500: #3b82f6;
+            --purple-500: #8b5cf6;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            min-height: 100vh;
+            color: var(--gray-900);
+        }
+
+        .phone-frame {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: 80px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 20px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--gray-400);
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--green-600);
+        }
+
+        .nav-item .icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--green-600), var(--green-700));
+            color: white;
+            padding: 48px 20px 24px;
+        }
+
+        .header-small {
+            background: var(--green-600);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-small .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            margin-top: 4px;
+            font-size: 13px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 16px 20px;
+            margin-top: -30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card .number {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .stat-card .label {
+            font-size: 10px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .stat-card.sos .number {
+            color: var(--red-500);
+        }
+
+        .stat-card.medical .number {
+            color: var(--yellow-600);
+        }
+
+        .stat-card.safe .number {
+            color: var(--green-600);
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 12px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .workflow-btn {
+            padding: 16px 12px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .workflow-btn:active {
+            transform: scale(0.98);
+        }
+
+        .workflow-btn.verify {
+            background: linear-gradient(135deg, var(--blue-500), #2563eb);
+            color: white;
+        }
+
+        .workflow-btn.map {
+            background: linear-gradient(135deg, var(--green-500), var(--green-600));
+            color: white;
+        }
+
+        .workflow-btn.id {
+            background: linear-gradient(135deg, var(--purple-500), #7c3aed);
+            color: white;
+        }
+
+        .workflow-btn.register {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+        }
+
+        .workflow-btn .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .workflow-btn .text {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .case-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .case-status {
+            width: 5px;
+            height: 40px;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+
+        .case-status.sos {
+            background: var(--red-500);
+        }
+
+        .case-status.medical {
+            background: var(--yellow-500);
+        }
+
+        .case-status.safe {
+            background: var(--green-500);
+        }
+
+        .case-info {
+            flex: 1;
+        }
+
+        .case-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-800);
+        }
+
+        .case-address {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .case-meta {
+            font-size: 11px;
+            color: var(--gray-400);
+            margin-top: 2px;
+        }
+
+        .case-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .case-badge.sos {
+            background: var(--red-100);
+            color: var(--red-600);
+        }
+
+        .case-badge.medical {
+            background: var(--yellow-100);
+            color: var(--yellow-600);
+        }
+
+        .case-badge.safe {
+            background: var(--green-100);
+            color: var(--green-600);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-500), var(--green-600));
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--red-500), var(--red-600));
+            color: white;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid var(--green-500);
+            color: var(--green-600);
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--green-500);
+            box-shadow: 0 0 0 3px var(--green-100);
+        }
+
+        .call-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 30px 20px;
+        }
+
+        .counter-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid var(--green-500);
+            background: white;
+            font-size: 26px;
+            color: var(--green-600);
+            cursor: pointer;
+        }
+
+        .counter-value {
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--green-600);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--gray-200);
+            margin: 0 16px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-500);
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: var(--green-600);
+            border-bottom-color: var(--green-600);
+        }
+
+        .progress-section {
+            padding: 14px 16px;
+            background: var(--green-50);
+        }
+
+        .progress-bar-bg {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green-500), var(--green-600));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-top: 6px;
+            color: var(--gray-600);
+        }
+
+        .script-card {
+            background: var(--gray-50);
+            border-radius: 10px;
+            margin: 12px 16px;
+            overflow: hidden;
+        }
+
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: var(--gray-100);
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .script-content {
+            padding: 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--gray-700);
+            display: none;
+        }
+
+        .script-content.show {
+            display: block;
+        }
+
+        .call-item {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .call-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .call-item-status {
+            width: 6px;
+            height: 36px;
+            border-radius: 3px;
+        }
+
+        .call-item-status.pending {
+            background: var(--yellow-500);
+        }
+
+        .call-item-status.completed {
+            background: var(--green-500);
+        }
+
+        .call-item-status.unreachable {
+            background: var(--red-500);
+        }
+
+        .call-item-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 14px;
+        }
+
+        .call-item-phone {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--green-600);
+        }
+
+        .call-item-address {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .call-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+        }
+
+        .call-action-btn {
+            padding: 8px 6px;
+            border-radius: 8px;
+            border: none;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .call-action-btn.call {
+            background: var(--green-500);
+            color: white;
+        }
+
+        .call-action-btn.form {
+            background: var(--blue-500);
+            color: white;
+        }
+
+        .call-action-btn.skip {
+            background: var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        #map {
+            height: calc(100vh - 140px);
+            width: 100%;
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 90px;
+            left: 16px;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            font-size: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 3px 0;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .scanner-area {
+            background: var(--gray-900);
+            height: 260px;
+            margin: 16px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .scanner-frame {
+            width: 180px;
+            height: 180px;
+            border: 3px solid var(--green-500);
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .scanner-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--green-500);
+            box-shadow: 0 0 10px var(--green-500);
+            animation: scan 2s infinite;
+        }
+
+        @keyframes scan {
+
+            0%,
+            100% {
+                top: 0;
+            }
+
+            50% {
+                top: calc(100% - 2px);
+            }
+        }
+
+        .scanned-result {
+            background: var(--green-50);
+            padding: 16px;
+            margin: 16px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid var(--green-200);
+        }
+
+        .scanned-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--green-600);
+            letter-spacing: 2px;
+        }
+
+        .login-header {
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        .login-logo {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--green-700);
+        }
+
+        .login-subtitle {
+            color: var(--gray-500);
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .login-form {
+            padding: 0 20px;
+        }
+
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .login-footer a {
+            color: var(--green-600);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--green-600), var(--green-700));
+            padding: 40px 20px 28px;
+            text-align: center;
+            color: white;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 12px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .profile-email {
+            opacity: 0.9;
+            margin-top: 4px;
+            font-size: 13px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px;
+            margin-top: -16px;
+        }
+
+        .profile-stat {
+            background: white;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--green-600);
+        }
+
+        .profile-stat-label {
+            font-size: 10px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .recording-btn {
+            background: var(--red-500);
+            color: white;
+            padding: 16px;
+            border-radius: 50%;
+            font-size: 28px;
+            border: none;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+            }
+        }
+
+        .priority-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .priority-tag.high {
+            background: var(--red-100);
+            color: var(--red-600);
+        }
+
+        .priority-tag.medium {
+            background: var(--yellow-100);
+            color: var(--yellow-600);
+        }
+
+        .priority-tag.low {
+            background: var(--green-100);
+            color: var(--green-600);
+        }
+
+        .data-source {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--gray-600);
+            margin: 2px;
+        }
+
+        .volunteer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin: 10px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--green-500);
+        }
+
+        .volunteer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .volunteer-name {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .volunteer-goods {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        .volunteer-route {
+            font-size: 11px;
+            color: var(--green-600);
+            margin-top: 4px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .history-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--green-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .history-cccd {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .history-time {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        .history-count {
+            text-align: right;
+        }
+
+        .history-count-num {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--green-600);
+        }
+
+        .history-count-label {
+            font-size: 10px;
+            color: var(--gray-500);
+        }
+
+        .alert-banner {
+            background: var(--yellow-100);
+            border-left: 4px solid var(--yellow-500);
+            padding: 10px 14px;
+            margin: 12px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--yellow-600);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-800);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            padding: 12px 16px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="phone-frame">
+        <!-- Login Screen -->
+        <div class="screen active" id="screen-login">
+            <div class="login-header">
+                <div class="login-logo">🆘</div>
+                <div class="login-title">Xác Minh & Điều Phối</div>
+                <div class="login-subtitle">Cứu Trợ Khẩn Cấp</div>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label">Email / Số điện thoại</label>
+                    <input type="text" class="form-input" value="volunteer@relief.vn">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-input" value="password">
+                </div>
+                <button class="btn btn-primary" onclick="showScreen('home')">Đăng nhập</button>
+            </div>
+            <div class="login-footer"><a href="#" onclick="showScreen('register')">Chưa có tài khoản? Đăng ký</a></div>
+        </div>
+
+        <!-- Register Screen -->
+        <div class="screen" id="screen-register">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('login')">←</button>
+                <h2>Đăng ký tài khoản</h2>
+            </div>
+            <div style="padding: 16px;">
+                <div class="form-group"><label class="form-label">Họ và tên</label><input type="text" class="form-input"
+                        placeholder="Nguyễn Văn A"></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input"
+                        placeholder="email@example.com"></div>
+                <div class="form-group"><label class="form-label">Số điện thoại</label><input type="tel"
+                        class="form-input" placeholder="0912 345 678"></div>
+                <div class="form-group"><label class="form-label">Vai trò</label>
+                    <select class="form-input">
+                        <option>Tình nguyện viên gọi điện</option>
+                        <option>Đoàn thiện nguyện</option>
+                        <option>Nhân viên phát quà</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="showScreen('login'); showToast('Đăng ký thành công!')">Đăng
+                    ký</button>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div class="screen" id="screen-home">
+            <div class="header">
+                <h1>🆘 Hệ Thống Cứu Trợ</h1>
+                <p>Xin chào, Tình Nguyện Viên!</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card sos">
+                    <div class="number">12</div>
+                    <div class="label">🔴 Vùng Đỏ</div>
+                </div>
+                <div class="stat-card medical">
+                    <div class="number">8</div>
+                    <div class="label">🟡 Vùng Vàng</div>
+                </div>
+                <div class="stat-card safe">
+                    <div class="number">25</div>
+                    <div class="label">🟢 Vùng Xanh</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📋 Quy trình hệ thống</div>
+                <div class="workflow-grid">
+                    <button class="workflow-btn verify" onclick="showScreen('verify')">
+                        <span class="icon">📞</span>
+                        <span class="text">1. Xác minh & Sàng lọc</span>
+                    </button>
+                    <button class="workflow-btn map" onclick="showScreen('map')">
+                        <span class="icon">🗺️</span>
+                        <span class="text">2. Bản đồ Điều phối</span>
+                    </button>
+                    <button class="workflow-btn id" onclick="showScreen('identify')">
+                        <span class="icon">🪪</span>
+                        <span class="text">3. Định danh Minh bạch</span>
+                    </button>
+                    <button class="workflow-btn register" onclick="showScreen('volunteer-register')">
+                        <span class="icon">🚛</span>
+                        <span class="text">Đăng ký Thiện nguyện</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="section-title">📊 Nguồn dữ liệu Crawler</div>
+            <div style="padding: 0 16px; display: flex; flex-wrap: wrap; gap: 4px;">
+                <span class="data-source">📱 Facebook (234)</span>
+                <span class="data-source">💬 Zalo (156)</span>
+                <span class="data-source">📋 Địa phương (89)</span>
+                <span class="data-source">🌐 MXH khác (45)</span>
+            </div>
+
+            <div class="section-title">🆘 Ca khẩn cấp cần xử lý</div>
+            <div style="padding: 0 16px;" id="emergency-list"></div>
+        </div>
+
+        <!-- 1. Verification Screen -->
+        <div class="screen" id="screen-verify">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Xác minh & Sàng lọc</h2>
+            </div>
+            <div class="card">
+                <div class="card-title">📞 Quy trình xác minh qua cuộc gọi</div>
+                <p style="font-size: 13px; color: var(--gray-600); line-height: 1.5;">Gọi điện xác minh tình trạng nạn
+                    nhân từ danh sách Crawler. Phân loại: <b>An toàn</b> hoặc <b>Cần cứu trợ</b>.</p>
+            </div>
+            <div class="call-counter">
+                <button class="counter-btn" onclick="decreaseCount()">−</button>
+                <div class="counter-value" id="call-count">5</div>
+                <button class="counter-btn" onclick="increaseCount()">+</button>
+            </div>
+            <div style="padding: 16px;"><button class="btn btn-primary" onclick="startCalling()">📞 Bắt đầu gọi xác
+                    minh</button></div>
+        </div>
+
+        <!-- Call List Screen -->
+        <div class="screen" id="screen-call-list">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('verify')">←</button>
+                <h2>Danh sách xác minh</h2>
+            </div>
+            <div class="progress-section">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="call-progress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text"><span id="progress-text">Đã xác minh: 0/5</span><span
+                        id="unreachable-text">Lọc rác: 0</span></div>
+            </div>
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('pending')">Chưa gọi</button>
+                <button class="tab" onclick="switchTab('completed')">Đã xác minh</button>
+                <button class="tab" onclick="switchTab('spam')">Tin rác</button>
+            </div>
+            <div class="script-card">
+                <div class="script-header" onclick="toggleScript()"><span>📋 Kịch bản gọi điện</span><span
+                        id="script-toggle">▼</span></div>
+                <div class="script-content" id="script-content">"Xin chào, tôi là tình nguyện viên. Xin hỏi gia đình còn
+                    cần hỗ trợ không ạ?<br><br>✅ Nếu <b>AN TOÀN</b>: Cảm ơn, chúc gia đình bình an!<br><br>🆘 Nếu <b>CẦN
+                        HỖ TRỢ</b>: Ghi nhận vị trí, số người, tình trạng sức khỏe."</div>
+            </div>
+            <div id="call-list-container"></div>
+        </div>
+
+        <!-- Recording Form Screen -->
+        <div class="screen" id="screen-record-form">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('call-list')">←</button>
+                <h2>Ghi nhận thông tin</h2>
+            </div>
+            <div style="padding: 16px;">
+                <div
+                    style="background: var(--blue-500); color: white; padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 12px; opacity: 0.9;">Đang gọi</div>
+                    <div id="current-phone" style="font-size: 22px; font-weight: 700;">0912 345 678</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Trạng thái</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn btn-outline" id="btn-safe" onclick="selectStatus('safe')"
+                            style="padding: 12px;">✅ An toàn</button>
+                        <button class="btn btn-danger" id="btn-need" onclick="selectStatus('need')"
+                            style="padding: 12px;">🆘 Cần cứu trợ</button>
+                    </div>
+                </div>
+                <div id="need-form" class="hidden">
+                    <div class="form-group"><label class="form-label">📍 Vị trí chính xác</label><textarea
+                            class="form-input" rows="2" placeholder="Thôn, xã, huyện, tỉnh..."></textarea></div>
+                    <div class="form-group"><label class="form-label">👥 Số lượng người</label><input type="number"
+                            class="form-input" placeholder="5"></div>
+                    <div class="form-group"><label class="form-label">🏥 Tình trạng sức khỏe</label>
+                        <select class="form-input">
+                            <option>Bình thường</option>
+                            <option>Cần y tế khẩn cấp</option>
+                            <option>Có người già</option>
+                            <option>Có trẻ nhỏ</option>
+                            <option>Có phụ nữ mang thai</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label class="form-label">📝 Nhu cầu cấp thiết</label><textarea
+                            class="form-input" rows="2" placeholder="Thực phẩm, nước, thuốc..."></textarea></div>
+                    <div class="form-group"><label class="form-label">🎙️ Ghi âm cuộc gọi</label>
+                        <div style="text-align: center; padding: 16px;"><button class="recording-btn"
+                                onclick="toggleRecording()">🎙️</button>
+                            <div style="margin-top: 8px; font-size: 12px; color: var(--gray-500);">Nhấn để ghi âm</div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">⚡ Mức độ ưu tiên</label>
+                        <div style="display: flex; gap: 8px;">
+                            <span class="priority-tag high" onclick="selectPriority('high')">🔴 Khẩn cấp</span>
+                            <span class="priority-tag medium" onclick="selectPriority('medium')">🟡 Trung bình</span>
+                            <span class="priority-tag low" onclick="selectPriority('low')">🟢 Thấp</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveVerification()">💾 Lưu & Chuyển tiếp</button>
+            </div>
+        </div>
+
+        <!-- 2. Map Screen -->
+        <div class="screen" id="screen-map">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Bản đồ Điều phối</h2>
+            </div>
+            <div class="alert-banner">⚠️ Cảnh báo: Khu vực Xã Hạ đang quá tải (5 đoàn đang đến)</div>
+            <div id="map"></div>
+            <div class="map-legend">
+                <div style="font-weight: 600; margin-bottom: 4px;">Phân vùng nguy cấp</div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--red-500)"></div> Vùng Đỏ (SOS) - Chưa có đoàn
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--yellow-500)"></div> Vùng Vàng - Cần Y tế/Thuốc
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--green-500)"></div> Vùng Xanh - Đã đủ hỗ trợ
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--blue-500)"></div> Đoàn thiện nguyện
+                </div>
+            </div>
+        </div>
+
+        <!-- Volunteer Register Screen -->
+        <div class="screen" id="screen-volunteer-register">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Đăng ký Thiện nguyện</h2>
+            </div>
+            <div class="card">
+                <div class="card-title">🚛 Cổng đăng ký Đoàn</div>
+                <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;">Đăng ký lộ trình và hàng hóa để
+                    hệ thống điều phối, tránh quá tải.</p>
+            </div>
+            <div style="padding: 0 16px;">
+                <div class="form-group"><label class="form-label">Tên đoàn</label><input type="text" class="form-input"
+                        placeholder="Đoàn thiện nguyện ABC"></div>
+                <div class="form-group"><label class="form-label">Số xe / phương tiện</label><input type="text"
+                        class="form-input" placeholder="2 xe tải, 1 xe con"></div>
+                <div class="form-group"><label class="form-label">Hàng hóa mang theo</label><textarea class="form-input"
+                        rows="2" placeholder="Gạo 500kg, mì 200 thùng, nước 1000 chai..."></textarea></div>
+                <div class="form-group"><label class="form-label">Lộ trình dự kiến</label><input type="text"
+                        class="form-input" placeholder="Hà Nội → Yên Thế → Xã Hạ"></div>
+                <div class="form-group"><label class="form-label">Thời gian dự kiến đến</label><input
+                        type="datetime-local" class="form-input"></div>
+                <button class="btn btn-primary" onclick="registerVolunteer()">📝 Đăng ký lộ trình</button>
+            </div>
+            <div class="section-title">🚗 Đoàn đang di chuyển</div>
+            <div class="volunteer-card">
+                <div class="volunteer-info">
+                    <div>
+                        <div class="volunteer-name">Đoàn Hà Nội 1</div>
+                        <div class="volunteer-goods">Gạo 1 tấn, Mì 500 thùng</div>
+                        <div class="volunteer-route">📍 Đang đến: Xã Thượng (còn 15km)</div>
+                    </div>
+                    <span class="priority-tag low">🟢 Đúng tuyến</span>
+                </div>
+            </div>
+            <div class="volunteer-card">
+                <div class="volunteer-info">
+                    <div>
+                        <div class="volunteer-name">Đoàn Bắc Ninh</div>
+                        <div class="volunteer-goods">Thuốc y tế, Sữa</div>
+                        <div class="volunteer-route">📍 Đang đến: Xã Hạ (còn 5km)</div>
+                    </div>
+                    <span class="priority-tag high">⚠️ Khu vực đông</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Identify Screen -->
+        <div class="screen" id="screen-identify">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Định danh Minh bạch</h2>
+            </div>
+            <div class="card">
+                <div class="card-title">🪪 Quét định danh người nhận</div>
+                <p style="font-size: 12px; color: var(--gray-600); line-height: 1.5;">Quét CCCD/VNeID/BHYT để ghi nhận
+                    lịch sử, đảm bảo phân phối công bằng.</p>
+            </div>
+            <div class="scanner-area">
+                <div class="scanner-frame">
+                    <div class="scanner-line"></div>
+                </div>
+            </div>
+            <div style="text-align: center; padding: 0 16px;">
+                <p style="color: var(--gray-500); font-size: 12px; margin-bottom: 12px;">Đưa CCCD/VNeID/BHYT vào khung
+                    hình</p>
+                <button class="btn btn-primary" onclick="simulateScan()">📷 Mô phỏng quét</button>
+            </div>
+            <div class="scanned-result hidden" id="scan-result">
+                <div style="font-size: 12px; color: var(--gray-500); margin-bottom: 6px;">Số CCCD đã quét:</div>
+                <div class="scanned-number" id="scanned-cccd">012345678901</div>
+                <div style="margin-top: 12px; padding: 10px; background: var(--yellow-50); border-radius: 8px;">
+                    <div style="font-size: 12px; color: var(--yellow-600);">⚠️ Hộ này đã nhận quà 1 lần (2 ngày trước)
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 12px;" onclick="confirmGift()">✅ Xác nhận phát
+                    quà</button>
+            </div>
+            <div class="section-title">📜 Lịch sử phát quà hôm nay</div>
+            <div style="padding: 0 16px;" id="gift-history"></div>
+        </div>
+
+        <!-- Add Case Screen -->
+        <div class="screen" id="screen-add">
+            <div
+                style="background: linear-gradient(135deg, var(--red-500), var(--red-600)); color: white; padding: 16px; margin: 16px; border-radius: 14px;">
+                <div style="font-size: 28px; margin-bottom: 6px;">🆘</div>
+                <div style="font-size: 18px; font-weight: 700;">Báo cáo ca cứu trợ</div>
+            </div>
+            <div style="padding: 0 16px 16px;">
+                <div class="form-group"><label class="form-label">Tên chủ hộ</label><input type="text"
+                        class="form-input" placeholder="Nguyễn Văn A"></div>
+                <div class="form-group"><label class="form-label">Số điện thoại</label><input type="tel"
+                        class="form-input" placeholder="0912 345 678"></div>
+                <div class="form-group"><label class="form-label">Địa chỉ</label><textarea class="form-input" rows="2"
+                        placeholder="Thôn, xã, huyện..."></textarea></div>
+                <div class="form-group"><label class="form-label">Nguồn thông tin</label>
+                    <select class="form-input">
+                        <option>Facebook</option>
+                        <option>Zalo</option>
+                        <option>Danh sách địa phương</option>
+                        <option>Người dân báo</option>
+                    </select>
+                </div>
+                <button class="btn btn-danger" onclick="submitCase()">🆘 Gửi báo cáo</button>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div class="screen" id="screen-profile">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name">Tình Nguyện Viên</div>
+                <div class="profile-email">volunteer@relief.vn</div>
+            </div>
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="profile-stat-value">45</div>
+                    <div class="profile-stat-label">Cuộc gọi</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">120</div>
+                    <div class="profile-stat-label">Hộ phát quà</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">8h</div>
+                    <div class="profile-stat-label">Thời gian</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">📱 Thông tin</div>
+                <div style="font-size: 13px;">
+                    <div style="color: var(--gray-500);">Vai trò</div>
+                    <div style="font-weight: 600;">Tình nguyện viên gọi điện</div>
+                </div>
+            </div>
+            <div style="padding: 16px;"><button class="btn" style="background: var(--red-100); color: var(--red-600);"
+                    onclick="showScreen('login'); showToast('Đã đăng xuất')">🚪 Đăng xuất</button></div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav" id="bottom-nav">
+            <button class="nav-item active" onclick="navTo('home')"><span class="icon">🏠</span><span>Trang
+                    chủ</span></button>
+            <button class="nav-item" onclick="navTo('map')"><span class="icon">🗺️</span><span>Bản đồ</span></button>
+            <button class="nav-item" onclick="navTo('add')"><span class="icon">➕</span><span>Thêm ca</span></button>
+            <button class="nav-item" onclick="navTo('identify')"><span class="icon">🪪</span><span>Định
+                    danh</span></button>
+            <button class="nav-item" onclick="navTo('profile')"><span class="icon">👤</span><span>Cá
+                    nhân</span></button>
+        </div>
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script>
+        const cases = [
+            { id: 1, name: 'Hộ Nguyễn Văn A', phone: '0912345678', address: 'Thôn 3, Xã Hạ', people: 5, status: 'sos', source: 'Facebook', lat: 21.285, lng: 106.145 },
+            { id: 2, name: 'Hộ Trần Thị B', phone: '0923456789', address: 'Thôn 5, Xã Thượng', people: 3, status: 'medical', source: 'Zalo', lat: 21.290, lng: 106.150 },
+            { id: 3, name: 'Hộ Lê Văn C', phone: '0934567890', address: 'Thôn 1, Xã Đông', people: 4, status: 'sos', source: 'Địa phương', lat: 21.280, lng: 106.140 },
+            { id: 4, name: 'Hộ Phạm Văn D', phone: '0945678901', address: 'Thôn 2, Xã Tây', people: 6, status: 'safe', source: 'Facebook', lat: 21.275, lng: 106.135 },
+            { id: 5, name: 'Hộ Hoàng Thị E', phone: '0956789012', address: 'Thôn 4, Xã Bắc', people: 2, status: 'sos', source: 'Zalo', lat: 21.295, lng: 106.155 },
+        ];
+        const giftHistory = [
+            { name: 'Nguyễn Thị Lan', cccd: '012345678901', time: '10:30', count: 2, priority: 'Người già' },
+            { name: 'Trần Văn Hùng', cccd: '023456789012', time: '10:15', count: 1, priority: 'Trẻ nhỏ' },
+            { name: 'Lê Thị Mai', cccd: '034567890123', time: '09:45', count: 1, priority: 'Phụ nữ mang thai' },
+        ];
+        let callCount = 5, callsList = [], completedCalls = 0, spamCalls = 0, currentCallId = null, map = null, selectedStatus = null;
+
+        document.addEventListener('DOMContentLoaded', () => { renderCaseLists(); renderGiftHistory(); });
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + screenId).classList.add('active');
+            const hideNav = ['login', 'register', 'verify', 'call-list', 'record-form', 'volunteer-register'].includes(screenId);
+            document.getElementById('bottom-nav').style.display = hideNav ? 'none' : 'flex';
+            if (screenId === 'map' && !map) setTimeout(initMap, 100);
+        }
+
+        function navTo(screen) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            showScreen(screen);
+        }
+
+        function renderCaseLists() {
+            const list = document.getElementById('emergency-list');
+            const statusLabels = { sos: 'SOS', medical: 'Y Tế', safe: 'An toàn' };
+            list.innerHTML = cases.filter(c => c.status !== 'safe').map(c => `
+                <div class="case-item" onclick="showCaseDetail(${c.id})">
+                    <div class="case-status ${c.status}"></div>
+                    <div class="case-info">
+                        <div class="case-name">${c.name}</div>
+                        <div class="case-address">${c.address}</div>
+                        <div class="case-meta">👥 ${c.people} người • ${c.source}</div>
+                    </div>
+                    <span class="case-badge ${c.status}">${statusLabels[c.status]}</span>
+                </div>`).join('');
+        }
+
+        function renderGiftHistory() {
+            const list = document.getElementById('gift-history');
+            list.innerHTML = giftHistory.map(h => `
+                <div class="history-item">
+                    <div class="history-avatar">👤</div>
+                    <div class="history-info">
+                        <div class="history-name">${h.name}</div>
+                        <div class="history-cccd">CCCD: ${h.cccd}</div>
+                        <div class="history-time">🕐 ${h.time} • ${h.priority}</div>
+                    </div>
+                    <div class="history-count">
+                        <div class="history-count-num">${h.count}</div>
+                        <div class="history-count-label">lần nhận</div>
+                    </div>
+                </div>`).join('');
+        }
+
+        function showCaseDetail(id) { const c = cases.find(x => x.id === id); alert(`${c.name}\n📍 ${c.address}\n📞 ${c.phone}\n👥 ${c.people} người\n📊 Nguồn: ${c.source}`); }
+        function decreaseCount() { if (callCount > 1) { callCount--; document.getElementById('call-count').textContent = callCount; } }
+        function increaseCount() { if (callCount < 20) { callCount++; document.getElementById('call-count').textContent = callCount; } }
+
+        function startCalling() {
+            callsList = cases.filter(c => c.status !== 'safe').slice(0, callCount).map(c => ({ ...c, callStatus: 'pending' }));
+            completedCalls = 0; spamCalls = 0;
+            showScreen('call-list'); renderCallList(); updateProgress();
+        }
+
+        function renderCallList() {
+            const container = document.getElementById('call-list-container');
+            const currentTab = document.querySelector('.tab.active').textContent;
+            let filtered = callsList;
+            if (currentTab.includes('Đã xác minh')) filtered = callsList.filter(c => c.callStatus === 'completed');
+            else if (currentTab.includes('Tin rác')) filtered = callsList.filter(c => c.callStatus === 'spam');
+            else filtered = callsList.filter(c => c.callStatus === 'pending');
+
+            container.innerHTML = filtered.map(c => `
+                <div class="call-item">
+                    <div class="call-item-header">
+                        <div class="call-item-status ${c.callStatus}"></div>
+                        <div style="flex:1;">
+                            <div class="call-item-name">${c.name}</div>
+                            <div class="call-item-phone">${formatPhone(c.phone)}</div>
+                            <div class="call-item-address">${c.address} • ${c.source}</div>
+                        </div>
+                    </div>
+                    ${c.callStatus === 'pending' ? `
+                    <div class="call-actions">
+                        <button class="call-action-btn call" onclick="makeCall('${c.phone}')">📞 Gọi</button>
+                        <button class="call-action-btn form" onclick="openForm(${c.id})">📝 Ghi nhận</button>
+                        <button class="call-action-btn skip" onclick="markSpam(${c.id})">🗑️ Tin rác</button>
+                    </div>` : ''}
+                </div>`).join('') || '<div style="text-align: center; padding: 40px; color: var(--gray-500);">Không có cuộc gọi nào</div>';
+        }
+
+        function formatPhone(phone) { return phone.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3'); }
+        function switchTab(tab) { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); event.currentTarget.classList.add('active'); renderCallList(); }
+        function toggleScript() { const c = document.getElementById('script-content'); const t = document.getElementById('script-toggle'); c.classList.toggle('show'); t.textContent = c.classList.contains('show') ? '▲' : '▼'; }
+        function updateProgress() {
+            const total = callsList.length, progress = total > 0 ? (completedCalls / total * 100) : 0;
+            document.getElementById('call-progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Đã xác minh: ${completedCalls}/${total}`;
+            document.getElementById('unreachable-text').textContent = `Lọc rác: ${spamCalls}`;
+        }
+
+        function makeCall(phone) { showToast(`Đang gọi đến ${formatPhone(phone)}...`); }
+        function openForm(id) { currentCallId = id; const c = callsList.find(x => x.id === id); document.getElementById('current-phone').textContent = formatPhone(c.phone); selectedStatus = null; document.getElementById('need-form').classList.add('hidden'); showScreen('record-form'); }
+        function markSpam(id) { const c = callsList.find(x => x.id === id); c.callStatus = 'spam'; spamCalls++; updateProgress(); renderCallList(); showToast('Đã đánh dấu tin rác'); }
+
+        function selectStatus(status) {
+            selectedStatus = status;
+            document.getElementById('btn-safe').style.background = status === 'safe' ? 'var(--green-500)' : 'white';
+            document.getElementById('btn-safe').style.color = status === 'safe' ? 'white' : 'var(--green-600)';
+            document.getElementById('btn-need').style.background = status === 'need' ? 'var(--red-500)' : 'linear-gradient(135deg, var(--red-500), var(--red-600))';
+            document.getElementById('need-form').classList.toggle('hidden', status !== 'need');
+        }
+
+        function toggleRecording() { showToast('🎙️ Đang ghi âm...'); }
+        function selectPriority(p) { document.querySelectorAll('.priority-tag').forEach(t => t.style.opacity = '0.5'); event.currentTarget.style.opacity = '1'; }
+
+        function saveVerification() {
+            if (currentCallId) { const c = callsList.find(x => x.id === currentCallId); c.callStatus = 'completed'; completedCalls++; updateProgress(); }
+            showScreen('call-list'); renderCallList(); showToast(selectedStatus === 'safe' ? '✅ Đã xác minh AN TOÀN' : '🆘 Đã chuyển cho nhân viên xử lý');
+        }
+
+        function simulateScan() { document.getElementById('scanned-cccd').textContent = '0' + Math.floor(Math.random() * 100000000000).toString().padStart(11, '0'); document.getElementById('scan-result').classList.remove('hidden'); }
+        function confirmGift() { showToast('✅ Đã ghi nhận phát quà'); document.getElementById('scan-result').classList.add('hidden'); }
+        function registerVolunteer() { showToast('📝 Đã đăng ký lộ trình thành công!'); showScreen('home'); }
+        function submitCase() { showToast('🆘 Đã gửi báo cáo!'); showScreen('home'); }
+
+        function initMap() {
+            map = L.map('map').setView([21.285, 106.145], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+            const colors = { sos: '#ef4444', medical: '#eab308', safe: '#22c55e' };
+            cases.forEach(c => {
+                L.circleMarker([c.lat, c.lng], { radius: 14, fillColor: colors[c.status], color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup(`<b>${c.name}</b><br>${c.address}<br>👥 ${c.people} người`);
+            });
+            // Volunteer convoy markers
+            L.circleMarker([21.30, 106.16], { radius: 10, fillColor: '#3b82f6', color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup('<b>🚛 Đoàn Hà Nội 1</b><br>Gạo 1 tấn, Mì 500 thùng');
+            L.circleMarker([21.27, 106.13], { radius: 10, fillColor: '#3b82f6', color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup('<b>🚛 Đoàn Bắc Ninh</b><br>Thuốc y tế, Sữa');
+        }
+
+        function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+    </script>
+</body>
+
+</html>
