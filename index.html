@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -617,13 +618,29 @@
 
         .scanner-area {
             background: var(--gray-900);
-            height: 260px;
+            min-height: 280px;
             margin: 16px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
+        }
+
+        .scanner-area video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #qr-reader {
+            width: 100% !important;
+            border: none !important;
+        }
+
+        #qr-reader video {
+            border-radius: 10px;
         }
 
         .scanner-frame {
@@ -653,6 +670,32 @@
             50% {
                 top: calc(100% - 2px);
             }
+        }
+
+        .already-received-banner {
+            background: var(--red-50);
+            border: 2px solid var(--red-500);
+            padding: 16px;
+            margin: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .already-received-banner .icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .already-received-banner .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--red-600);
+            margin-bottom: 4px;
+        }
+
+        .already-received-banner .description {
+            font-size: 13px;
+            color: var(--red-500);
         }
 
         .scanned-result {
@@ -1240,34 +1283,56 @@
         <!-- 3. Identify Screen -->
         <div class="screen" id="screen-identify">
             <div class="header-small">
-                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <button class="back-btn" onclick="goBackFromIdentify()">←</button>
                 <h2>Định danh Minh bạch</h2>
             </div>
             <div class="card">
                 <div class="card-title">🪪 Quét định danh người nhận</div>
-                <p style="font-size: 12px; color: var(--gray-600); line-height: 1.5;">Quét CCCD/VNeID/BHYT để ghi nhận
+                <p style="font-size: 12px; color: var(--gray-600); line-height: 1.5;">Quét mã QR trên CCCD/VNeID/BHYT để
+                    ghi nhận
                     lịch sử, đảm bảo phân phối công bằng.</p>
             </div>
-            <div class="scanner-area">
-                <div class="scanner-frame">
+
+            <!-- Camera container for QR scanning -->
+            <div class="scanner-area" id="scanner-area">
+                <div id="qr-reader"></div>
+                <div class="scanner-frame" id="scanner-placeholder">
                     <div class="scanner-line"></div>
                 </div>
             </div>
+
             <div style="text-align: center; padding: 0 16px;">
-                <p style="color: var(--gray-500); font-size: 12px; margin-bottom: 12px;">Đưa CCCD/VNeID/BHYT vào khung
-                    hình</p>
-                <button class="btn btn-primary" onclick="simulateScan()">📷 Mô phỏng quét</button>
+                <p style="color: var(--gray-500); font-size: 12px; margin-bottom: 12px;" id="scan-instruction">Nhấn nút
+                    bên dưới để mở camera quét mã QR</p>
+                <button class="btn btn-primary" id="btn-start-scan" onclick="startQRScanner()">📷 Mở Camera Quét
+                    QR</button>
+                <button class="btn btn-outline hidden" id="btn-stop-scan" onclick="stopQRScanner()"
+                    style="margin-top: 10px;">⏹️ Dừng Quét</button>
             </div>
+
+            <!-- Already received warning banner -->
+            <div class="already-received-banner hidden" id="already-received">
+                <div class="icon">🚫</div>
+                <div class="title">ĐÃ NHẬN QUÀ RỒI!</div>
+                <div class="description" id="already-received-detail">Mã này đã được nhận quà trước đó. Không thể nhận
+                    thêm.</div>
+                <button class="btn" style="background: var(--gray-200); color: var(--gray-700); margin-top: 12px;"
+                    onclick="resetScan()">� Quét mã khác</button>
+            </div>
+
+            <!-- Scan result for new recipients -->
             <div class="scanned-result hidden" id="scan-result">
-                <div style="font-size: 12px; color: var(--gray-500); margin-bottom: 6px;">Số CCCD đã quét:</div>
+                <div style="font-size: 12px; color: var(--gray-500); margin-bottom: 6px;">Mã đã quét (12 số đầu):</div>
                 <div class="scanned-number" id="scanned-cccd">012345678901</div>
-                <div style="margin-top: 12px; padding: 10px; background: var(--yellow-50); border-radius: 8px;">
-                    <div style="font-size: 12px; color: var(--yellow-600);">⚠️ Hộ này đã nhận quà 1 lần (2 ngày trước)
+                <div style="margin-top: 8px; padding: 10px; background: var(--green-50); border-radius: 8px;">
+                    <div style="font-size: 12px; color: var(--green-600);">✅ Mã này chưa nhận quà - Có thể phát quà!
                     </div>
                 </div>
                 <button class="btn btn-primary" style="margin-top: 12px;" onclick="confirmGift()">✅ Xác nhận phát
                     quà</button>
+                <button class="btn btn-outline" style="margin-top: 8px;" onclick="resetScan()">🔄 Quét mã khác</button>
             </div>
+
             <div class="section-title">📜 Lịch sử phát quà hôm nay</div>
             <div style="padding: 0 16px;" id="gift-history"></div>
         </div>
@@ -1474,8 +1539,169 @@
             showScreen('call-list'); renderCallList(); showToast(selectedStatus === 'safe' ? '✅ Đã xác minh AN TOÀN' : '🆘 Đã chuyển cho nhân viên xử lý');
         }
 
-        function simulateScan() { document.getElementById('scanned-cccd').textContent = '0' + Math.floor(Math.random() * 100000000000).toString().padStart(11, '0'); document.getElementById('scan-result').classList.remove('hidden'); }
-        function confirmGift() { showToast('✅ Đã ghi nhận phát quà'); document.getElementById('scan-result').classList.add('hidden'); }
+        // QR Scanner variables
+        let html5QrCode = null;
+        let isScanning = false;
+        let currentScannedCode = null;
+        // Set to track received codes (in real app, this would be in database)
+        const receivedCodes = new Set(['012345678901', '023456789012', '034567890123']); // Pre-populate with gift history CCCDs
+
+        function startQRScanner() {
+            const qrReaderElement = document.getElementById('qr-reader');
+            const scannerPlaceholder = document.getElementById('scanner-placeholder');
+            const btnStart = document.getElementById('btn-start-scan');
+            const btnStop = document.getElementById('btn-stop-scan');
+            const scanInstruction = document.getElementById('scan-instruction');
+
+            // Hide placeholder, show scanner
+            scannerPlaceholder.classList.add('hidden');
+            btnStart.classList.add('hidden');
+            btnStop.classList.remove('hidden');
+            scanInstruction.textContent = 'Đưa mã QR vào khung hình để quét...';
+
+            // Initialize html5-qrcode
+            html5QrCode = new Html5Qrcode("qr-reader");
+
+            const config = {
+                fps: 10,
+                qrbox: { width: 200, height: 200 },
+                aspectRatio: 1.0
+            };
+
+            html5QrCode.start(
+                { facingMode: "environment" }, // Use back camera on mobile
+                config,
+                onQRCodeSuccess,
+                onQRCodeError
+            ).then(() => {
+                isScanning = true;
+                showToast('📷 Camera đã mở - Hướng vào mã QR');
+            }).catch((err) => {
+                console.error('Camera error:', err);
+                showToast('❌ Không thể mở camera. Vui lòng cho phép truy cập camera.');
+                resetScannerUI();
+            });
+        }
+
+        function stopQRScanner() {
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    isScanning = false;
+                    resetScannerUI();
+                    showToast('⏹️ Đã dừng quét');
+                }).catch(err => console.error('Stop scanner error:', err));
+            }
+        }
+
+        function onQRCodeSuccess(decodedText, decodedResult) {
+            // Stop scanning immediately after successful read
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    isScanning = false;
+                    processScannedCode(decodedText);
+                }).catch(err => console.error('Stop after scan error:', err));
+            }
+        }
+
+        function onQRCodeError(errorMessage) {
+            // Ignore errors during scanning (they happen frequently when no QR is in view)
+        }
+
+        function processScannedCode(fullText) {
+            // Extract first 12 characters
+            const first12Chars = fullText.substring(0, 12);
+            currentScannedCode = first12Chars;
+
+            console.log('Full scanned text:', fullText);
+            console.log('First 12 characters:', first12Chars);
+
+            // Hide scanner UI
+            resetScannerUI();
+
+            // Check if this code has already received a gift
+            if (receivedCodes.has(first12Chars)) {
+                // Show already received warning
+                showAlreadyReceived(first12Chars);
+            } else {
+                // Show scan result for new recipient
+                showNewRecipient(first12Chars);
+            }
+        }
+
+        function showAlreadyReceived(code) {
+            document.getElementById('scan-result').classList.add('hidden');
+            document.getElementById('already-received').classList.remove('hidden');
+            document.getElementById('already-received-detail').textContent =
+                `Mã ${code} đã được nhận quà trước đó. Không thể nhận thêm.`;
+
+            showToast('🚫 Mã này đã nhận quà rồi!');
+        }
+
+        function showNewRecipient(code) {
+            document.getElementById('already-received').classList.add('hidden');
+            document.getElementById('scan-result').classList.remove('hidden');
+            document.getElementById('scanned-cccd').textContent = code;
+
+            showToast('✅ Quét thành công - Mã mới!');
+        }
+
+        function resetScan() {
+            currentScannedCode = null;
+            document.getElementById('scan-result').classList.add('hidden');
+            document.getElementById('already-received').classList.add('hidden');
+            resetScannerUI();
+        }
+
+        function resetScannerUI() {
+            const scannerPlaceholder = document.getElementById('scanner-placeholder');
+            const btnStart = document.getElementById('btn-start-scan');
+            const btnStop = document.getElementById('btn-stop-scan');
+            const scanInstruction = document.getElementById('scan-instruction');
+            const qrReader = document.getElementById('qr-reader');
+
+            scannerPlaceholder.classList.remove('hidden');
+            btnStart.classList.remove('hidden');
+            btnStop.classList.add('hidden');
+            scanInstruction.textContent = 'Nhấn nút bên dưới để mở camera quét mã QR';
+
+            // Clear the qr-reader div
+            qrReader.innerHTML = '';
+        }
+
+        function confirmGift() {
+            if (currentScannedCode) {
+                // Add to received codes set
+                receivedCodes.add(currentScannedCode);
+
+                // Add to gift history
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+                    now.getMinutes().toString().padStart(2, '0');
+
+                giftHistory.unshift({
+                    name: 'Người nhận mới',
+                    cccd: currentScannedCode,
+                    time: timeStr,
+                    count: 1,
+                    priority: 'Mới quét QR'
+                });
+
+                renderGiftHistory();
+                showToast('✅ Đã ghi nhận phát quà cho mã ' + currentScannedCode);
+            }
+
+            resetScan();
+        }
+
+        function goBackFromIdentify() {
+            // Make sure to stop scanner when leaving the screen
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().catch(err => console.error('Stop on back error:', err));
+                isScanning = false;
+            }
+            resetScan();
+            showScreen('home');
+        }
         function registerVolunteer() { showToast('📝 Đã đăng ký lộ trình thành công!'); showScreen('home'); }
         function submitCase() { showToast('🆘 Đã gửi báo cáo!'); showScreen('home'); }
 
