@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
     <style>
         * {
             margin: 0;
@@ -615,6 +616,15 @@
         #map {
             height: calc(100vh - 140px);
             width: 100%;
+        }
+
+        #windy {
+            width: 90%;
+            height: 40vh;
+            margin: 10px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         .map-legend {
@@ -4163,6 +4173,9 @@
                 <h2>Tin tức & Mẹo sinh tồn</h2>
             </div>
 
+            <!-- Windy Map -->
+            <div id="windy"></div>
+
             <!-- Dam Status Section -->
             <div style="padding: 16px; padding-bottom: 0;">
                 <div
@@ -4617,6 +4630,7 @@
         };
 
         let callCount = 5, callsList = [], completedCalls = 0, spamCalls = 0, currentCallId = null, map = null, selectedStatus = null;
+        let windyMapInitialized = false;
 
         document.addEventListener('DOMContentLoaded', () => { renderGiftHistory(); });
 
@@ -4626,12 +4640,42 @@
             const hideNav = ['login', 'register', 'verify', 'call-list', 'record-form', 'volunteer-register', 'case-list', 'household-detail'].includes(screenId);
             document.getElementById('bottom-nav').style.display = hideNav ? 'none' : 'flex';
             if (screenId === 'map' && !map) setTimeout(initMap, 100);
+            if (screenId === 'news' && !windyMapInitialized) setTimeout(initWindyMap, 100);
         }
 
         function navTo(screen) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
             showScreen(screen);
+        }
+
+        function initWindyMap() {
+            if (windyMapInitialized) return;
+
+            const options = {
+                // API Key
+                key: 'LjWjTwgZUOUbNOiBPEzRzPcb4gdua0MP',
+
+                // Tọa độ tâm: Nha Trang
+                lat: 12.2529,
+                lon: 109.1899,
+
+                // Zoom 6
+                zoom: 6,
+
+                verbose: true
+            };
+
+            windyInit(options, windyAPI => {
+                const { map } = windyAPI;
+                console.log("Bản đồ bão đã sẵn sàng!");
+                windyMapInitialized = true;
+
+                // Marker Nha Trang
+                L.marker([12.2529, 109.1899]).addTo(map)
+                    .bindPopup('<b>Nha Trang</b><br>Tâm điểm quan sát')
+                    .openPopup();
+            });
         }
 
         // Notification Panel Functions
