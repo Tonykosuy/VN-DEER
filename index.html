@@ -11,7 +11,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
     <style>
         * {
             margin: 0;
@@ -4174,7 +4173,13 @@
             </div>
 
             <!-- Windy Map -->
-            <div id="windy"></div>
+            <!-- Windy Map -->
+            <div id="windy">
+                <iframe width="100%" height="100%"
+                    src="https://embed.windy.com/embed2.html?lat=12.253&lon=109.190&detailLat=12.253&detailLon=109.190&width=650&height=450&zoom=6&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
+                    frameborder="0"></iframe>
+            </div>
+
 
             <!-- Dam Status Section -->
             <div style="padding: 16px; padding-bottom: 0;">
@@ -4630,7 +4635,6 @@
         };
 
         let callCount = 5, callsList = [], completedCalls = 0, spamCalls = 0, currentCallId = null, map = null, selectedStatus = null;
-        let windyMapInitialized = false;
 
         document.addEventListener('DOMContentLoaded', () => { renderGiftHistory(); });
 
@@ -4640,7 +4644,6 @@
             const hideNav = ['login', 'register', 'verify', 'call-list', 'record-form', 'volunteer-register', 'case-list', 'household-detail'].includes(screenId);
             document.getElementById('bottom-nav').style.display = hideNav ? 'none' : 'flex';
             if (screenId === 'map' && !map) setTimeout(initMap, 100);
-            if (screenId === 'news' && !windyMapInitialized) setTimeout(initWindyMap, 100);
         }
 
         function navTo(screen) {
@@ -4649,34 +4652,6 @@
             showScreen(screen);
         }
 
-        function initWindyMap() {
-            if (windyMapInitialized) return;
-
-            const options = {
-                // API Key
-                key: 'LjWjTwgZUOUbNOiBPEzRzPcb4gdua0MP',
-
-                // Tọa độ tâm: Nha Trang
-                lat: 12.2529,
-                lon: 109.1899,
-
-                // Zoom 6
-                zoom: 6,
-
-                verbose: true
-            };
-
-            windyInit(options, windyAPI => {
-                const { map } = windyAPI;
-                console.log("Bản đồ bão đã sẵn sàng!");
-                windyMapInitialized = true;
-
-                // Marker Nha Trang
-                L.marker([12.2529, 109.1899]).addTo(map)
-                    .bindPopup('<b>Nha Trang</b><br>Tâm điểm quan sát')
-                    .openPopup();
-            });
-        }
 
         // Notification Panel Functions
         function openNotificationPanel() {
