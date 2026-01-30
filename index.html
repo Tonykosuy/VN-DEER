@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🆘 Hệ Thống Xác Minh & Điều Phối Cứu Trợ Khẩn Cấp</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * {
@@ -79,6 +81,20 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05);
             }
         }
 
@@ -1403,6 +1419,356 @@
         .see-more-btn:hover {
             background: var(--gray-200);
         }
+
+        /* Collapsible Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            cursor: pointer;
+            border-bottom: 1px solid var(--gray-200);
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .section-header:hover {
+            background: var(--gray-100);
+        }
+
+        .section-header .section-title {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .section-toggle {
+            font-size: 14px;
+            color: var(--gray-500);
+            transition: transform 0.3s;
+        }
+
+        .section-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-section {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        .collapsible-section.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        /* Doctor Call Section */
+        .doctor-call-card {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 2px solid var(--red-400);
+            border-radius: 14px;
+            padding: 14px;
+            margin: 8px 16px;
+        }
+
+        .health-condition-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            margin-top: 10px;
+        }
+
+        /* Photo Upload */
+        .photo-upload-area {
+            border: 2px dashed var(--gray-300);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            background: var(--gray-50);
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+
+        .photo-upload-area:hover {
+            border-color: var(--green-500);
+            background: var(--green-50);
+        }
+
+        .photo-upload-area .upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .photo-upload-area .upload-text {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .photo-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .photo-preview-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-preview-item .remove-photo {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--red-500);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        /* Symptom Selection Modal */
+        .symptom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .symptom-modal-overlay.show {
+            display: flex;
+        }
+
+        .symptom-modal {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            width: 90%;
+            max-width: 380px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .symptom-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .symptom-modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .symptom-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-500);
+        }
+
+        .symptom-option {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .symptom-option:hover {
+            border-color: var(--red-400);
+            background: var(--red-50);
+        }
+
+        .symptom-option.selected {
+            border-color: var(--red-500);
+            background: var(--red-50);
+        }
+
+        .symptom-option input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--red-500);
+        }
+
+        .symptom-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .symptom-text {
+            flex: 1;
+        }
+
+        .symptom-text-title {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-800);
+        }
+
+        .symptom-text-desc {
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .doctor-call-section {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-radius: 14px;
+            padding: 16px;
+            margin: 12px 16px;
+            border: 2px solid var(--red-300);
+        }
+
+        .doctor-call-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .doctor-call-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--red-700);
+        }
+
+        .doctor-call-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .doctor-btn {
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .doctor-btn:active {
+            transform: scale(0.98);
+        }
+
+        .doctor-btn.call {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+        }
+
+        .doctor-btn.symptoms {
+            background: white;
+            border: 2px solid var(--red-400);
+            color: var(--red-700);
+        }
+
+        .doctor-btn .btn-icon {
+            font-size: 24px;
+        }
+
+        /* Photo upload for convoy */
+        .convoy-photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: var(--gray-50);
+            border: 2px dashed var(--gray-300);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .convoy-photo-upload:hover {
+            border-color: var(--green-500);
+            background: var(--green-50);
+        }
+
+        .convoy-photo-upload .upload-icon {
+            font-size: 20px;
+        }
+
+        .convoy-photo-upload .upload-text {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .convoy-photos-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .convoy-photo-item {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .convoy-photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 
@@ -1428,6 +1794,26 @@
                 </div>
                 <button class="btn btn-primary" onclick="showScreen('home')">Đăng nhập</button>
             </div>
+
+            <!-- VNeID Login Section -->
+            <div style="padding: 0 24px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin: 16px 0;">
+                    <div style="flex: 1; height: 1px; background: var(--gray-300);"></div>
+                    <span style="font-size: 12px; color: var(--gray-500);">hoặc</span>
+                    <div style="flex: 1; height: 1px; background: var(--gray-300);"></div>
+                </div>
+
+                <button onclick="showScreen('vneid')"
+                    style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: linear-gradient(135deg, #dc2626, #ef4444); border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);">
+                    <img src="https://cdn.tgdd.vn/2023/07/GameApp/vneid-200x200.jpg" alt="VNeID"
+                        style="width: 28px; height: 28px; border-radius: 6px; object-fit: cover;">
+                    <span>Đăng nhập bằng VNeID</span>
+                </button>
+                <p style="font-size: 10px; color: var(--gray-500); text-align: center; margin-top: 8px;">
+                    Định danh điện tử Quốc gia - Xác thực nhanh chóng và an toàn
+                </p>
+            </div>
+
             <div class="login-footer"><a href="#" onclick="showScreen('register')">Chưa có tài khoản? Đăng ký</a></div>
         </div>
 
@@ -1514,9 +1900,179 @@
             </div>
         </div>
 
+        <!-- VNeID Login Screen -->
+        <div class="screen" id="screen-vneid">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('login')">←</button>
+                <h2>Đăng nhập VNeID</h2>
+            </div>
+            <div style="text-align: center; padding: 24px;">
+                <div
+                    style="width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                    <img src="https://cdn.tgdd.vn/2023/07/GameApp/vneid-200x200.jpg" alt="VNeID Logo"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="font-size: 18px; font-weight: 700; color: #dc2626; margin-bottom: 4px;">VNeID</div>
+                <div style="font-size: 12px; color: var(--gray-600);">Định danh điện tử Quốc gia</div>
+            </div>
+
+            <div style="padding: 0 16px;">
+                <div class="form-group">
+                    <label class="form-label">Số CCCD <span style="color: var(--red-500);">*</span></label>
+                    <input type="text" id="vneid-cccd" class="form-input" placeholder="012345678901" maxlength="12">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mã bí mật VNeID <span style="color: var(--red-500);">*</span></label>
+                    <input type="password" id="vneid-pin" class="form-input" placeholder="Nhập mã PIN 6 số"
+                        maxlength="6">
+                </div>
+
+                <p style="font-size: 11px; color: var(--gray-500); margin-bottom: 16px; line-height: 1.5;">
+                    <span style="color: var(--red-500);">*</span> Vui lòng nhập đầy đủ thông tin để đăng nhập. Tất cả
+                    các trường đều bắt buộc.
+                </p>
+
+                <button class="btn btn-primary" onclick="loginWithVNeID()"
+                    style="background: linear-gradient(135deg, #dc2626, #ef4444);">
+                    🪪 Xác thực VNeID
+                </button>
+
+                <div
+                    style="margin-top: 16px; padding: 14px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 10px;">
+                    <div style="font-weight: 600; font-size: 13px; color: #dc2626; margin-bottom: 8px;">💡 Hướng
+                        dẫn</div>
+                    <ul
+                        style="font-size: 11px; color: var(--gray-600); padding-left: 16px; margin: 0; line-height: 1.6;">
+                        <li>Số CCCD gồm 12 chữ số trên thẻ căn cước</li>
+                        <li>Mã PIN là mã 6 số bạn đã đăng ký trên ứng dụng VNeID</li>
+                        <li>Thông tin được xác thực qua hệ thống Cơ sở dữ liệu Quốc gia</li>
+                    </ul>
+                </div>
+
+                <!-- Demo notice -->
+                <div
+                    style="margin-top: 12px; padding: 10px; background: var(--yellow-100); border: 1px dashed var(--yellow-500); border-radius: 8px; text-align: center;">
+                    <span style="font-size: 11px; color: var(--yellow-700);">⚠️ Bản Demo - Nhập bất kỳ thông tin nào để
+                        tiếp tục</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div class="screen" id="screen-profile">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Hồ sơ cá nhân</h2>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div
+                    style="width: 90px; height: 90px; background: linear-gradient(135deg, var(--green-500), var(--green-600)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; box-shadow: 0 6px 20px rgba(22, 163, 74, 0.3);">
+                    <span style="font-size: 40px;">👤</span>
+                </div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--gray-800);">Nguyễn Văn A</div>
+                <div style="font-size: 13px; color: var(--gray-500);">Tình nguyện viên</div>
+            </div>
+
+            <div style="padding: 0 16px;">
+                <!-- Personal Info Card -->
+                <div
+                    style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--gray-800); margin-bottom: 12px;">📋
+                        Thông tin cá nhân</div>
+
+                    <div
+                        style="display: flex; gap: 12px; margin-bottom: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">📍</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);">Địa chỉ</div>
+                            <div style="font-size: 13px; color: var(--gray-800);">123 Đường 2 Tháng 4, P. Vĩnh Hải, TP.
+                                Nha Trang</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="display: flex; gap: 12px; margin-bottom: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">📞</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);">Số điện thoại</div>
+                            <div style="font-size: 13px; color: var(--gray-800);">0912 345 678</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="display: flex; gap: 12px; margin-bottom: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">✉️</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);">Email</div>
+                            <div style="font-size: 13px; color: var(--gray-800);">volunteer@relief.vn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Info Card -->
+                <div
+                    style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--gray-800); margin-bottom: 12px;">🏥
+                        Thông tin y tế</div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div
+                            style="padding: 12px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 10px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 4px;">🩸</div>
+                            <div style="font-size: 10px; color: var(--gray-500);">Nhóm máu</div>
+                            <div style="font-size: 16px; font-weight: 700; color: #dc2626;">O+</div>
+                        </div>
+                        <div
+                            style="padding: 12px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 10px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 4px;">⚖️</div>
+                            <div style="font-size: 10px; color: var(--gray-500);">Cân nặng</div>
+                            <div style="font-size: 16px; font-weight: 700; color: var(--green-600);">65 kg</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px; padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                        <div style="font-size: 11px; color: var(--gray-500); margin-bottom: 4px;">📋 Tiền sử bệnh</div>
+                        <div style="font-size: 13px; color: var(--gray-800);">Không có bệnh nền đáng kể</div>
+                    </div>
+                </div>
+
+                <!-- QR Code Section -->
+                <div
+                    style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--gray-800); margin-bottom: 12px;">📱 Mã
+                        QR định danh</div>
+                    <div id="profile-qr-code"
+                        style="width: 150px; height: 150px; background: white; border: 2px dashed var(--gray-300); border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px;">📱</div>
+                            <div style="font-size: 10px; color: var(--gray-500); margin-top: 4px;">QR Code</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 11px; color: var(--gray-500);">Quét mã để xác minh danh tính khi nhận hỗ trợ
+                        cứu trợ</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <button class="btn btn-primary" onclick="showToast('✅ Đã cập nhật thông tin!')"
+                    style="margin-bottom: 8px;">
+                    📝 Chỉnh sửa thông tin
+                </button>
+                <button class="btn" onclick="showScreen('login')"
+                    style="background: var(--gray-100); color: var(--gray-700);">
+                    🚪 Đăng xuất
+                </button>
+            </div>
+        </div>
+
         <!-- Home Screen -->
         <div class="screen" id="screen-home">
-            <div class="header" style="padding-bottom: 20px;">
+            <div class="header" style="padding-bottom: 20px; position: relative;">
+                <!-- Account icon - top right -->
+                <button onclick="showScreen('profile')"
+                    style="position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; background: white; border: 2px solid var(--green-500); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10;">
+                    <span style="font-size: 22px;">👤</span>
+                </button>
+
                 <!-- Logo - centered -->
                 <div class="logo-placeholder" id="logo-container">
                     <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
@@ -1563,145 +2119,1036 @@
                 </div>
             </div>
 
-            <!-- Volunteer Convoy Info -->
-            <div class="section-title">🚛 Đoàn thiện nguyện</div>
+            <!-- Notification Bell & Video Recording Section -->
+            <div style="display: flex; gap: 8px; padding: 0 16px; margin-bottom: 12px;">
+                <!-- Video Recording Button -->
+                <button onclick="openVideoRecording()"
+                    style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: linear-gradient(135deg, #dc2626, #ef4444); border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">
+                    <span style="font-size: 22px;">📹</span>
+                    <span>Quay video hiện trạng</span>
+                </button>
 
-            <!-- Nearest convoy - BIGGER card, Arrived -->
-            <div class="convoy-card"
-                style="border-left: 5px solid var(--green-500); background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div style="flex: 1;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                            <span style="font-size: 20px;">📍</span>
-                            <span
-                                style="font-size: 10px; background: var(--green-500); color: white; padding: 3px 8px; border-radius: 10px; font-weight: 600;">GẦN
-                                BẠN NHẤT</span>
+                <!-- Notification Bell -->
+                <button onclick="openNotificationPanel()"
+                    style="position: relative; width: 56px; display: flex; align-items: center; justify-content: center; background: white; border: 2px solid var(--green-500); border-radius: 12px; cursor: pointer;">
+                    <span style="font-size: 24px;">🔔</span>
+                    <span id="notification-badge"
+                        style="position: absolute; top: -4px; right: -4px; background: var(--red-500); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center;">3</span>
+                </button>
+            </div>
+
+            <!-- Doctor Call Section - Separate from convoys -->
+            <div class="doctor-call-section">
+                <div class="doctor-call-header">
+                    <span style="font-size: 24px;">🏥</span>
+                    <span class="doctor-call-title">Hỗ trợ Y tế & Vật dụng Khẩn cấp</span>
+                </div>
+                <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;">Liên hệ bác sĩ, báo cáo triệu
+                    chứng hoặc yêu cầu vật dụng thiết yếu</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                    <a href="tel:0912345678" class="doctor-btn call" style="padding: 10px;">
+                        <span class="btn-icon" style="font-size: 20px;">📞</span>
+                        <span style="font-size: 11px;">Gọi Bác sĩ</span>
+                    </a>
+                    <button class="doctor-btn symptoms" onclick="openSymptomModal()" style="padding: 10px;">
+                        <span class="btn-icon" style="font-size: 20px;">🩺</span>
+                        <span style="font-size: 11px;">Triệu chứng</span>
+                    </button>
+                    <button class="doctor-btn symptoms" onclick="openItemsModal()" style="padding: 10px;">
+                        <span class="btn-icon" style="font-size: 20px;">📦</span>
+                        <span style="font-size: 11px;">Vật dụng</span>
+                    </button>
+                </div>
+
+                <!-- Address and Phone Input -->
+                <div style="background: white; border-radius: 10px; padding: 12px; margin-top: 8px;">
+                    <div style="font-weight: 600; font-size: 13px; color: var(--gray-800); margin-bottom: 8px;">📍 Thông
+                        tin liên hệ của bạn</div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <input type="text" id="emergency-address" class="form-input"
+                            placeholder="Địa chỉ hiện tại (số nhà, đường, phường...)">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <input type="tel" id="emergency-phone" class="form-input" placeholder="Số điện thoại liên hệ">
+                    </div>
+                    <button class="btn btn-danger" onclick="sendEmergencyRequest()"
+                        style="padding: 10px; font-size: 13px;">
+                        🆘 Gửi yêu cầu hỗ trợ khẩn cấp
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hydroelectric Dam Notification Section -->
+            <div class="section-header" onclick="toggleSection('dam-section')"
+                style="background: linear-gradient(135deg, #1e40af, #3b82f6);">
+                <span class="section-title" style="margin: 0; color: white;">⚡ Thông báo Thủy điện</span>
+                <span class="section-toggle" id="dam-section-toggle" style="color: white;">▼</span>
+            </div>
+            <div id="dam-section" class="collapsible-section">
+                <!-- Critical Dam Alert -->
+                <div
+                    style="background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid var(--red-500); border-radius: 12px; padding: 14px; margin: 8px 0;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 24px;">🚨</span>
+                            <div>
+                                <div style="font-weight: 700; font-size: 14px; color: var(--red-700);">Thủy điện Sông
+                                    Cái</div>
+                                <div style="font-size: 11px; color: var(--red-600);">Khánh Hòa</div>
+                            </div>
                         </div>
-                        <div class="convoy-name" style="font-size: 14px;">Đoàn Hà Nội - Yên Bái #1</div>
-                        <div class="convoy-badge"
-                            style="background: var(--green-500); color: white; display: inline-block; margin-top: 4px;">
-                            ✅ ĐÃ ĐẾN</div>
+                        <div
+                            style="background: var(--red-500); color: white; padding: 4px 10px; border-radius: 15px; font-size: 11px; font-weight: 700; animation: pulse 2s infinite;">
+                            🔴 ĐANG XẢ
+                        </div>
+                    </div>
+                    <div style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+                            <div>
+                                <span style="color: var(--gray-500);">Mực nước hồ:</span>
+                                <span style="font-weight: 600; color: var(--red-600);">98.5m (cao)</span>
+                            </div>
+                            <div>
+                                <span style="color: var(--gray-500);">Lưu lượng xả:</span>
+                                <span style="font-weight: 600; color: var(--red-600);">1,500 m³/s</span>
+                            </div>
+                            <div>
+                                <span style="color: var(--gray-500);">Bắt đầu xả:</span>
+                                <span style="font-weight: 600;">08:00 - 30/01</span>
+                            </div>
+                            <div>
+                                <span style="color: var(--gray-500);">Dự kiến kết thúc:</span>
+                                <span style="font-weight: 600;">18:00 - 30/01</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: var(--red-100); border-radius: 6px; padding: 8px; margin-bottom: 10px;">
+                        <div style="font-size: 12px; color: var(--red-700); font-weight: 600;">⚠️ CẢNH BÁO:</div>
+                        <div style="font-size: 11px; color: var(--red-600); margin-top: 4px;">Người dân vùng hạ du sông
+                            Cái cần di chuyển đến nơi an toàn. Mực nước có thể dâng cao 1.5-2m trong 2-4 giờ tới.</div>
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 6px; padding: 8px; background: var(--green-50); border: 1px solid var(--green-400); border-radius: 6px;">
+                        <span style="font-size: 14px;">✅</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; color: var(--green-700); font-weight: 600;">Đã xác thực bởi
+                                Chính quyền</div>
+                            <div style="font-size: 10px; color: var(--green-600);">Ban Chỉ huy PCTT tỉnh Khánh Hòa •
+                                07:45 30/01/2026</div>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 8px;">
-                    <div style="font-size: 12px; font-weight: 600; color: var(--gray-800); margin-bottom: 4px;">📍 Địa
-                        điểm phát quà:</div>
-                    <div style="font-size: 13px; color: var(--gray-700);">Số 45, Đường Nguyễn Trãi, Thôn 3, Xã Hạ, Huyện
-                        Văn Yên, Yên Bái</div>
+
+                <!-- Normal Dam Status -->
+                <div
+                    style="background: white; border: 1px solid var(--gray-200); border-radius: 12px; padding: 14px; margin: 8px 0;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 20px;">💧</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 13px; color: var(--gray-800);">Thủy điện Ea
+                                    Krông Rou</div>
+                                <div style="font-size: 11px; color: var(--gray-500);">Khánh Hòa</div>
+                            </div>
+                        </div>
+                        <div
+                            style="background: var(--green-100); color: var(--green-700); padding: 4px 10px; border-radius: 15px; font-size: 11px; font-weight: 600;">
+                            🟢 BÌNH THƯỜNG
+                        </div>
+                    </div>
+                    <div
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; color: var(--gray-600);">
+                        <div>Mực nước: <span style="font-weight: 600; color: var(--gray-800);">72.3m</span></div>
+                        <div>Dung tích: <span style="font-weight: 600; color: var(--gray-800);">65%</span></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px; margin-top: 8px;">
+                        <span style="font-size: 12px;">✅</span>
+                        <span style="font-size: 10px; color: var(--green-600);">Xác thực: Sở NN&PTNT • 07:30
+                            30/01</span>
+                    </div>
                 </div>
-                <div class="convoy-details" style="margin-top: 10px;">
-                    <span>👥 15 người</span>
-                    <span>📦 200 phần quà</span>
-                    <span>🕐 Đã đến 15 phút trước</span>
+
+                <!-- Warning Dam Status -->
+                <div
+                    style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid var(--yellow-500); border-radius: 12px; padding: 14px; margin: 8px 0;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 20px;">⚠️</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 13px; color: var(--yellow-800);">Thủy điện Sông
+                                    Hinh</div>
+                                <div style="font-size: 11px; color: var(--yellow-600);">Phú Yên (lân cận)</div>
+                            </div>
+                        </div>
+                        <div
+                            style="background: var(--yellow-500); color: white; padding: 4px 10px; border-radius: 15px; font-size: 11px; font-weight: 600;">
+                            🟡 SẮP XẢ
+                        </div>
+                    </div>
+                    <div
+                        style="background: white; border-radius: 6px; padding: 8px; font-size: 11px; color: var(--yellow-700);">
+                        <div style="font-weight: 600;">📢 Dự kiến xả lúc 14:00 ngày 30/01/2026</div>
+                        <div style="margin-top: 4px;">Lưu lượng dự kiến: 800-1,000 m³/s</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px; margin-top: 8px;">
+                        <span style="font-size: 12px;">✅</span>
+                        <span style="font-size: 10px; color: var(--green-600);">Xác thực: UBND tỉnh Phú Yên • 06:00
+                            30/01</span>
+                    </div>
                 </div>
+
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin thủy điện...')">Xem tất cả thông
+                    báo thủy điện →</div>
             </div>
 
-            <!-- Second arrived convoy -->
-            <div class="convoy-card" style="border-left-color: var(--green-500);">
-                <div class="convoy-header">
-                    <div class="convoy-name">Đoàn TP.HCM - Yên Bái #2</div>
-                    <div class="convoy-badge" style="background: var(--green-500); color: white;">✅ ĐÃ ĐẾN</div>
+            <!-- Volunteer Convoy Info - Collapsible -->
+            <div class="section-header" onclick="toggleSection('convoy-section')">
+                <span class="section-title" style="margin: 0;">🚛 Đoàn thiện nguyện đã đến</span>
+                <span class="section-toggle" id="convoy-section-toggle">▼</span>
+            </div>
+            <div id="convoy-section" class="collapsible-section">
+                <!-- Nearest convoy - BIGGER card, Arrived -->
+                <div class="convoy-card"
+                    style="border-left: 5px solid var(--green-500); background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <span style="font-size: 20px;">📍</span>
+                                <span
+                                    style="font-size: 10px; background: var(--green-500); color: white; padding: 3px 8px; border-radius: 10px; font-weight: 600;">GẦN
+                                    BẠN NHẤT</span>
+                            </div>
+                            <div class="convoy-name" style="font-size: 14px;">Đoàn TP.HCM - Nha Trang #1</div>
+                            <div class="convoy-badge"
+                                style="background: var(--green-500); color: white; display: inline-block; margin-top: 4px;">
+                                ✅ ĐÃ ĐẾN</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 8px;">
+                        <div style="font-size: 12px; font-weight: 600; color: var(--gray-800); margin-bottom: 4px;">📍
+                            Địa
+                            điểm phát quà:</div>
+                        <div style="font-size: 13px; color: var(--gray-700);">Số 45, Đường Trần Phú, Phường Lộc Thọ, TP.
+                            Nha
+                            Trang, Khánh Hòa</div>
+                    </div>
+                    <div class="convoy-details" style="margin-top: 10px;">
+                        <span>👥 15 người</span>
+                        <span>📦 200 phần quà</span>
+                        <span>🕐 Đã đến 15 phút trước</span>
+                    </div>
+                    <!-- Contact Button -->
+                    <div style="margin-top: 12px; display: flex; gap: 8px;">
+                        <a href="tel:0342381843" class="btn"
+                            style="background: var(--green-600); color: white; flex: 1; text-align: center; padding: 10px; text-decoration: none; font-size: 12px;">
+                            📞 Liên hệ đoàn
+                        </a>
+                    </div>
                 </div>
-                <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
-                    📍 Số 78, Đường Lê Lợi, Thôn 5, Xã Thượng, Huyện Văn Yên, Yên Bái
+
+                <!-- Second arrived convoy -->
+                <div class="convoy-card" style="border-left-color: var(--green-500);">
+                    <div class="convoy-header">
+                        <div class="convoy-name">Đoàn Hà Nội - Nha Trang #2</div>
+                        <div class="convoy-badge" style="background: var(--green-500); color: white;">✅ ĐÃ ĐẾN</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Số 78, Đường Yersin, Phường Vĩnh Nguyên, TP. Nha Trang, Khánh Hòa
+                    </div>
+                    <div class="convoy-details">
+                        <span>👥 20 người</span>
+                        <span>📦 300 phần quà</span>
+                        <span>🕐 Đã đến 45 phút trước</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <a href="tel:0923456789" class="btn"
+                            style="background: var(--green-600); color: white; padding: 8px 16px; text-decoration: none; font-size: 11px;">
+                            📞 Liên hệ đoàn
+                        </a>
+                    </div>
                 </div>
-                <div class="convoy-details">
-                    <span>👥 20 người</span>
-                    <span>📦 300 phần quà</span>
-                    <span>🕐 Đã đến 45 phút trước</span>
-                </div>
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn đã đến...')">Xem tất cả đoàn
+                    đã đến →</div>
             </div>
 
-            <!-- Moving convoy -->
-            <div class="convoy-card" style="border-left-color: var(--blue-500);">
-                <div class="convoy-header">
-                    <div class="convoy-name">Đoàn Đà Nẵng - Yên Bái #3</div>
-                    <div class="convoy-badge enroute">🚚 ĐANG DI CHUYỂN</div>
-                </div>
-                <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
-                    📍 Đang hướng đến: Số 123, Đường Trần Phú, Thôn 2, Xã Đông, Huyện Văn Yên
-                </div>
-                <div class="convoy-details">
-                    <span>👥 12 người</span>
-                    <span>📦 150 phần quà</span>
-                </div>
-                <div class="convoy-eta">⏱️ Dự kiến đến: 30 phút</div>
+            <!-- Rescue Teams Arriving - NEW SECTION -->
+            <div class="section-header" onclick="toggleSection('rescue-section')">
+                <span class="section-title" style="margin: 0;">🚨 Đoàn cứu hộ đang đến</span>
+                <span class="section-toggle" id="rescue-section-toggle">▼</span>
             </div>
-            <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn...')">Xem tất cả đoàn thiện
-                nguyện →</div>
+            <div id="rescue-section" class="collapsible-section">
+                <!-- Rescue Team 1 -->
+                <div class="convoy-card"
+                    style="border-left: 4px solid var(--red-500); background: linear-gradient(135deg, #fef2f2, #fee2e2);">
+                    <div class="convoy-header">
+                        <div class="convoy-name" style="color: var(--red-700);">🚒 Đội PCCC Khánh Hòa</div>
+                        <div class="convoy-badge" style="background: var(--red-500); color: white;">🚨 KHẨN CẤP</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Đang hướng đến: P. Vĩnh Hải - Khu vực ngập nặng
+                    </div>
+                    <div class="convoy-details">
+                        <span>🚒 3 xe cứu hộ</span>
+                        <span>👥 25 người</span>
+                        <span>🛟 Thiết bị cứu hộ</span>
+                    </div>
+                    <div class="convoy-eta" style="color: var(--red-600);">⏱️ Dự kiến đến: 15 phút</div>
+                </div>
 
-            <!-- News and Announcements Section -->
-            <div class="section-title">📢 Tin tức & Thông báo</div>
-            <div class="news-card">
-                <div class="news-icon alert">🚨</div>
-                <div class="news-content">
-                    <div class="news-title">Cảnh báo: Mưa lớn tiếp tục tại Yên Bái</div>
-                    <div class="news-desc">Dự báo mưa lớn 100-200mm trong 24h tới. Người dân cần di chuyển đến nơi an
-                        toàn.</div>
-                    <div class="news-time">⏰ 30 phút trước</div>
+                <!-- Rescue Team 2 -->
+                <div class="convoy-card" style="border-left: 4px solid var(--orange-500);">
+                    <div class="convoy-header">
+                        <div class="convoy-name">🚑 Đội Y tế lưu động</div>
+                        <div class="convoy-badge" style="background: var(--orange-500); color: white;">🔄 ĐANG ĐẾN</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Đang hướng đến: P. Lộc Thọ - Hỗ trợ y tế
+                    </div>
+                    <div class="convoy-details">
+                        <span>🚑 2 xe cứu thương</span>
+                        <span>👨‍⚕️ 8 bác sĩ</span>
+                        <span>💊 Thuốc & vật tư</span>
+                    </div>
+                    <div class="convoy-eta">⏱️ Dự kiến đến: 25 phút</div>
                 </div>
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn cứu hộ...')">Xem tất cả đoàn
+                    cứu hộ →</div>
             </div>
-            <div class="news-card">
-                <div class="news-icon success">✅</div>
-                <div class="news-content">
-                    <div class="news-title">Đoàn cứu trợ Hà Nội đã đến Xã Thượng</div>
-                    <div class="news-desc">Phát 500 phần quà cho bà con vùng lũ. Tiếp tục di chuyển đến Xã Hạ.</div>
-                    <div class="news-time">⏰ 1 giờ trước</div>
-                </div>
-            </div>
-            <div class="news-card">
-                <div class="news-icon warning">⚠️</div>
-                <div class="news-content">
-                    <div class="news-title">Khu vực Xã Đông đang thiếu thuốc y tế</div>
-                    <div class="news-desc">Cần các đoàn có thuốc kháng sinh, thuốc tiêu chảy ưu tiên hướng đến khu vực
-                        này.</div>
-                    <div class="news-time">⏰ 2 giờ trước</div>
-                </div>
-            </div>
-            <div class="see-more-btn" onclick="showToast('Đang tải thêm tin tức...')">Xem thêm tin tức →</div>
 
-            <!-- Survival Tips Section -->
-            <div class="section-title">💡 Mẹo sinh tồn khi bão lũ</div>
-            <div class="tip-card">
-                <div class="tip-header">
-                    <span>🌊</span> Khi nước lũ dâng cao
+            <!-- Volunteer Convoy Moving - Collapsible -->
+            <div class="section-header" onclick="toggleSection('moving-convoy-section')">
+                <span class="section-title" style="margin: 0;">🚚 Đoàn thiện nguyện đang đến</span>
+                <span class="section-toggle" id="moving-convoy-section-toggle">▼</span>
+            </div>
+            <div id="moving-convoy-section" class="collapsible-section">
+                <!-- Moving convoy -->
+                <div class="convoy-card" style="border-left-color: var(--blue-500);">
+                    <div class="convoy-header">
+                        <div class="convoy-name">Đoàn Đà Nẵng - Nha Trang #3</div>
+                        <div class="convoy-badge enroute">🚚 ĐANG DI CHUYỂN</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Đang hướng đến: Số 123, Đường 2 Tháng 4, Phường Vĩnh Hải, TP. Nha Trang
+                    </div>
+                    <div class="convoy-details">
+                        <span>👥 12 người</span>
+                        <span>📦 150 phần quà</span>
+                    </div>
+                    <div class="convoy-eta">⏱️ Dự kiến đến: 30 phút</div>
                 </div>
-                <div class="tip-content">
-                    <ul>
-                        <li>Di chuyển lên tầng cao hoặc nóc nhà</li>
-                        <li>Mang theo nước sạch và đèn pin</li>
-                        <li>Không cố bơi qua dòng nước chảy xiết</li>
-                        <li>Gọi cứu hộ: <b>113 hoặc 114</b></li>
-                    </ul>
+
+                <!-- Another moving convoy -->
+                <div class="convoy-card" style="border-left-color: var(--blue-500);">
+                    <div class="convoy-header">
+                        <div class="convoy-name">Đoàn Cần Thơ - Nha Trang #4</div>
+                        <div class="convoy-badge enroute">🚚 ĐANG DI CHUYỂN</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Đang hướng đến: P. Phước Hải
+                    </div>
+                    <div class="convoy-details">
+                        <span>👥 18 người</span>
+                        <span>📦 250 phần quà</span>
+                        <span>💊 Thuốc y tế</span>
+                    </div>
+                    <div class="convoy-eta">⏱️ Dự kiến đến: 1 giờ 30 phút</div>
+                </div>
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn đang đến...')">Xem tất cả
+                    đoàn đang đến →</div>
+            </div>
+
+            <!-- News and Announcements Section - Collapsible -->
+            <div class="section-header" onclick="toggleSection('news-section')">
+                <span class="section-title" style="margin: 0;">📢 Tin tức & Thông báo</span>
+                <span class="section-toggle" id="news-section-toggle">▼</span>
+            </div>
+            <div id="news-section" class="collapsible-section">
+                <div class="news-card">
+                    <div class="news-icon alert">🚨</div>
+                    <div class="news-content">
+                        <div class="news-title">Cảnh báo: Mưa lớn tiếp tục tại Yên Bái</div>
+                        <div class="news-desc">Dự báo mưa lớn 100-200mm trong 24h tới. Người dân cần di chuyển đến nơi
+                            an
+                            toàn.</div>
+                        <div class="news-time">⏰ 30 phút trước</div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-icon success">✅</div>
+                    <div class="news-content">
+                        <div class="news-title">Đoàn cứu trợ Hà Nội đã đến Xã Thượng</div>
+                        <div class="news-desc">Phát 500 phần quà cho bà con vùng lũ. Tiếp tục di chuyển đến Xã Hạ.</div>
+                        <div class="news-time">⏰ 1 giờ trước</div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-icon warning">⚠️</div>
+                    <div class="news-content">
+                        <div class="news-title">Khu vực Xã Đông đang thiếu thuốc y tế</div>
+                        <div class="news-desc">Cần các đoàn có thuốc kháng sinh, thuốc tiêu chảy ưu tiên hướng đến khu
+                            vực
+                            này.</div>
+                        <div class="news-time">⏰ 2 giờ trước</div>
+                    </div>
+                </div>
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm tin tức...')">Xem thêm tin tức →</div>
+            </div>
+
+            <!-- Survival Tips Section - Collapsible -->
+            <div class="section-header" onclick="toggleSection('tips-section')">
+                <span class="section-title" style="margin: 0;">💡 Mẹo sinh tồn khi bão lũ</span>
+                <span class="section-toggle" id="tips-section-toggle">▼</span>
+            </div>
+            <div id="tips-section" class="collapsible-section">
+                <div class="tip-card">
+                    <div class="tip-header">
+                        <span>🌊</span> Khi nước lũ dâng cao
+                    </div>
+                    <div class="tip-content">
+                        <ul>
+                            <li>Di chuyển lên tầng cao hoặc nóc nhà</li>
+                            <li>Mang theo nước sạch và đèn pin</li>
+                            <li>Không cố bơi qua dòng nước chảy xiết</li>
+                            <li>Gọi cứu hộ: <b>113 hoặc 114</b></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                    <div class="tip-header">
+                        <span>⚡</span> An toàn điện trong mưa bão
+                    </div>
+                    <div class="tip-content">
+                        <ul>
+                            <li>Ngắt cầu dao điện khi nước vào nhà</li>
+                            <li>Không chạm vào thiết bị điện khi tay ướt</li>
+                            <li>Tránh xa cột điện, dây điện đứt</li>
+                            <li>Không sử dụng điện thoại khi đang sạc</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tip-card" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                    <div class="tip-header">
+                        <span>🏥</span> Sơ cứu & Y tế cơ bản
+                    </div>
+                    <div class="tip-content">
+                        <ul>
+                            <li>Uống nước đã đun sôi để tránh bệnh tiêu hóa</li>
+                            <li>Rửa tay thường xuyên với xà phòng</li>
+                            <li>Xử lý vết thương bằng cồn 70 độ</li>
+                            <li>Đưa người bị hạ thân nhiệt vào chỗ ấm</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm mẹo...')">Xem thêm mẹo sinh tồn →</div>
+            </div>
+        </div>
+
+        <!-- Symptom Selection Modal -->
+        <div class="symptom-modal-overlay" id="symptom-modal">
+            <div class="symptom-modal">
+                <div class="symptom-modal-header">
+                    <span class="symptom-modal-title">🩺 Chọn triệu chứng cần hỗ trợ</span>
+                    <button class="symptom-modal-close" onclick="closeSymptomModal()">×</button>
+                </div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 16px;">Chọn các triệu chứng để thông
+                    báo cho bác sĩ trước khi gọi</div>
+
+                <div style="max-height: 50vh; overflow-y: auto; padding-right: 4px;">
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🤰</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Phụ nữ đang sinh đẻ</div>
+                            <div class="symptom-text-desc">Cần hỗ trợ y tế cho sản phụ</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">👴</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Người già cần hỗ trợ đặc biệt</div>
+                            <div class="symptom-text-desc">Người cao tuổi, khó di chuyển</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">💊</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Cần thuốc tim mạch</div>
+                            <div class="symptom-text-desc">Thuốc huyết áp, tim, mỡ máu...</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">💉</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Cần thuốc tiểu đường</div>
+                            <div class="symptom-text-desc">Insulin, thuốc hạ đường huyết...</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🫁</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Bệnh hô hấp / Hen suyễn</div>
+                            <div class="symptom-text-desc">Cần bình oxy, thuốc xịt hen...</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🩹</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Chấn thương / Tai nạn</div>
+                            <div class="symptom-text-desc">Gãy xương, vết thương hở...</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">👶</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Trẻ em cần hỗ trợ</div>
+                            <div class="symptom-text-desc">Trẻ sơ sinh, trẻ nhỏ cần chăm sóc</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🤒</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Sốt cao / Nhiễm trùng</div>
+                            <div class="symptom-text-desc">Sốt trên 38.5°C, dấu hiệu nhiễm trùng</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🤢</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Tiêu chảy / Ngộ độc thực phẩm</div>
+                            <div class="symptom-text-desc">Nôn mửa, tiêu chảy, mất nước</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🦠</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Bệnh ngoài da / Dị ứng</div>
+                            <div class="symptom-text-desc">Nấm, ghẻ, phát ban, dị ứng nước</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">😵</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Đuối nước / Hạ thân nhiệt</div>
+                            <div class="symptom-text-desc">Cần hồi sức, sưởi ấm khẩn cấp</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🧠</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Rối loạn tâm thần / Hoảng loạn</div>
+                            <div class="symptom-text-desc">Lo âu, hoảng sợ, cần hỗ trợ tâm lý</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🦴</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Người khuyết tật cần hỗ trợ</div>
+                            <div class="symptom-text-desc">Cần hỗ trợ di chuyển, thiết bị đặc biệt</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">⚡</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Điện giật / Bỏng</div>
+                            <div class="symptom-text-desc">Bỏng điện, bỏng nước sôi, bỏng lửa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other symptoms input -->
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-200);">
+                    <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 6px;">📝 Triệu chứng khác:</div>
+                    <textarea id="other-symptoms" class="form-input" rows="2"
+                        placeholder="Nhập các triệu chứng khác không có trong danh sách..."></textarea>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-danger" onclick="confirmSymptoms()" style="margin-bottom: 8px;">📞 Gọi Bác sĩ
+                        với triệu chứng đã chọn</button>
+                    <button class="btn btn-outline" onclick="closeSymptomModal()">Đóng</button>
                 </div>
             </div>
-            <div class="tip-card" style="background: linear-gradient(135deg, #f97316, #ea580c);">
-                <div class="tip-header">
-                    <span>⚡</span> An toàn điện trong mưa bão
+        </div>
+
+        <!-- Essential Items Modal -->
+        <div class="symptom-modal-overlay" id="items-modal">
+            <div class="symptom-modal">
+                <div class="symptom-modal-header">
+                    <span class="symptom-modal-title">📦 Vật dụng cần hỗ trợ</span>
+                    <button class="symptom-modal-close" onclick="closeItemsModal()">×</button>
                 </div>
-                <div class="tip-content">
-                    <ul>
-                        <li>Ngắt cầu dao điện khi nước vào nhà</li>
-                        <li>Không chạm vào thiết bị điện khi tay ướt</li>
-                        <li>Tránh xa cột điện, dây điện đứt</li>
-                        <li>Không sử dụng điện thoại khi đang sạc</li>
-                    </ul>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 16px;">Chọn các vật dụng thiết yếu
+                    bạn cần được hỗ trợ</div>
+
+                <div style="max-height: 50vh; overflow-y: auto; padding-right: 4px;">
+                    <!-- Personal Care -->
+                    <div
+                        style="font-size: 11px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; margin-top: 8px;">
+                        👤 VỆ SINH CÁ NHÂN</div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🩸</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Băng vệ sinh phụ nữ</div>
+                            <div class="symptom-text-desc">Băng vệ sinh, tampon, giấy vệ sinh...</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🍼</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Tã, bỉm cho trẻ em</div>
+                            <div class="symptom-text-desc">Tã giấy, bỉm các size, khăn ướt</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🧴</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Xà phòng / Dầu gội</div>
+                            <div class="symptom-text-desc">Xà phòng tắm, dầu gội, sữa rửa mặt</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🪥</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Bàn chải / Kem đánh răng</div>
+                            <div class="symptom-text-desc">Dụng cụ vệ sinh răng miệng</div>
+                        </div>
+                    </div>
+
+                    <!-- Food & Water -->
+                    <div
+                        style="font-size: 11px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; margin-top: 16px;">
+                        🍞 THỰC PHẨM & NƯỚC</div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">💧</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Nước uống sạch</div>
+                            <div class="symptom-text-desc">Nước đóng chai, nước lọc</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🍚</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Gạo / Lương thực khô</div>
+                            <div class="symptom-text-desc">Gạo, mì gói, cháo ăn liền</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🥫</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Đồ hộp / Thực phẩm đóng gói</div>
+                            <div class="symptom-text-desc">Cá hộp, thịt hộp, xúc xích...</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🥛</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Sữa cho trẻ em / Người già</div>
+                            <div class="symptom-text-desc">Sữa bột, sữa tươi, sữa đặc biệt</div>
+                        </div>
+                    </div>
+
+                    <!-- Medical Supplies -->
+                    <div
+                        style="font-size: 11px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; margin-top: 16px;">
+                        💊 Y TẾ & THUỐC</div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🩹</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Băng gạc / Cồn sát trùng</div>
+                            <div class="symptom-text-desc">Dụng cụ sơ cứu, băng keo y tế</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">💊</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Thuốc cảm / Hạ sốt</div>
+                            <div class="symptom-text-desc">Paracetamol, thuốc ho, cảm cúm</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">💉</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Thuốc tiêu chảy / Đau bụng</div>
+                            <div class="symptom-text-desc">Oresol, Smecta, thuốc dạ dày</div>
+                        </div>
+                    </div>
+
+                    <!-- Shelter & Clothing -->
+                    <div
+                        style="font-size: 11px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; margin-top: 16px;">
+                        🏠 CHỖ Ở & QUẦN ÁO</div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">👕</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Quần áo</div>
+                            <div class="symptom-text-desc">Quần áo khô, đồ lót, giày dép</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🛏️</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Chăn / Màn / Chiếu</div>
+                            <div class="symptom-text-desc">Đồ dùng ngủ nghỉ, giữ ấm</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">⛺</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Bạt / Lều tạm</div>
+                            <div class="symptom-text-desc">Nơi trú ẩn tạm thời</div>
+                        </div>
+                    </div>
+
+                    <!-- Tools & Equipment -->
+                    <div
+                        style="font-size: 11px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; margin-top: 16px;">
+                        🔧 DỤNG CỤ & THIẾT BỊ</div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🔦</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Đèn pin / Nến</div>
+                            <div class="symptom-text-desc">Thiết bị chiếu sáng, pin dự phòng</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🔋</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Sạc dự phòng / Pin</div>
+                            <div class="symptom-text-desc">Powerbank, pin các loại</div>
+                        </div>
+                    </div>
+
+                    <div class="symptom-option" onclick="toggleSymptom(this)">
+                        <input type="checkbox">
+                        <span class="symptom-icon">🪣</span>
+                        <div class="symptom-text">
+                            <div class="symptom-text-title">Xô / Chậu / Thùng chứa nước</div>
+                            <div class="symptom-text-desc">Dụng cụ chứa và vận chuyển nước</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other items input -->
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-200);">
+                    <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 6px;">📝 Vật dụng khác:</div>
+                    <textarea id="other-items" class="form-input" rows="2"
+                        placeholder="Nhập các vật dụng khác không có trong danh sách..."></textarea>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-primary" onclick="confirmItems()" style="margin-bottom: 8px;">✅ Xác nhận vật
+                        dụng cần hỗ trợ</button>
+                    <button class="btn btn-outline" onclick="closeItemsModal()">Đóng</button>
                 </div>
             </div>
-            <div class="tip-card" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
-                <div class="tip-header">
-                    <span>🏥</span> Sơ cứu & Y tế cơ bản
+        </div>
+
+        <!-- Video Recording Modal -->
+        <div class="symptom-modal-overlay" id="video-modal">
+            <div class="symptom-modal">
+                <div class="symptom-modal-header">
+                    <span class="symptom-modal-title">📹 Quay video hiện trạng</span>
+                    <button class="symptom-modal-close" onclick="closeVideoModal()">×</button>
                 </div>
-                <div class="tip-content">
-                    <ul>
-                        <li>Uống nước đã đun sôi để tránh bệnh tiêu hóa</li>
-                        <li>Rửa tay thường xuyên với xà phòng</li>
-                        <li>Xử lý vết thương bằng cồn 70 độ</li>
-                        <li>Đưa người bị hạ thân nhiệt vào chỗ ấm</li>
-                    </ul>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 16px;">Quay video để gửi đến đội ngũ
+                    y tế và cứu trợ</div>
+
+                <div
+                    style="background: var(--gray-100); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 48px; margin-bottom: 8px;">🎥</div>
+                    <div style="font-size: 13px; color: var(--gray-600); margin-bottom: 12px;">Nhấn để bắt đầu quay
+                        video</div>
+                    <label
+                        style="display: inline-block; padding: 14px 24px; background: var(--red-500); color: white; border-radius: 50px; font-weight: 600; cursor: pointer;">
+                        <input type="file" accept="video/*" capture="environment" style="display: none;"
+                            onchange="handleVideoUpload(this)">
+                        ⏺️ Bắt đầu quay
+                    </label>
+                </div>
+
+                <div id="video-preview" style="display: none; margin-bottom: 16px;">
+                    <video id="recorded-video" controls style="width: 100%; border-radius: 8px;"></video>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label">Mô tả tình trạng</label>
+                    <textarea id="video-description" class="form-input" rows="2"
+                        placeholder="Mô tả ngắn về tình trạng hiện tại..."></textarea>
+                </div>
+
+                <button class="btn btn-danger" onclick="sendVideoToMedical()" style="margin-bottom: 8px;">🆘 Gửi video
+                    đến đội Y tế</button>
+                <button class="btn btn-outline" onclick="closeVideoModal()">Đóng</button>
+            </div>
+        </div>
+
+        <!-- Notification Panel Modal -->
+        <div class="symptom-modal-overlay" id="notification-modal">
+            <div class="symptom-modal">
+                <div class="symptom-modal-header">
+                    <span class="symptom-modal-title">🔔 Thông báo</span>
+                    <button class="symptom-modal-close" onclick="closeNotificationPanel()">×</button>
+                </div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 16px;">Tin nhắn từ đội ngũ y tế và
+                    người thân</div>
+
+                <div style="max-height: 50vh; overflow-y: auto;">
+                    <!-- Medical Team Notification -->
+                    <div
+                        style="background: linear-gradient(135deg, #fef2f2, #fee2e2); border-left: 4px solid var(--red-500); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600; font-size: 13px; color: var(--red-700);">🏥 Đội Y tế Nha
+                                Trang</span>
+                            <span style="font-size: 10px; color: var(--gray-500);">5 phút trước</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-700);">Chúng tôi đã nhận được yêu cầu hỗ trợ của
+                            bạn. Đội cứu hộ đang trên đường đến.</div>
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <a href="tel:0912345678"
+                                style="flex: 1; text-align: center; padding: 8px; background: var(--green-500); color: white; border-radius: 6px; font-size: 11px; text-decoration: none; font-weight: 600;">📞
+                                Gọi lại</a>
+                            <button onclick="replyToNotification('medical')"
+                                style="flex: 1; padding: 8px; background: white; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 11px; cursor: pointer;">💬
+                                Nhắn</button>
+                        </div>
+                    </div>
+
+                    <!-- Family Notification -->
+                    <div
+                        style="background: white; border: 1px solid var(--gray-200); border-left: 4px solid var(--blue-500); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600; font-size: 13px; color: var(--blue-700);">👨‍👩‍👧 Người thân
+                                - Nguyễn Văn A</span>
+                            <span style="font-size: 10px; color: var(--gray-500);">15 phút trước</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-700);">Con ơi, bố mẹ đang rất lo. Có cần gì thì
+                            báo ngay nhé!</div>
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <a href="tel:0987654321"
+                                style="flex: 1; text-align: center; padding: 8px; background: var(--green-500); color: white; border-radius: 6px; font-size: 11px; text-decoration: none; font-weight: 600;">📞
+                                Gọi lại</a>
+                            <button onclick="replyToNotification('family')"
+                                style="flex: 1; padding: 8px; background: white; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 11px; cursor: pointer;">💬
+                                Nhắn</button>
+                        </div>
+                    </div>
+
+                    <!-- Volunteer Team Notification -->
+                    <div
+                        style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-left: 4px solid var(--green-500); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600; font-size: 13px; color: var(--green-700);">🚛 Đoàn thiện
+                                nguyện TP.HCM</span>
+                            <span style="font-size: 10px; color: var(--gray-500);">1 giờ trước</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-700);">Đoàn đã đến điểm phát quà. Xin mời bà con
+                            đến nhận hỗ trợ!</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline" onclick="closeNotificationPanel()"
+                    style="margin-top: 12px;">Đóng</button>
+            </div>
+        </div>
+
+        <!-- Pilot Registration Modal -->
+        <div class="symptom-modal-overlay" id="pilot-register-modal">
+            <div class="symptom-modal">
+                <div class="symptom-modal-header">
+                    <span class="symptom-modal-title">🙋 Đăng ký Hoa tiêu dẫn đường</span>
+                    <button class="symptom-modal-close" onclick="closePilotRegisterModal()">×</button>
+                </div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 16px;">Nhập thông tin để đăng ký làm
+                    hoa tiêu dẫn đường cho các đoàn thiện nguyện</div>
+
+                <div style="max-height: 50vh; overflow-y: auto; padding-right: 4px;">
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên <span style="color: var(--red-500);">*</span></label>
+                        <input type="text" id="pilot-name" class="form-input" placeholder="Nguyễn Văn A">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại <span style="color: var(--red-500);">*</span></label>
+                        <input type="tel" id="pilot-phone" class="form-input" placeholder="0912 345 678">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Khu vực thông thạo <span
+                                style="color: var(--red-500);">*</span></label>
+                        <input type="text" id="pilot-area" class="form-input"
+                            placeholder="P. Lộc Thọ, P. Vĩnh Hải, TP. Nha Trang">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phương tiện di chuyển</label>
+                        <select id="pilot-vehicle" class="form-input">
+                            <option value="motorbike">🏍️ Xe máy</option>
+                            <option value="car">🚗 Ô tô</option>
+                            <option value="bicycle">🚲 Xe đạp</option>
+                            <option value="walking">🚶 Đi bộ</option>
+                            <option value="boat">🚤 Thuyền/Ghe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Thời gian có thể hỗ trợ</label>
+                        <input type="text" id="pilot-availability" class="form-input" placeholder="6:00 - 18:00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ghi chú thêm</label>
+                        <textarea id="pilot-notes" class="form-input" rows="2"
+                            placeholder="Biết đường tắt, có thể đi đường ngập..."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-primary" onclick="registerPilot()" style="margin-bottom: 8px;">✅ Đăng ký làm
+                        Hoa tiêu</button>
+                    <button class="btn btn-outline" onclick="closePilotRegisterModal()">Đóng</button>
                 </div>
             </div>
-            <div class="see-more-btn" onclick="showToast('Đang tải thêm mẹo...')">Xem thêm mẹo sinh tồn →</div>
+        </div>
+
+        <!-- Find Pilot Modal -->
+        <div class="symptom-modal-overlay" id="find-pilot-modal">
+            <div class="symptom-modal">
+                <div class="symptom-modal-header">
+                    <span class="symptom-modal-title">🔍 Tìm Hoa tiêu dẫn đường</span>
+                    <button class="symptom-modal-close" onclick="closeFindPilotModal()">×</button>
+                </div>
+                <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;">Tìm hoa tiêu địa phương để
+                    dẫn đường</div>
+
+                <button onclick="getPilotGPSLocation()"
+                    style="width: 100%; padding: 12px; background: var(--blue-500); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 12px;">
+                    📍 Lấy vị trí GPS của tôi
+                </button>
+                <div id="pilot-gps-status"
+                    style="font-size: 11px; color: var(--gray-500); text-align: center; margin-bottom: 12px;"></div>
+
+                <div style="font-size: 12px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px;">📋 Danh sách
+                    Hoa tiêu gần bạn:</div>
+
+                <div style="max-height: 40vh; overflow-y: auto;">
+                    <!-- Nearest Pilot - Highlighted -->
+                    <div id="pilot-nearest"
+                        style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 2px solid var(--yellow-500); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                            <span style="font-size: 20px;">⭐</span>
+                            <span
+                                style="background: var(--yellow-500); color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">GẦN
+                                NHẤT</span>
+                        </div>
+                        <div style="font-weight: 600; font-size: 14px; color: var(--gray-800);">Trần Văn B</div>
+                        <div style="font-size: 11px; color: var(--gray-600); margin: 4px 0;">📍 P. Lộc Thọ • 🏍️ Xe máy
+                            • ⏰ 6:00-18:00</div>
+                        <div style="font-size: 11px; color: var(--green-600); font-weight: 600;">📏 Cách 0.5km</div>
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <a href="tel:0923456789"
+                                style="flex: 1; text-align: center; padding: 10px; background: var(--green-500); color: white; border-radius: 6px; font-size: 12px; text-decoration: none; font-weight: 600;">📞
+                                Gọi ngay</a>
+                            <button onclick="showToast('Đã gửi yêu cầu!')"
+                                style="flex: 1; padding: 10px; background: var(--blue-500); color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;">📍
+                                Nhờ dẫn</button>
+                        </div>
+                    </div>
+
+                    <!-- Other Pilots -->
+                    <div
+                        style="background: white; border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div style="font-weight: 600; font-size: 13px; color: var(--gray-800);">Lê Thị C</div>
+                        <div style="font-size: 11px; color: var(--gray-600); margin: 4px 0;">📍 P. Vĩnh Hải • 🚗 Ô tô •
+                            ⏰ 8:00-20:00</div>
+                        <div style="font-size: 11px; color: var(--gray-500);">📏 Cách 1.2km</div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <a href="tel:0934567890"
+                                style="flex: 1; text-align: center; padding: 8px; background: var(--green-500); color: white; border-radius: 6px; font-size: 11px; text-decoration: none;">📞
+                                Gọi</a>
+                            <button onclick="showToast('Đã gửi yêu cầu!')"
+                                style="flex: 1; padding: 8px; background: white; border: 1px solid var(--blue-500); color: var(--blue-500); border-radius: 6px; font-size: 11px; cursor: pointer;">📍
+                                Nhờ dẫn</button>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: white; border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div style="font-weight: 600; font-size: 13px; color: var(--gray-800);">Phạm Văn D</div>
+                        <div style="font-size: 11px; color: var(--gray-600); margin: 4px 0;">📍 P. Vĩnh Nguyên • 🚤
+                            Thuyền • ⏰ Cả ngày</div>
+                        <div style="font-size: 11px; color: var(--gray-500);">📏 Cách 2.5km</div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <a href="tel:0945678901"
+                                style="flex: 1; text-align: center; padding: 8px; background: var(--green-500); color: white; border-radius: 6px; font-size: 11px; text-decoration: none;">📞
+                                Gọi</a>
+                            <button onclick="showToast('Đã gửi yêu cầu!')"
+                                style="flex: 1; padding: 8px; background: white; border: 1px solid var(--blue-500); color: var(--blue-500); border-radius: 6px; font-size: 11px; cursor: pointer;">📍
+                                Nhờ dẫn</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline" onclick="closeFindPilotModal()" style="margin-top: 12px;">Đóng</button>
+            </div>
         </div>
 
         <!-- 1. Verification Screen -->
@@ -1811,9 +3258,19 @@
         <div class="screen" id="screen-map">
             <div class="header-small">
                 <button class="back-btn" onclick="showScreen('home')">←</button>
-                <h2>Bản đồ Điều phối</h2>
+                <h2>Bản đồ Điều phối - Nha Trang</h2>
             </div>
-            <div class="alert-banner">⚠️ Cảnh báo: Khu vực Xã Hạ đang quá tải (5 đoàn đang đến)</div>
+            <!-- Quick Tips Banner -->
+            <div
+                style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 12px 16px; border-bottom: 2px solid #3b82f6;">
+                <div style="font-weight: 600; font-size: 12px; color: #1e40af; margin-bottom: 4px;">💡 Hướng dẫn nhanh
+                </div>
+                <div style="font-size: 11px; color: #1e40af; line-height: 1.5;">
+                    👆 Bấm vào điểm đánh dấu để xem thông tin hộ cần cứu trợ<br>
+                    📋 Sao chép tọa độ hoặc mở Google Maps để điều hướng
+                </div>
+            </div>
+            <div class="alert-banner">⚠️ Cảnh báo: Khu vực P. Lộc Thọ đang quá tải (5 đoàn đang đến)</div>
             <div id="map"></div>
             <div class="map-legend">
                 <div style="font-weight: 600; margin-bottom: 4px;">Phân vùng nguy cấp</div>
@@ -1851,7 +3308,7 @@
                 <div class="form-group"><label class="form-label">Hàng hóa mang theo</label><textarea class="form-input"
                         rows="2" placeholder="Gạo 500kg, mì 200 thùng, nước 1000 chai..."></textarea></div>
                 <div class="form-group"><label class="form-label">Lộ trình dự kiến</label><input type="text"
-                        class="form-input" placeholder="Hà Nội → Yên Thế → Xã Hạ"></div>
+                        class="form-input" placeholder="TP.HCM → Cam Ranh → Nha Trang"></div>
                 <div class="form-group"><label class="form-label">Thời gian dự kiến đến</label><input
                         type="datetime-local" class="form-input"></div>
                 <button class="btn btn-primary" onclick="registerVolunteer()" style="margin-bottom: 16px;">📝 Đăng ký lộ
@@ -1875,10 +3332,49 @@
                     </button>
                     <div id="volunteer-gps-status"
                         style="font-size: 11px; color: var(--gray-500); margin-top: 8px; text-align: center;"></div>
-                    <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 8px; padding: 10px;"
+
+                    <!-- Photo Upload Section -->
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--green-400);">
+                        <div style="font-weight: 600; font-size: 13px; color: var(--green-700); margin-bottom: 8px;">📷
+                            Tải ảnh địa điểm phát quà</div>
+                        <label class="convoy-photo-upload" style="margin-top: 0;">
+                            <input type="file" accept="image/*" capture="environment" style="display: none;"
+                                onchange="handleConvoyPhotoUpload(this, 'volunteer-location')" multiple>
+                            <span class="upload-icon">📷</span>
+                            <span class="upload-text">Chọn hoặc chụp ảnh địa điểm</span>
+                        </label>
+                        <div id="volunteer-location-photos" class="convoy-photos-preview"></div>
+                    </div>
+
+                    <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 12px; padding: 10px;"
                         onclick="confirmArrival()">
                         ✅ Xác nhận đã đến nơi
                     </button>
+                </div>
+
+                <!-- Pilot/Guide Section -->
+                <div
+                    style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid var(--blue-500); border-radius: 12px; padding: 14px; margin-top: 16px;">
+                    <div style="font-weight: 700; font-size: 14px; color: var(--blue-700); margin-bottom: 8px;">🧭 Hoa
+                        tiêu dẫn đường</div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;">Đăng ký làm hoa tiêu hoặc
+                        tìm hoa tiêu dẫn đường tại địa phương</div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button onclick="openPilotRegisterModal()"
+                            style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px; background: white; border: 2px solid var(--blue-400); border-radius: 10px; cursor: pointer;">
+                            <span style="font-size: 28px;">🙋</span>
+                            <span style="font-size: 12px; font-weight: 600; color: var(--blue-700);">Đăng ký Hoa
+                                tiêu</span>
+                            <span style="font-size: 10px; color: var(--gray-500);">Dẫn đường cho đoàn</span>
+                        </button>
+                        <button onclick="openFindPilotModal()"
+                            style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px; background: var(--blue-500); border: none; border-radius: 10px; cursor: pointer; color: white;">
+                            <span style="font-size: 28px;">🔍</span>
+                            <span style="font-size: 12px; font-weight: 600;">Tìm Hoa tiêu</span>
+                            <span style="font-size: 10px; opacity: 0.9;">Nhờ dẫn đường</span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="section-title">🚗 Đoàn đang di chuyển</div>
@@ -1887,7 +3383,7 @@
                     <div>
                         <div class="volunteer-name">Đoàn Hà Nội 1</div>
                         <div class="volunteer-goods">Gạo 1 tấn, Mì 500 thùng</div>
-                        <div class="volunteer-route">📍 Đang đến: Xã Thượng (còn 15km)</div>
+                        <div class="volunteer-route">📍 Đang đến: P. Vĩnh Hải (còn 15km)</div>
                     </div>
                     <span class="priority-tag low">🟢 Đúng tuyến</span>
                 </div>
@@ -1897,7 +3393,7 @@
                     <div>
                         <div class="volunteer-name">Đoàn Bắc Ninh</div>
                         <div class="volunteer-goods">Thuốc y tế, Sữa</div>
-                        <div class="volunteer-route">📍 Đang đến: Xã Hạ (còn 5km)</div>
+                        <div class="volunteer-route">📍 Đang đến: P. Lộc Thọ (còn 5km)</div>
                     </div>
                     <span class="priority-tag high">⚠️ Khu vực đông</span>
                 </div>
@@ -2015,7 +3511,39 @@
                 <p style="font-size: 11px; color: var(--gray-500); margin-bottom: 12px;">
                     <span style="color: var(--red-500);">*</span> Tất cả các trường đều bắt buộc phải điền
                 </p>
-                <button class="btn btn-danger" onclick="submitCase()">🆘 Gửi báo cáo</button>
+                <button class="btn btn-danger" onclick="submitCase()" style="margin-bottom: 10px;">🆘 Gửi báo
+                    cáo</button>
+
+                <!-- SMS Auto-send Section -->
+                <div
+                    style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 2px solid var(--blue-500); border-radius: 12px; padding: 14px; margin-top: 8px;">
+                    <div style="font-weight: 700; font-size: 14px; color: var(--blue-700); margin-bottom: 8px;">📱 Gửi
+                        SMS báo cáo nhanh</div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 10px;">Bấm nút dưới để tự động
+                        mở ứng dụng Tin nhắn với nội dung báo cáo soạn sẵn</div>
+
+                    <!-- SMS Template Preview -->
+                    <div
+                        style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size: 11px; color: var(--gray-700); line-height: 1.5;">
+                        <strong>Mẫu tin nhắn:</strong><br>
+                        <span style="color: var(--gray-500);">
+                            [CỨU TRỢ KHẨN CẤP]<br>
+                            Tên: <span style="color: var(--blue-600);">{Tên chủ hộ}</span><br>
+                            SĐT: <span style="color: var(--blue-600);">{Số điện thoại}</span><br>
+                            Địa chỉ: <span style="color: var(--blue-600);">{Địa chỉ}</span><br>
+                            Nguồn: <span style="color: var(--blue-600);">{Nguồn thông tin}</span>
+                        </span>
+                    </div>
+
+                    <button type="button" class="btn"
+                        style="background: var(--blue-500); color: white; width: 100%; padding: 12px; font-size: 14px;"
+                        onclick="sendSMSReport()">
+                        📤 Gửi SMS đến 0342381843
+                    </button>
+                    <div style="font-size: 10px; color: var(--gray-500); margin-top: 6px; text-align: center;">
+                        Sẽ tự động mở ứng dụng Tin nhắn trên điện thoại
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2131,6 +3659,170 @@
                     onclick="showScreen('login'); showToast('Đã đăng xuất')">🚪 Đăng xuất</button></div>
         </div>
 
+        <!-- News Screen -->
+        <div class="screen" id="screen-news">
+            <div class="header-small">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>Tin tức & Mẹo sinh tồn</h2>
+            </div>
+
+            <!-- Dam Status Section -->
+            <div style="padding: 16px; padding-bottom: 0;">
+                <div
+                    style="background: linear-gradient(135deg, #1e40af, #3b82f6); border-radius: 14px; padding: 16px; margin-bottom: 16px; color: white;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="font-size: 28px;">⚡</span>
+                        <div>
+                            <div style="font-weight: 700; font-size: 16px;">Tình trạng Đập Thủy điện</div>
+                            <div style="font-size: 11px; opacity: 0.9;">Cập nhật: 30/01/2026 - 13:00</div>
+                        </div>
+                    </div>
+
+                    <!-- Dam 1 - Critical -->
+                    <div
+                        style="background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600;">🔴 Đập Sông Cái</span>
+                            <span
+                                style="background: #ef4444; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 700;">XẢ
+                                LŨ</span>
+                        </div>
+                        <div style="font-size: 11px; opacity: 0.9;">Mực nước: 98.5m (Giới hạn: 100m) | Lưu lượng xả:
+                            2500 m³/s</div>
+                    </div>
+
+                    <!-- Dam 2 - Warning -->
+                    <div
+                        style="background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600;">🟡 Đập Eakrong Rou</span>
+                            <span
+                                style="background: #eab308; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; color: #000;">CẢNH
+                                BÁO</span>
+                        </div>
+                        <div style="font-size: 11px; opacity: 0.9;">Mực nước: 85.2m (Giới hạn: 95m) | Đang theo dõi
+                        </div>
+                    </div>
+
+                    <!-- Dam 3 - Normal -->
+                    <div style="background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600;">🟢 Đập Đa Nhim</span>
+                            <span
+                                style="background: #22c55e; padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 700;">BÌNH
+                                THƯỜNG</span>
+                        </div>
+                        <div style="font-size: 11px; opacity: 0.9;">Mực nước: 72.0m (Giới hạn: 90m) | Hoạt động ổn định
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survival Tips Section -->
+            <div style="padding: 0 16px;">
+                <div style="font-weight: 700; font-size: 15px; color: var(--gray-800); margin-bottom: 12px;">🛟 Mẹo sinh
+                    tồn khi bão lũ</div>
+
+                <div
+                    style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px; padding: 14px; margin-bottom: 12px; border-left: 4px solid #f59e0b;">
+                    <div style="font-weight: 600; font-size: 13px; color: #92400e; margin-bottom: 6px;">🏠 Khi ở trong
+                        nhà</div>
+                    <ul style="font-size: 12px; color: #78350f; padding-left: 18px; margin: 0; line-height: 1.6;">
+                        <li>Di chuyển lên tầng cao, mang theo nước uống và đèn pin</li>
+                        <li>Tắt nguồn điện và gas để tránh nguy hiểm</li>
+                        <li>Lưu số điện thoại khẩn cấp: 113, 114, 115</li>
+                    </ul>
+                </div>
+
+                <div
+                    style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: 12px; padding: 14px; margin-bottom: 12px; border-left: 4px solid #22c55e;">
+                    <div style="font-weight: 600; font-size: 13px; color: #166534; margin-bottom: 6px;">🌊 Khi di chuyển
+                        qua vùng ngập</div>
+                    <ul style="font-size: 12px; color: #14532d; padding-left: 18px; margin: 0; line-height: 1.6;">
+                        <li>Dùng gậy dò đường để tránh hố sâu</li>
+                        <li>Không đi qua nơi nước chảy xiết</li>
+                        <li>Giữ trẻ em và người già ở giữa đoàn</li>
+                    </ul>
+                </div>
+
+                <div
+                    style="background: linear-gradient(135deg, #fee2e2, #fecaca); border-radius: 12px; padding: 14px; margin-bottom: 12px; border-left: 4px solid #ef4444;">
+                    <div style="font-weight: 600; font-size: 13px; color: #991b1b; margin-bottom: 6px;">⚠️ Cảnh báo nguy
+                        hiểm</div>
+                    <ul style="font-size: 12px; color: #7f1d1d; padding-left: 18px; margin: 0; line-height: 1.6;">
+                        <li>Tuyệt đối không bơi qua vùng nước lũ</li>
+                        <li>Tránh xa cột điện, dây điện bị đổ</li>
+                        <li>Không ăn thực phẩm đã ngâm nước lũ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- News & Announcements -->
+            <div style="padding: 16px;">
+                <div style="font-weight: 700; font-size: 15px; color: var(--gray-800); margin-bottom: 12px;">📢 Tin tức
+                    cứu trợ</div>
+
+                <div
+                    style="background: white; border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 18px;">🚨</span>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--red-600);">Cảnh báo mưa lớn tiếp
+                                tục</div>
+                            <div style="font-size: 10px; color: var(--gray-500);">30 phút trước</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-700); line-height: 1.5;">Dự báo mưa lớn 100-200mm tại
+                        Nha Trang trong 24h tới. Người dân vùng trũng cần di chuyển đến nơi an toàn.</div>
+                </div>
+
+                <div
+                    style="background: white; border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 18px;">✅</span>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--green-600);">Đoàn cứu trợ TP.HCM
+                                đã đến</div>
+                            <div style="font-size: 10px; color: var(--gray-500);">1 giờ trước</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-700); line-height: 1.5;">Đoàn đã phát 500 phần quà
+                        tại P. Vĩnh Hải. Tiếp tục di chuyển đến P. Lộc Thọ để hỗ trợ.</div>
+                </div>
+
+                <div
+                    style="background: white; border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 18px;">📍</span>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--blue-600);">Điểm tập trung di
+                                dời mới</div>
+                            <div style="font-size: 10px; color: var(--gray-500);">2 giờ trước</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-700); line-height: 1.5;">Trường THPT Trần Phú được sử
+                        dụng làm điểm tập trung cho bà con P. Lộc Thọ. Có bếp ăn miễn phí.</div>
+                </div>
+
+                <div
+                    style="background: white; border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 18px;">💊</span>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--orange-600);">Thông báo cấp
+                                thuốc y tế</div>
+                            <div style="font-size: 10px; color: var(--gray-500);">3 giờ trước</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-700); line-height: 1.5;">Trạm Y tế P. Vĩnh Nguyên
+                        hoạt động 24/7, cấp thuốc miễn phí cho người dân vùng lũ.</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Bottom Navigation -->
         <div class="bottom-nav" id="bottom-nav">
             <button class="nav-item active" onclick="navTo('home')"><span class="icon">🏠</span><span>Trang
@@ -2139,19 +3831,19 @@
             <button class="nav-item" onclick="navTo('add')"><span class="icon">➕</span><span>Thêm ca</span></button>
             <button class="nav-item" onclick="navTo('identify')"><span class="icon">🪪</span><span>Định
                     danh</span></button>
-            <button class="nav-item" onclick="navTo('profile')"><span class="icon">👤</span><span>Cá
-                    nhân</span></button>
+            <button class="nav-item" onclick="navTo('news')"><span class="icon">📰</span><span>Tin
+                    tức</span></button>
         </div>
         <div class="toast" id="toast"></div>
     </div>
 
     <script>
         const cases = [
-            { id: 1, name: 'Hộ Nguyễn Văn A', phone: '0912345678', address: 'Thôn 3, Xã Hạ', people: 5, status: 'sos', source: 'Facebook', lat: 21.285, lng: 106.145 },
-            { id: 2, name: 'Hộ Trần Thị B', phone: '0923456789', address: 'Thôn 5, Xã Thượng', people: 3, status: 'medical', source: 'Zalo', lat: 21.290, lng: 106.150 },
-            { id: 3, name: 'Hộ Lê Văn C', phone: '0934567890', address: 'Thôn 1, Xã Đông', people: 4, status: 'sos', source: 'Địa phương', lat: 21.280, lng: 106.140 },
-            { id: 4, name: 'Hộ Phạm Văn D', phone: '0945678901', address: 'Thôn 2, Xã Tây', people: 6, status: 'safe', source: 'Facebook', lat: 21.275, lng: 106.135 },
-            { id: 5, name: 'Hộ Hoàng Thị E', phone: '0956789012', address: 'Thôn 4, Xã Bắc', people: 2, status: 'sos', source: 'Zalo', lat: 21.295, lng: 106.155 },
+            { id: 1, name: 'Hộ Nguyễn Văn A', phone: '0912345678', address: 'Số 15, Đường Trần Phú, P. Lộc Thọ, Nha Trang', people: 5, status: 'sos', source: 'Facebook', lat: 12.2450, lng: 109.1950 },
+            { id: 2, name: 'Hộ Trần Thị B', phone: '0923456789', address: 'Số 78, Đường Yersin, P. Vĩnh Nguyên, Nha Trang', people: 3, status: 'medical', source: 'Zalo', lat: 12.2380, lng: 109.1920 },
+            { id: 3, name: 'Hộ Lê Văn C', phone: '0934567890', address: 'Số 123, Đường 2 Tháng 4, P. Vĩnh Hải, Nha Trang', people: 4, status: 'sos', source: 'Địa phương', lat: 12.2520, lng: 109.1880 },
+            { id: 4, name: 'Hộ Phạm Văn D', phone: '0945678901', address: 'Số 56, Đường Lê Hồng Phong, P. Phước Hải, Nha Trang', people: 6, status: 'safe', source: 'Facebook', lat: 12.2410, lng: 109.2010 },
+            { id: 5, name: 'Hộ Hoàng Thị E', phone: '0956789012', address: 'Số 89, Đường Nguyễn Thiện Thuật, P. Tân Lập, Nha Trang', people: 2, status: 'sos', source: 'Zalo', lat: 12.2350, lng: 109.1980 },
         ];
         const giftHistory = [
             { name: 'Nguyễn Thị Lan', cccd: '012345678901', time: '10:30', count: 2, priority: 'Người già' },
@@ -2159,86 +3851,86 @@
             { name: 'Lê Thị Mai', cccd: '034567890123', time: '09:45', count: 1, priority: 'Phụ nữ mang thai' },
         ];
 
-        // Region data with 10 households each
+        // Region data with 10 households each - Nha Trang city
         const regions = {
-            'xa-ha': {
-                name: 'Xã Hạ',
+            'phuong-loc-tho': {
+                name: 'Phường Lộc Thọ',
                 level: 'critical',
                 levelText: 'Cực kỳ khẩn cấp',
-                description: 'Khu vực ngập nặng nhất, nước dâng 2m. Chưa có đoàn cứu trợ đến.',
-                floodLevel: '2m',
+                description: 'Khu vực trung tâm ngập nặng, nước dâng 1.5m. Chưa có đoàn cứu trợ đến.',
+                floodLevel: '1.5m',
                 convoys: 0,
                 households: [
-                    { id: 1, name: 'Hộ Nguyễn Văn An', phone: '0912345001', address: 'Thôn 1, Xã Hạ', people: 6, status: 'Người già, trẻ nhỏ' },
-                    { id: 2, name: 'Hộ Trần Thị Bình', phone: '0912345002', address: 'Thôn 1, Xã Hạ', people: 4, status: 'Cần thuốc gấp' },
-                    { id: 3, name: 'Hộ Lê Văn Cường', phone: '0912345003', address: 'Thôn 2, Xã Hạ', people: 5, status: 'Thiếu lương thực' },
-                    { id: 4, name: 'Hộ Phạm Thị Dung', phone: '0912345004', address: 'Thôn 2, Xã Hạ', people: 7, status: 'Phụ nữ mang thai' },
-                    { id: 5, name: 'Hộ Hoàng Văn Em', phone: '0912345005', address: 'Thôn 3, Xã Hạ', people: 3, status: 'Người tàn tật' },
-                    { id: 6, name: 'Hộ Vũ Thị Phương', phone: '0912345006', address: 'Thôn 3, Xã Hạ', people: 5, status: 'Thiếu nước sạch' },
-                    { id: 7, name: 'Hộ Đặng Văn Giang', phone: '0912345007', address: 'Thôn 4, Xã Hạ', people: 4, status: 'Nhà bị sập' },
-                    { id: 8, name: 'Hộ Bùi Thị Hạnh', phone: '0912345008', address: 'Thôn 4, Xã Hạ', people: 6, status: 'Cô lập hoàn toàn' },
-                    { id: 9, name: 'Hộ Ngô Văn Kiên', phone: '0912345009', address: 'Thôn 5, Xã Hạ', people: 5, status: 'Người già ốm nặng' },
-                    { id: 10, name: 'Hộ Lý Thị Lan', phone: '0912345010', address: 'Thôn 5, Xã Hạ', people: 4, status: 'Trẻ sơ sinh' }
+                    { id: 1, name: 'Hộ Nguyễn Văn An', phone: '0912345001', address: 'Số 12, Đường Trần Phú, P. Lộc Thọ', people: 6, status: 'Người già, trẻ nhỏ' },
+                    { id: 2, name: 'Hộ Trần Thị Bình', phone: '0912345002', address: 'Số 45, Đường Lê Thánh Tôn, P. Lộc Thọ', people: 4, status: 'Cần thuốc gấp' },
+                    { id: 3, name: 'Hộ Lê Văn Cường', phone: '0912345003', address: 'Số 78, Đường Nguyễn Trãi, P. Lộc Thọ', people: 5, status: 'Thiếu lương thực' },
+                    { id: 4, name: 'Hộ Phạm Thị Dung', phone: '0912345004', address: 'Số 23, Đường Biệt Thự, P. Lộc Thọ', people: 7, status: 'Phụ nữ mang thai' },
+                    { id: 5, name: 'Hộ Hoàng Văn Em', phone: '0912345005', address: 'Số 56, Đường Hùng Vương, P. Lộc Thọ', people: 3, status: 'Người tàn tật' },
+                    { id: 6, name: 'Hộ Vũ Thị Phương', phone: '0912345006', address: 'Số 89, Đường Hoàng Hoa Thám, P. Lộc Thọ', people: 5, status: 'Thiếu nước sạch' },
+                    { id: 7, name: 'Hộ Đặng Văn Giang', phone: '0912345007', address: 'Số 34, Đường Thống Nhất, P. Lộc Thọ', people: 4, status: 'Nhà bị sập' },
+                    { id: 8, name: 'Hộ Bùi Thị Hạnh', phone: '0912345008', address: 'Số 67, Đường Quang Trung, P. Lộc Thọ', people: 6, status: 'Cô lập hoàn toàn' },
+                    { id: 9, name: 'Hộ Ngô Văn Kiên', phone: '0912345009', address: 'Số 90, Đường Phan Bội Châu, P. Lộc Thọ', people: 5, status: 'Người già ốm nặng' },
+                    { id: 10, name: 'Hộ Lý Thị Lan', phone: '0912345010', address: 'Số 15, Đường Lý Tự Trọng, P. Lộc Thọ', people: 4, status: 'Trẻ sơ sinh' }
                 ]
             },
-            'xa-thuong': {
-                name: 'Xã Thượng',
+            'phuong-vinh-hai': {
+                name: 'Phường Vĩnh Hải',
                 level: 'high',
                 levelText: 'Khẩn cấp cao',
-                description: 'Nước ngập 1.5m, 1 đoàn cứu trợ đang trên đường đến.',
-                floodLevel: '1.5m',
+                description: 'Khu vực ven biển ngập 1.2m, 1 đoàn cứu trợ đang trên đường đến.',
+                floodLevel: '1.2m',
                 convoys: 1,
                 households: [
-                    { id: 11, name: 'Hộ Trương Văn Minh', phone: '0923456001', address: 'Thôn 1, Xã Thượng', people: 5, status: 'Thiếu lương thực' },
-                    { id: 12, name: 'Hộ Đỗ Thị Ngọc', phone: '0923456002', address: 'Thôn 1, Xã Thượng', people: 4, status: 'Người già' },
-                    { id: 13, name: 'Hộ Phan Văn Oanh', phone: '0923456003', address: 'Thôn 2, Xã Thượng', people: 6, status: 'Trẻ nhỏ bị ốm' },
-                    { id: 14, name: 'Hộ Lưu Thị Phượng', phone: '0923456004', address: 'Thôn 2, Xã Thượng', people: 3, status: 'Cần nước sạch' },
-                    { id: 15, name: 'Hộ Mai Văn Quang', phone: '0923456005', address: 'Thôn 3, Xã Thượng', people: 7, status: 'Gia đình đông' },
-                    { id: 16, name: 'Hộ Đinh Thị Rosé', phone: '0923456006', address: 'Thôn 3, Xã Thượng', people: 4, status: 'Phụ nữ mang thai' },
-                    { id: 17, name: 'Hộ Cao Văn Sơn', phone: '0923456007', address: 'Thôn 4, Xã Thượng', people: 5, status: 'Thiếu thuốc' },
-                    { id: 18, name: 'Hộ Tô Thị Thảo', phone: '0923456008', address: 'Thôn 4, Xã Thượng', people: 4, status: 'Mất liên lạc' },
-                    { id: 19, name: 'Hộ Hà Văn Uy', phone: '0923456009', address: 'Thôn 5, Xã Thượng', people: 6, status: 'Người tàn tật' },
-                    { id: 20, name: 'Hộ Châu Thị Vân', phone: '0923456010', address: 'Thôn 5, Xã Thượng', people: 3, status: 'Người già neo đơn' }
+                    { id: 11, name: 'Hộ Trương Văn Minh', phone: '0923456001', address: 'Số 101, Đường 2 Tháng 4, P. Vĩnh Hải', people: 5, status: 'Thiếu lương thực' },
+                    { id: 12, name: 'Hộ Đỗ Thị Ngọc', phone: '0923456002', address: 'Số 55, Đường Phạm Văn Đồng, P. Vĩnh Hải', people: 4, status: 'Người già' },
+                    { id: 13, name: 'Hộ Phan Văn Oanh', phone: '0923456003', address: 'Số 88, Đường Võ Nguyên Giáp, P. Vĩnh Hải', people: 6, status: 'Trẻ nhỏ bị ốm' },
+                    { id: 14, name: 'Hộ Lưu Thị Phượng', phone: '0923456004', address: 'Số 22, Đường Lê Đại Hành, P. Vĩnh Hải', people: 3, status: 'Cần nước sạch' },
+                    { id: 15, name: 'Hộ Mai Văn Quang', phone: '0923456005', address: 'Số 77, Đường Nguyễn Đình Chiểu, P. Vĩnh Hải', people: 7, status: 'Gia đình đông' },
+                    { id: 16, name: 'Hộ Đinh Thị Rosé', phone: '0923456006', address: 'Số 44, Đường Trần Quang Khải, P. Vĩnh Hải', people: 4, status: 'Phụ nữ mang thai' },
+                    { id: 17, name: 'Hộ Cao Văn Sơn', phone: '0923456007', address: 'Số 99, Đường Lê Lai, P. Vĩnh Hải', people: 5, status: 'Thiếu thuốc' },
+                    { id: 18, name: 'Hộ Tô Thị Thảo', phone: '0923456008', address: 'Số 33, Đường Nguyễn Chánh, P. Vĩnh Hải', people: 4, status: 'Mất liên lạc' },
+                    { id: 19, name: 'Hộ Hà Văn Uy', phone: '0923456009', address: 'Số 66, Đường Cao Bá Quát, P. Vĩnh Hải', people: 6, status: 'Người tàn tật' },
+                    { id: 20, name: 'Hộ Châu Thị Vân', phone: '0923456010', address: 'Số 11, Đường Ngô Gia Tự, P. Vĩnh Hải', people: 3, status: 'Người già neo đơn' }
                 ]
             },
-            'xa-dong': {
-                name: 'Xã Đông',
+            'phuong-vinh-nguyen': {
+                name: 'Phường Vĩnh Nguyên',
                 level: 'medium',
                 levelText: 'Cần hỗ trợ',
-                description: 'Nước ngập 1m, đang thiếu thuốc y tế và vật tư sơ cứu.',
-                floodLevel: '1m',
+                description: 'Khu vực cảng cá ngập 0.8m, đang thiếu thuốc y tế và vật tư sơ cứu.',
+                floodLevel: '0.8m',
                 convoys: 2,
                 households: [
-                    { id: 21, name: 'Hộ Trịnh Văn Xuân', phone: '0934567001', address: 'Thôn 1, Xã Đông', people: 4, status: 'Cần thuốc kháng sinh' },
-                    { id: 22, name: 'Hộ Dương Thị Yến', phone: '0934567002', address: 'Thôn 1, Xã Đông', people: 5, status: 'Trẻ bị tiêu chảy' },
-                    { id: 23, name: 'Hộ Kiều Văn Anh', phone: '0934567003', address: 'Thôn 2, Xã Đông', people: 3, status: 'Người cao tuổi' },
-                    { id: 24, name: 'Hộ Mạc Thị Bích', phone: '0934567004', address: 'Thôn 2, Xã Đông', people: 6, status: 'Thiếu lương thực' },
-                    { id: 25, name: 'Hộ Âu Văn Công', phone: '0934567005', address: 'Thôn 3, Xã Đông', people: 4, status: 'Cần bông băng' },
-                    { id: 26, name: 'Hộ La Thị Diệu', phone: '0934567006', address: 'Thôn 3, Xã Đông', people: 5, status: 'Bị cảm cúm' },
-                    { id: 27, name: 'Hộ Tạ Văn Hiệp', phone: '0934567007', address: 'Thôn 4, Xã Đông', people: 7, status: 'Gia đình đông' },
-                    { id: 28, name: 'Hộ Từ Thị Hồng', phone: '0934567008', address: 'Thôn 4, Xã Đông', people: 4, status: 'Cần thuốc đau bụng' },
-                    { id: 29, name: 'Hộ Liễu Văn Khánh', phone: '0934567009', address: 'Thôn 5, Xã Đông', people: 3, status: 'Người già ốm' },
-                    { id: 30, name: 'Hộ Quách Thị Liên', phone: '0934567010', address: 'Thôn 5, Xã Đông', people: 5, status: 'Thiếu nước sạch' }
+                    { id: 21, name: 'Hộ Trịnh Văn Xuân', phone: '0934567001', address: 'Số 45, Đường Yersin, P. Vĩnh Nguyên', people: 4, status: 'Cần thuốc kháng sinh' },
+                    { id: 22, name: 'Hộ Dương Thị Yến', phone: '0934567002', address: 'Số 78, Đường Bạch Đằng, P. Vĩnh Nguyên', people: 5, status: 'Trẻ bị tiêu chảy' },
+                    { id: 23, name: 'Hộ Kiều Văn Anh', phone: '0934567003', address: 'Số 23, Đường Lê Lợi, P. Vĩnh Nguyên', people: 3, status: 'Người cao tuổi' },
+                    { id: 24, name: 'Hộ Mạc Thị Bích', phone: '0934567004', address: 'Số 56, Đường Nguyễn Bỉnh Khiêm, P. Vĩnh Nguyên', people: 6, status: 'Thiếu lương thực' },
+                    { id: 25, name: 'Hộ Âu Văn Công', phone: '0934567005', address: 'Số 89, Đường Tô Hiệu, P. Vĩnh Nguyên', people: 4, status: 'Cần bông băng' },
+                    { id: 26, name: 'Hộ La Thị Diệu', phone: '0934567006', address: 'Số 12, Đường Đồng Nai, P. Vĩnh Nguyên', people: 5, status: 'Bị cảm cúm' },
+                    { id: 27, name: 'Hộ Tạ Văn Hiệp', phone: '0934567007', address: 'Số 34, Đường Cửu Long, P. Vĩnh Nguyên', people: 7, status: 'Gia đình đông' },
+                    { id: 28, name: 'Hộ Từ Thị Hồng', phone: '0934567008', address: 'Số 67, Đường Đà Nẵng, P. Vĩnh Nguyên', people: 4, status: 'Cần thuốc đau bụng' },
+                    { id: 29, name: 'Hộ Liễu Văn Khánh', phone: '0934567009', address: 'Số 90, Đường Huỳnh Thúc Kháng, P. Vĩnh Nguyên', people: 3, status: 'Người già ốm' },
+                    { id: 30, name: 'Hộ Quách Thị Liên', phone: '0934567010', address: 'Số 15, Đường Phan Chu Trinh, P. Vĩnh Nguyên', people: 5, status: 'Thiếu nước sạch' }
                 ]
             },
-            'xa-tay': {
-                name: 'Xã Tây',
+            'phuong-phuoc-hai': {
+                name: 'Phường Phước Hải',
                 level: 'low',
                 levelText: 'Ổn định',
                 description: 'Nước đã rút, các hộ đã được hỗ trợ cơ bản. Cần theo dõi.',
                 floodLevel: 'Đã rút',
                 convoys: 3,
                 households: [
-                    { id: 31, name: 'Hộ Sầm Văn Long', phone: '0945678001', address: 'Thôn 1, Xã Tây', people: 4, status: 'Đã nhận quà' },
-                    { id: 32, name: 'Hộ Nông Thị Mai', phone: '0945678002', address: 'Thôn 1, Xã Tây', people: 5, status: 'Đã nhận quà' },
-                    { id: 33, name: 'Hộ Tăng Văn Nghĩa', phone: '0945678003', address: 'Thôn 2, Xã Tây', people: 3, status: 'Ổn định' },
-                    { id: 34, name: 'Hộ Mã Thị Oanh', phone: '0945678004', address: 'Thôn 2, Xã Tây', people: 6, status: 'Đã nhận quà' },
-                    { id: 35, name: 'Hộ Triệu Văn Phúc', phone: '0945678005', address: 'Thôn 3, Xã Tây', people: 4, status: 'Ổn định' },
-                    { id: 36, name: 'Hộ Lộc Thị Quỳnh', phone: '0945678006', address: 'Thôn 3, Xã Tây', people: 5, status: 'Đã nhận quà' },
-                    { id: 37, name: 'Hộ Vi Văn Sỹ', phone: '0945678007', address: 'Thôn 4, Xã Tây', people: 4, status: 'Ổn định' },
-                    { id: 38, name: 'Hộ Hứa Thị Trang', phone: '0945678008', address: 'Thôn 4, Xã Tây', people: 3, status: 'Đã nhận quà' },
-                    { id: 39, name: 'Hộ Thạch Văn Vinh', phone: '0945678009', address: 'Thôn 5, Xã Tây', people: 5, status: 'Ổn định' },
-                    { id: 40, name: 'Hộ Cầm Thị Xuân', phone: '0945678010', address: 'Thôn 5, Xã Tây', people: 4, status: 'Đã nhận quà' }
+                    { id: 31, name: 'Hộ Sầm Văn Long', phone: '0945678001', address: 'Số 101, Đường Lê Hồng Phong, P. Phước Hải', people: 4, status: 'Đã nhận quà' },
+                    { id: 32, name: 'Hộ Nông Thị Mai', phone: '0945678002', address: 'Số 55, Đường Nguyễn Thị Minh Khai, P. Phước Hải', people: 5, status: 'Đã nhận quà' },
+                    { id: 33, name: 'Hộ Tăng Văn Nghĩa', phone: '0945678003', address: 'Số 88, Đường Thái Nguyên, P. Phước Hải', people: 3, status: 'Ổn định' },
+                    { id: 34, name: 'Hộ Mã Thị Oanh', phone: '0945678004', address: 'Số 22, Đường Ngô Quyền, P. Phước Hải', people: 6, status: 'Đã nhận quà' },
+                    { id: 35, name: 'Hộ Triệu Văn Phúc', phone: '0945678005', address: 'Số 77, Đường Trương Định, P. Phước Hải', people: 4, status: 'Ổn định' },
+                    { id: 36, name: 'Hộ Lộc Thị Quỳnh', phone: '0945678006', address: 'Số 44, Đường Hai Bà Trưng, P. Phước Hải', people: 5, status: 'Đã nhận quà' },
+                    { id: 37, name: 'Hộ Vi Văn Sỹ', phone: '0945678007', address: 'Số 99, Đường Nguyễn Công Trứ, P. Phước Hải', people: 4, status: 'Ổn định' },
+                    { id: 38, name: 'Hộ Hứa Thị Trang', phone: '0945678008', address: 'Số 33, Đường Đinh Tiên Hoàng, P. Phước Hải', people: 3, status: 'Đã nhận quà' },
+                    { id: 39, name: 'Hộ Thạch Văn Vinh', phone: '0945678009', address: 'Số 66, Đường Pasteur, P. Phước Hải', people: 5, status: 'Ổn định' },
+                    { id: 40, name: 'Hộ Cầm Thị Xuân', phone: '0945678010', address: 'Số 11, Đường Lý Thường Kiệt, P. Phước Hải', people: 4, status: 'Đã nhận quà' }
                 ]
             }
         };
@@ -2440,6 +4132,54 @@
             showToast('✅ Đã gửi báo cáo thành công!');
             showScreen('home');
             return true;
+        }
+
+        function sendSMSReport() {
+            const name = document.getElementById('case-name').value.trim();
+            const phone = document.getElementById('case-phone').value.trim();
+            const address = document.getElementById('case-address').value.trim();
+            const sourceEl = document.getElementById('case-source');
+            const sourceValue = sourceEl.value;
+
+            // Get source display text
+            let sourceText = '';
+            if (sourceValue) {
+                sourceText = sourceEl.options[sourceEl.selectedIndex].text;
+            }
+
+            // Validate - at least name is required
+            if (!name) {
+                alert('⚠️ Vui lòng điền ít nhất Tên chủ hộ để gửi SMS!');
+                document.getElementById('case-name').style.borderColor = 'var(--red-500)';
+                return;
+            }
+
+            // Build SMS message from template
+            const smsTemplate = `[CỨU TRỢ KHẨN CẤP]
+Tên: ${name || '(Chưa điền)'}
+SĐT: ${phone || '(Chưa điền)'}
+Địa chỉ: ${address || '(Chưa điền)'}
+Nguồn: ${sourceText || '(Chưa chọn)'}
+---
+Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
+
+            // Phone number to send SMS to
+            const phoneNumber = '0342381843';
+
+            // Encode the message for URL
+            const encodedMessage = encodeURIComponent(smsTemplate);
+
+            // Create SMS URI (works on both Android and iOS)
+            // Android uses sms:number?body=message
+            // iOS uses sms:number&body=message (but also supports ?)
+            const smsURI = `sms:${phoneNumber}?body=${encodedMessage}`;
+
+            // Show confirmation
+            if (confirm(`📱 Sẽ mở ứng dụng Tin nhắn để gửi đến:\n\nSố: ${phoneNumber}\n\nNội dung:\n${smsTemplate}\n\nBấm OK để tiếp tục.`)) {
+                // Open SMS app
+                window.location.href = smsURI;
+                showToast('📱 Đang mở ứng dụng Tin nhắn...');
+            }
         }
 
         function getGPSLocation() {
@@ -2793,18 +4533,488 @@
         function submitCase() { showToast('🆘 Đã gửi báo cáo!'); showScreen('home'); }
 
         function initMap() {
-            map = L.map('map').setView([21.285, 106.145], 12);
+            // Nha Trang city coordinates
+            map = L.map('map').setView([12.2450, 109.1950], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
             const colors = { sos: '#ef4444', medical: '#eab308', safe: '#22c55e' };
+            const statusLabels = { sos: '🔴 KHẨN CẤP', medical: '🟡 CẦN HỖ TRỢ', safe: '🟢 ĐÃ AN TOÀN' };
+
             cases.forEach(c => {
-                L.circleMarker([c.lat, c.lng], { radius: 14, fillColor: colors[c.status], color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup(`<b>${c.name}</b><br>${c.address}<br>👥 ${c.people} người`);
+                const popupContent = `
+                    <div style="min-width: 200px; font-family: system-ui;">
+                        <div style="font-weight: bold; font-size: 14px; color: ${colors[c.status]}; margin-bottom: 8px;">${statusLabels[c.status]}</div>
+                        <div style="font-weight: bold; font-size: 13px; margin-bottom: 4px;">${c.name}</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 4px;">📍 ${c.address}</div>
+                        <div style="font-size: 12px; margin-bottom: 4px;">👥 ${c.people} người | 📞 ${c.phone}</div>
+                        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">📊 Nguồn: ${c.source}</div>
+                        <div style="background: #f3f4f6; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+                            <div style="font-size: 11px; color: #666;">📍 Tọa độ GPS:</div>
+                            <div style="font-weight: bold; font-size: 12px; color: #1d4ed8;">${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}</div>
+                        </div>
+                        <button onclick="copyCoordinates(${c.lat}, ${c.lng}, '${c.name}')" 
+                            style="width: 100%; padding: 8px; background: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px;">
+                            📋 Sao chép tọa độ
+                        </button>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}" target="_blank"
+                            style="display: block; width: 100%; padding: 8px; background: #22c55e; color: white; border: none; border-radius: 6px; font-weight: 600; text-align: center; text-decoration: none; margin-top: 6px; font-size: 12px; box-sizing: border-box;">
+                            🗺️ Mở Google Maps
+                        </a>
+                    </div>
+                `;
+                L.circleMarker([c.lat, c.lng], {
+                    radius: 14,
+                    fillColor: colors[c.status],
+                    color: '#fff',
+                    weight: 2,
+                    fillOpacity: 0.9
+                }).addTo(map).bindPopup(popupContent);
             });
-            // Volunteer convoy markers
-            L.circleMarker([21.30, 106.16], { radius: 10, fillColor: '#3b82f6', color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup('<b>🚛 Đoàn Hà Nội 1</b><br>Gạo 1 tấn, Mì 500 thùng');
-            L.circleMarker([21.27, 106.13], { radius: 10, fillColor: '#3b82f6', color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup('<b>🚛 Đoàn Bắc Ninh</b><br>Thuốc y tế, Sữa');
+
+            // Volunteer convoy markers - Nha Trang locations
+            const convoyPopup1 = `
+                <div style="min-width: 180px; font-family: system-ui;">
+                    <div style="font-weight: bold; font-size: 13px; color: #3b82f6;">🚛 Đoàn Hà Nội 1</div>
+                    <div style="font-size: 12px; margin: 4px 0;">📦 Gạo 1 tấn, Mì 500 thùng</div>
+                    <div style="font-size: 11px; color: #666;">📍 Đang đến: P. Vĩnh Hải</div>
+                </div>
+            `;
+            const convoyPopup2 = `
+                <div style="min-width: 180px; font-family: system-ui;">
+                    <div style="font-weight: bold; font-size: 13px; color: #3b82f6;">🚛 Đoàn Bắc Ninh</div>
+                    <div style="font-size: 12px; margin: 4px 0;">💊 Thuốc y tế, Sữa</div>
+                    <div style="font-size: 11px; color: #666;">📍 Đang đến: P. Lộc Thọ</div>
+                </div>
+            `;
+            L.circleMarker([12.2520, 109.1880], { radius: 10, fillColor: '#3b82f6', color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup(convoyPopup1);
+            L.circleMarker([12.2380, 109.1920], { radius: 10, fillColor: '#3b82f6', color: '#fff', weight: 2, fillOpacity: 0.9 }).addTo(map).bindPopup(convoyPopup2);
+        }
+
+        // Copy coordinates function
+        function copyCoordinates(lat, lng, name) {
+            const text = `${lat}, ${lng}`;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('✅ Đã sao chép tọa độ: ' + text);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('✅ Đã sao chép tọa độ: ' + text);
+            });
         }
 
         function showToast(message) { const toast = document.getElementById('toast'); toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+
+        // VNeID Login function
+        function loginWithVNeID() {
+            const cccd = document.getElementById('vneid-cccd').value.trim();
+            const pin = document.getElementById('vneid-pin').value.trim();
+
+            if (!cccd) {
+                showToast('⚠️ Vui lòng nhập số CCCD!');
+                return;
+            }
+            if (!pin) {
+                showToast('⚠️ Vui lòng nhập mã PIN!');
+                return;
+            }
+
+            showToast('🔄 Đang xác thực VNeID...');
+
+            // Simulate VNeID authentication
+            setTimeout(() => {
+                showToast('✅ Xác thực VNeID thành công!');
+                showScreen('home');
+            }, 1500);
+        }
+
+        // Toggle collapsible sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const toggle = document.getElementById(sectionId + '-toggle');
+
+            if (section.classList.contains('collapsed')) {
+                section.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                section.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Symptom Modal functions
+        function openSymptomModal() {
+            document.getElementById('symptom-modal').classList.add('show');
+        }
+
+        function closeSymptomModal() {
+            document.getElementById('symptom-modal').classList.remove('show');
+            // Reset all checkboxes
+            document.querySelectorAll('.symptom-option').forEach(option => {
+                option.classList.remove('selected');
+                option.querySelector('input[type="checkbox"]').checked = false;
+            });
+        }
+
+        function toggleSymptom(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('selected', checkbox.checked);
+        }
+
+        function confirmSymptoms() {
+            const selectedSymptoms = [];
+            document.querySelectorAll('#symptom-modal .symptom-option.selected').forEach(option => {
+                const title = option.querySelector('.symptom-text-title').textContent;
+                selectedSymptoms.push(title);
+            });
+
+            // Get other symptoms input
+            const otherSymptoms = document.getElementById('other-symptoms').value.trim();
+            if (otherSymptoms) {
+                selectedSymptoms.push('Khác: ' + otherSymptoms);
+            }
+
+            if (selectedSymptoms.length === 0) {
+                showToast('⚠️ Vui lòng chọn ít nhất một triệu chứng');
+                return;
+            }
+
+            // Store selected symptoms for emergency request
+            window.selectedSymptoms = selectedSymptoms;
+
+            // Create SMS message with symptoms
+            const symptomsText = selectedSymptoms.join(', ');
+            showToast('✅ Đã lưu triệu chứng: ' + selectedSymptoms.length + ' mục');
+            closeSymptomModal();
+        }
+
+        // Items Modal functions
+        function openItemsModal() {
+            document.getElementById('items-modal').classList.add('show');
+        }
+
+        function closeItemsModal() {
+            document.getElementById('items-modal').classList.remove('show');
+            // Reset all checkboxes in items modal
+            document.querySelectorAll('#items-modal .symptom-option').forEach(option => {
+                option.classList.remove('selected');
+                option.querySelector('input[type="checkbox"]').checked = false;
+            });
+            document.getElementById('other-items').value = '';
+        }
+
+        function confirmItems() {
+            const selectedItems = [];
+            document.querySelectorAll('#items-modal .symptom-option.selected').forEach(option => {
+                const title = option.querySelector('.symptom-text-title').textContent;
+                selectedItems.push(title);
+            });
+
+            // Get other items input
+            const otherItems = document.getElementById('other-items').value.trim();
+            if (otherItems) {
+                selectedItems.push('Khác: ' + otherItems);
+            }
+
+            if (selectedItems.length === 0) {
+                showToast('⚠️ Vui lòng chọn ít nhất một vật dụng');
+                return;
+            }
+
+            // Store selected items for emergency request
+            window.selectedItems = selectedItems;
+
+            showToast('✅ Đã lưu vật dụng cần hỗ trợ: ' + selectedItems.length + ' mục');
+            closeItemsModal();
+        }
+
+        // Send emergency request function
+        function sendEmergencyRequest() {
+            const address = document.getElementById('emergency-address').value.trim();
+            const phone = document.getElementById('emergency-phone').value.trim();
+
+            if (!address) {
+                showToast('⚠️ Vui lòng nhập địa chỉ hiện tại');
+                return;
+            }
+
+            if (!phone) {
+                showToast('⚠️ Vui lòng nhập số điện thoại liên hệ');
+                return;
+            }
+
+            // Check if phone is valid Vietnamese format
+            if (!/^[0-9]{10,11}$/.test(phone.replace(/\s/g, ''))) {
+                showToast('⚠️ Số điện thoại không hợp lệ');
+                return;
+            }
+
+            // Build emergency request message
+            let message = '🆘 YÊU CẦU HỖ TRỢ KHẨN CẤP\n';
+            message += '━━━━━━━━━━━━━━━━━━━━\n';
+            message += '📍 Địa chỉ: ' + address + '\n';
+            message += '📞 SĐT: ' + phone + '\n';
+            message += '🕐 Thời gian: ' + new Date().toLocaleString('vi-VN') + '\n\n';
+
+            if (window.selectedSymptoms && window.selectedSymptoms.length > 0) {
+                message += '🩺 TRIỆU CHỨNG:\n';
+                window.selectedSymptoms.forEach((s, i) => {
+                    message += '  • ' + s + '\n';
+                });
+                message += '\n';
+            }
+
+            if (window.selectedItems && window.selectedItems.length > 0) {
+                message += '📦 VẬT DỤNG CẦN HỖ TRỢ:\n';
+                window.selectedItems.forEach((item, i) => {
+                    message += '  • ' + item + '\n';
+                });
+            }
+
+            // Log the message (in real app, this would be sent to server)
+            console.log(message);
+
+            // Show success message
+            showToast('✅ Đã gửi yêu cầu hỗ trợ khẩn cấp!');
+
+            // Clear form
+            document.getElementById('emergency-address').value = '';
+            document.getElementById('emergency-phone').value = '';
+            window.selectedSymptoms = [];
+            window.selectedItems = [];
+
+            // Show confirmation alert
+            alert('🆘 ĐÃ GỬI YÊU CẦU HỖ TRỢ!\n\nThông tin đã được ghi nhận. Đội cứu trợ sẽ liên hệ bạn trong thời gian sớm nhất.\n\n' + message);
+        }
+
+        // Convoy photo upload handler
+        function handleConvoyPhotoUpload(input, convoyId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewContainer = document.getElementById(convoyId + '-photos');
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'convoy-photo-item';
+                    photoItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Ảnh địa điểm">
+                    `;
+                    previewContainer.appendChild(photoItem);
+                    showToast('✅ Đã tải ảnh địa điểm thành công!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Video Recording Functions
+        function openVideoRecording() {
+            document.getElementById('video-modal').classList.add('show');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.remove('show');
+            document.getElementById('video-preview').style.display = 'none';
+            document.getElementById('video-description').value = '';
+        }
+
+        function handleVideoUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const videoPreview = document.getElementById('video-preview');
+                const videoElement = document.getElementById('recorded-video');
+                videoElement.src = URL.createObjectURL(file);
+                videoPreview.style.display = 'block';
+                showToast('✅ Video đã được ghi nhận!');
+            }
+        }
+
+        function sendVideoToMedical() {
+            const description = document.getElementById('video-description').value.trim();
+            const videoElement = document.getElementById('recorded-video');
+
+            if (!videoElement.src) {
+                showToast('⚠️ Vui lòng quay video trước!');
+                return;
+            }
+
+            showToast('📤 Đang gửi video đến đội Y tế...');
+
+            // Simulate sending
+            setTimeout(() => {
+                showToast('✅ Video đã được gửi đến đội Y tế!');
+                closeVideoModal();
+
+                // Update notification badge
+                const badge = document.getElementById('notification-badge');
+                badge.textContent = parseInt(badge.textContent) + 1;
+
+                alert('🆘 VIDEO ĐÃ ĐƯỢC GỬI!\n\nĐội ngũ y tế đã nhận được video hiện trạng của bạn.\nHọ sẽ liên hệ bạn trong thời gian sớm nhất.');
+            }, 1500);
+        }
+
+        // Notification Panel Functions
+        function openNotificationPanel() {
+            document.getElementById('notification-modal').classList.add('show');
+            // Reset badge
+            document.getElementById('notification-badge').textContent = '0';
+        }
+
+        function closeNotificationPanel() {
+            document.getElementById('notification-modal').classList.remove('show');
+        }
+
+        function replyToNotification(type) {
+            const recipient = type === 'medical' ? 'Đội Y tế' : 'Người thân';
+            const message = prompt(`Nhập tin nhắn gửi đến ${recipient}:`);
+            if (message) {
+                showToast(`✅ Đã gửi tin nhắn đến ${recipient}!`);
+            }
+        }
+
+        // Pilot Registration Functions
+        function openPilotRegisterModal() {
+            document.getElementById('pilot-register-modal').classList.add('show');
+        }
+
+        function closePilotRegisterModal() {
+            document.getElementById('pilot-register-modal').classList.remove('show');
+            // Reset form
+            document.getElementById('pilot-name').value = '';
+            document.getElementById('pilot-phone').value = '';
+            document.getElementById('pilot-area').value = '';
+            document.getElementById('pilot-availability').value = '';
+            document.getElementById('pilot-notes').value = '';
+        }
+
+        function registerPilot() {
+            const name = document.getElementById('pilot-name').value.trim();
+            const phone = document.getElementById('pilot-phone').value.trim();
+            const area = document.getElementById('pilot-area').value.trim();
+            const vehicle = document.getElementById('pilot-vehicle').value;
+            const availability = document.getElementById('pilot-availability').value.trim();
+            const notes = document.getElementById('pilot-notes').value.trim();
+
+            if (!name) {
+                showToast('⚠️ Vui lòng nhập họ tên!');
+                return;
+            }
+            if (!phone) {
+                showToast('⚠️ Vui lòng nhập số điện thoại!');
+                return;
+            }
+            if (!area) {
+                showToast('⚠️ Vui lòng nhập khu vực thông thạo!');
+                return;
+            }
+
+            // Build pilot info
+            const vehicleNames = {
+                'motorbike': 'Xe máy',
+                'car': 'Ô tô',
+                'bicycle': 'Xe đạp',
+                'walking': 'Đi bộ',
+                'boat': 'Thuyền/Ghe'
+            };
+
+            let message = '🧭 ĐĂNG KÝ HOA TIÊU DẪN ĐƯỜNG\n';
+            message += '━━━━━━━━━━━━━━━━━━━━\n';
+            message += '👤 Họ tên: ' + name + '\n';
+            message += '📞 SĐT: ' + phone + '\n';
+            message += '📍 Khu vực: ' + area + '\n';
+            message += '🏍️ Phương tiện: ' + vehicleNames[vehicle] + '\n';
+            if (availability) message += '⏰ Thời gian: ' + availability + '\n';
+            if (notes) message += '📝 Ghi chú: ' + notes + '\n';
+            message += '🕐 Đăng ký lúc: ' + new Date().toLocaleString('vi-VN');
+
+            console.log(message);
+
+            showToast('✅ Đăng ký Hoa tiêu thành công!');
+            closePilotRegisterModal();
+
+            alert('🧭 ĐĂNG KÝ HOA TIÊU THÀNH CÔNG!\n\nThông tin của bạn đã được ghi nhận vào hệ thống.\nCác đoàn thiện nguyện sẽ có thể liên hệ bạn khi cần dẫn đường.\n\n' + message);
+        }
+
+        // Find Pilot Functions  
+        function openFindPilotModal() {
+            document.getElementById('find-pilot-modal').classList.add('show');
+        }
+
+        function closeFindPilotModal() {
+            document.getElementById('find-pilot-modal').classList.remove('show');
+            document.getElementById('pilot-gps-status').textContent = '';
+        }
+
+        function getPilotGPSLocation() {
+            const statusDiv = document.getElementById('pilot-gps-status');
+            statusDiv.innerHTML = '<span style="color: var(--blue-500);">📡 Đang lấy vị trí GPS...</span>';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(6);
+                        const lng = position.coords.longitude.toFixed(6);
+                        statusDiv.innerHTML = `<span style="color: var(--green-600);">✅ Vị trí: ${lat}, ${lng}</span>`;
+                        showToast('✅ Đã xác định vị trí! Đang tìm hoa tiêu gần nhất...');
+
+                        // Highlight nearest pilot
+                        const nearestPilot = document.getElementById('pilot-nearest');
+                        nearestPilot.style.animation = 'pulse 1s ease-in-out 3';
+                    },
+                    (error) => {
+                        statusDiv.innerHTML = '<span style="color: var(--red-500);">❌ Không thể lấy vị trí GPS</span>';
+                        showToast('⚠️ Không thể lấy vị trí GPS!');
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                statusDiv.innerHTML = '<span style="color: var(--red-500);">❌ Trình duyệt không hỗ trợ GPS</span>';
+            }
+        }
+
+        // Confirm Arrival function for volunteer
+        function confirmArrival() {
+            const location = document.getElementById('volunteer-arrival-location').value.trim();
+            if (!location) {
+                showToast('⚠️ Vui lòng nhập địa chỉ điểm phát quà!');
+                return;
+            }
+            showToast('✅ Đã xác nhận đến nơi phát quà!');
+            alert('📍 XÁC NHẬN ĐẾN NƠI!\n\nĐịa điểm: ' + location + '\nThời gian: ' + new Date().toLocaleString('vi-VN') + '\n\nThông tin đã được cập nhật lên hệ thống.');
+        }
+
+        // Get Volunteer GPS Location
+        function getVolunteerGPSLocation() {
+            const statusDiv = document.getElementById('volunteer-gps-status');
+            const locationInput = document.getElementById('volunteer-arrival-location');
+
+            statusDiv.innerHTML = '<span style="color: var(--blue-500);">📡 Đang lấy vị trí GPS...</span>';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(6);
+                        const lng = position.coords.longitude.toFixed(6);
+                        statusDiv.innerHTML = `<span style="color: var(--green-600);">✅ GPS: ${lat}, ${lng}</span>`;
+                        locationInput.value = locationInput.value + ` [GPS: ${lat}, ${lng}]`;
+                        showToast('✅ Đã lấy vị trí GPS!');
+                    },
+                    (error) => {
+                        statusDiv.innerHTML = '<span style="color: var(--red-500);">❌ Không thể lấy vị trí</span>';
+                        showToast('⚠️ Không thể lấy vị trí GPS!');
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                statusDiv.innerHTML = '<span style="color: var(--red-500);">❌ Không hỗ trợ GPS</span>';
+            }
+        }
     </script>
 </body>
 
