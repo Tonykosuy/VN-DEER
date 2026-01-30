@@ -138,13 +138,14 @@
         .header {
             background: linear-gradient(135deg, var(--green-600), var(--green-700));
             color: white;
-            padding: 48px 20px 24px;
+            padding: 14px 20px 35px;
+            /* Reduced by half */
         }
 
         .header-small {
             background: var(--green-600);
             color: white;
-            padding: 16px 20px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -154,46 +155,55 @@
             background: none;
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
         }
 
         .header h1 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
         }
 
         .header p {
             opacity: 0.9;
             margin-top: 4px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            padding: 16px 20px;
+            grid-template-columns: repeat(3, 60px);
+            /* Approx 1/2 side length */
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px;
             margin-top: -30px;
+            /* Reduced overlap */
         }
 
         .stat-card {
             background: white;
-            border-radius: 14px;
-            padding: 14px 10px;
+            border-radius: 10px;
+            padding: 5px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .stat-card .number {
-            font-size: 26px;
+            font-size: 14px;
             font-weight: 700;
         }
 
         .stat-card .label {
-            font-size: 10px;
+            font-size: 8px;
             color: var(--gray-500);
             margin-top: 2px;
+            white-space: nowrap;
         }
 
         .stat-card.sos .number {
@@ -1064,12 +1074,19 @@
         }
 
         .workflow-btn-compact {
-            padding: 10px 6px;
-            border-radius: 10px;
-            border: none;
+            padding: 10px 4px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            /* Prepare for borders */
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
         }
 
         .workflow-btn-compact:active {
@@ -1077,40 +1094,65 @@
         }
 
         .workflow-btn-compact .icon {
-            font-size: 20px;
+            font-size: 24px;
+            /* Larger icons for visibility */
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .workflow-btn-compact .text {
-            font-size: 9px;
-            font-weight: 600;
+            font-size: 10px;
+            font-weight: 700;
             line-height: 1.2;
         }
 
+        /* Pastel Themes */
         .workflow-btn-compact.verify {
-            background: linear-gradient(135deg, var(--blue-500), #2563eb);
-            color: white;
+            background: #eff6ff;
+            /* Blue 50 */
+            color: #1d4ed8;
+            /* Blue 700 */
+            border-color: #dbeafe;
         }
 
         .workflow-btn-compact.map {
-            background: linear-gradient(135deg, var(--green-500), var(--green-600));
-            color: white;
+            background: #f0fdf4;
+            /* Green 50 */
+            color: #15803d;
+            /* Green 700 */
+            border-color: #dcfce7;
         }
 
         .workflow-btn-compact.id {
-            background: linear-gradient(135deg, var(--purple-500), #7c3aed);
-            color: white;
+            background: #faf5ff;
+            /* Purple 50 */
+            color: #7e22ce;
+            /* Purple 700 */
+            border-color: #f3e8ff;
         }
 
         .workflow-btn-compact.register {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            color: white;
+            background: #fff7ed;
+            /* Orange 50 */
+            color: #c2410c;
+            /* Orange 700 */
+            border-color: #ffedd5;
         }
 
         .workflow-btn-compact.cases {
-            background: linear-gradient(135deg, #ec4899, #db2777);
-            color: white;
+            background: #fef2f2;
+            /* Red 50 */
+            color: #b91c1c;
+            /* Red 700 */
+            border-color: #fee2e2;
+        }
+
+        /* Highlighted Container Custom Style */
+        #main-workflow-container {
+            border: 2px solid #bfdbfe !important;
+            /* Blue 200 frame */
+            background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%) !important;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
         }
 
         /* Region cards */
@@ -1769,6 +1811,49 @@
             height: 100%;
             object-fit: cover;
         }
+
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-overlay>div {
+            max-width: 430px;
+            width: 100%;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -1814,7 +1899,45 @@
                 </p>
             </div>
 
-            <div class="login-footer"><a href="#" onclick="showScreen('register')">Chưa có tài khoản? Đăng ký</a></div>
+            <div class="login-footer">
+                <a href="#" onclick="showScreen('register')">Chưa có tài khoản? Đăng ký</a>
+
+                <!-- Author Info -->
+                <div style="margin-top: 30px; border-top: 1px solid var(--gray-200); padding-top: 20px;">
+                    <div style="font-size: 12px; color: var(--gray-500); margin-bottom: 8px;">Tác giả</div>
+                    <div style="font-weight: 700; color: var(--green-700); font-size: 15px; margin-bottom: 12px;">Nguyễn
+                        Trần Tiến Phúc</div>
+
+                    <div style="display: flex; justify-content: center; gap: 16px;">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/nguyen.phuc.524150" target="_blank"
+                            style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--gray-700);">
+                            <div
+                                style="width: 36px; height: 36px; background: #1877F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                f</div>
+                            <span style="font-size: 10px;">Nguyễn Phúc</span>
+                        </a>
+
+                        <!-- Mail -->
+                        <a href="mailto:pn852007@gmail.com"
+                            style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--gray-700);">
+                            <div
+                                style="width: 36px; height: 36px; background: #EA4335; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                ✉️</div>
+                            <span style="font-size: 10px;">Email</span>
+                        </a>
+
+                        <!-- Phone -->
+                        <a href="tel:0342381843"
+                            style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--gray-700);">
+                            <div
+                                style="width: 36px; height: 36px; background: #34A853; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                📞</div>
+                            <span style="font-size: 10px;">0342381843</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Register Screen -->
@@ -2009,6 +2132,64 @@
                     </div>
                 </div>
 
+                <!-- Emergency Contact Card -->
+                <div
+                    style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--gray-800); margin-bottom: 12px;">📞
+                        Liên hệ người thân khẩn cấp</div>
+
+                    <!-- Contact 1 -->
+                    <div
+                        style="display: flex; gap: 12px; padding: 12px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 10px; margin-bottom: 10px; align-items: center;">
+                        <div
+                            style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 20px;">👩</span>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--gray-800);">Trần Thị Hương</div>
+                            <div style="font-size: 11px; color: var(--red-600);">Mẹ</div>
+                        </div>
+                        <a href="tel:0912111222"
+                            style="background: var(--red-500); color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            📞 Gọi
+                        </a>
+                    </div>
+
+                    <!-- Contact 2 -->
+                    <div
+                        style="display: flex; gap: 12px; padding: 12px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 10px; margin-bottom: 10px; align-items: center;">
+                        <div
+                            style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 20px;">👨</span>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--gray-800);">Nguyễn Văn B</div>
+                            <div style="font-size: 11px; color: var(--blue-500);">Anh trai</div>
+                        </div>
+                        <a href="tel:0912333444"
+                            style="background: var(--blue-500); color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            📞 Gọi
+                        </a>
+                    </div>
+
+                    <!-- Contact 3 -->
+                    <div
+                        style="display: flex; gap: 12px; padding: 12px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 10px; align-items: center;">
+                        <div
+                            style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 20px;">👴</span>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--gray-800);">Lê Văn Tâm</div>
+                            <div style="font-size: 11px; color: var(--green-600);">Chú</div>
+                        </div>
+                        <a href="tel:0912555666"
+                            style="background: var(--green-600); color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; text-decoration: none;">
+                            📞 Gọi
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Health Info Card -->
                 <div
                     style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
@@ -2030,9 +2211,46 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 12px; padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                    <!-- Pre-existing conditions -->
+                    <div
+                        style="margin-top: 12px; padding: 12px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        <div style="font-size: 12px; font-weight: 600; color: #92400e; margin-bottom: 6px;">⚠️ Bệnh nền
+                        </div>
+                        <ul style="font-size: 12px; color: #78350f; padding-left: 16px; margin: 0; line-height: 1.6;">
+                            <li>Tiểu đường type 2 (đang điều trị)</li>
+                            <li>Huyết áp cao nhẹ</li>
+                        </ul>
+                    </div>
+
+                    <!-- Medical history -->
+                    <div style="margin-top: 10px; padding: 12px; background: var(--gray-50); border-radius: 8px;">
                         <div style="font-size: 11px; color: var(--gray-500); margin-bottom: 4px;">📋 Tiền sử bệnh</div>
-                        <div style="font-size: 13px; color: var(--gray-800);">Không có bệnh nền đáng kể</div>
+                        <div style="font-size: 12px; color: var(--gray-700); line-height: 1.5;">
+                            Phẫu thuật ruột thừa (2018)<br>
+                            Viêm phổi nặng (2020)
+                        </div>
+                    </div>
+
+                    <!-- Allergies -->
+                    <div
+                        style="margin-top: 10px; padding: 12px; background: linear-gradient(135deg, #fee2e2, #fecaca); border-radius: 8px; border-left: 4px solid var(--red-500);">
+                        <div style="font-size: 12px; font-weight: 600; color: var(--red-700); margin-bottom: 4px;">🚫 Dị
+                            ứng</div>
+                        <div style="font-size: 12px; color: var(--red-600);">
+                            • Penicillin<br>
+                            • Hải sản (tôm, cua)
+                        </div>
+                    </div>
+
+                    <!-- Current medications -->
+                    <div
+                        style="margin-top: 10px; padding: 12px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 8px;">
+                        <div style="font-size: 12px; font-weight: 600; color: #1e40af; margin-bottom: 4px;">💊 Thuốc
+                            đang dùng</div>
+                        <div style="font-size: 12px; color: #1e40af;">
+                            • Metformin 500mg (2 lần/ngày)<br>
+                            • Amlodipine 5mg (buổi sáng)
+                        </div>
                     </div>
                 </div>
 
@@ -2066,35 +2284,25 @@
 
         <!-- Home Screen -->
         <div class="screen" id="screen-home">
-            <div class="header" style="padding-bottom: 20px; position: relative;">
-                <!-- Account icon - top right -->
-                <button onclick="showScreen('profile')"
-                    style="position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; background: white; border: 2px solid var(--green-500); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10;">
-                    <span style="font-size: 22px;">👤</span>
-                </button>
+            <div class="header">
+                <!-- Logo and Account icon - horizontally aligned -->
+                <div style="position: relative; height: 44px; display: flex; align-items: center;">
+                    <!-- Logo - centered absolute & scaled down 75% -->
+                    <div class="logo-placeholder" id="logo-container"
+                        style="margin: 0; margin-top: 10px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.75);">
+                        <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
+                    </div>
+                    <!-- Account icon - absolute right -->
+                    <button onclick="showScreen('profile')"
+                        style="position: absolute; right: 0; width: 44px; height: 44px; border-radius: 50%; background: white; border: 2px solid var(--green-500); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <span style="font-size: 22px;">👤</span>
+                    </button>
+                </div>
+            </div>
 
-                <!-- Logo - centered -->
-                <div class="logo-placeholder" id="logo-container">
-                    <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
-                </div>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card sos">
-                    <div class="number">40</div>
-                    <div class="label">🔴 Khẩn cấp</div>
-                </div>
-                <div class="stat-card medical">
-                    <div class="number">35</div>
-                    <div class="label">🟡 Cần hỗ trợ</div>
-                </div>
-                <div class="stat-card safe">
-                    <div class="number">25</div>
-                    <div class="label">🟢 Đã cứu trợ</div>
-                </div>
-            </div>
 
             <!-- Compact Workflow Grid -->
-            <div class="card" style="padding: 12px;">
+            <div class="card" id="main-workflow-container" style="padding: 12px;">
                 <div class="workflow-grid-compact">
                     <button class="workflow-btn-compact verify" onclick="showScreen('verify')">
                         <span class="icon">📞</span>
@@ -2113,8 +2321,8 @@
                         <span class="text">Đăng ký</span>
                     </button>
                     <button class="workflow-btn-compact cases" onclick="showScreen('case-list')">
-                        <span class="icon">📋</span>
-                        <span class="text">Danh sách</span>
+                        <span class="icon">🔍</span>
+                        <span class="text">Tra cứu</span>
                     </button>
                 </div>
             </div>
@@ -2144,7 +2352,7 @@
                     <span class="doctor-call-title">Hỗ trợ Y tế & Vật dụng Khẩn cấp</span>
                 </div>
                 <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;">Liên hệ bác sĩ, báo cáo triệu
-                    chứng hoặc yêu cầu vật dụng thiết yếu</p>
+                    chứng/yêu cầu vật dụng thiết yếu</p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
                     <a href="tel:0912345678" class="doctor-btn call" style="padding: 10px;">
                         <span class="btn-icon" style="font-size: 20px;">📞</span>
@@ -2161,20 +2369,33 @@
                 </div>
 
                 <!-- Address and Phone Input -->
-                <div style="background: white; border-radius: 10px; padding: 12px; margin-top: 8px;">
-                    <div style="font-weight: 600; font-size: 13px; color: var(--gray-800); margin-bottom: 8px;">📍 Thông
-                        tin liên hệ của bạn</div>
-                    <div class="form-group" style="margin-bottom: 8px;">
-                        <input type="text" id="emergency-address" class="form-input"
-                            placeholder="Địa chỉ hiện tại (số nhà, đường, phường...)">
+                <!-- Address and Phone Input REMOVED - Using Auto GPS or Video Location -->
+                <!-- Location Tracking Section -->
+                <div
+                    style="background: #eff6ff; border-radius: 8px; padding: 10px; margin: 10px 0; border: 1px dashed var(--blue-400);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                        <span style="font-size: 12px; font-weight: 600; color: var(--blue-700);">📍 Vị trí hiện tại của
+                            bạn:</span>
+                        <button onclick="refreshHomeLocation()"
+                            style="border: none; background: none; color: var(--blue-600); font-weight: 700; font-size: 11px; cursor: pointer; text-decoration: underline;">🔄
+                            Lấy lại vị trí</button>
                     </div>
-                    <div class="form-group" style="margin-bottom: 8px;">
-                        <input type="tel" id="emergency-phone" class="form-input" placeholder="Số điện thoại liên hệ">
+                    <div id="home-location-text"
+                        style="font-size: 13px; color: var(--gray-800); font-weight: 500; min-height: 20px;">Đang lấy vị
+                        trí...</div>
+                    <div style="font-size: 10px; color: var(--gray-500); margin-top: 4px;">(Tự động cập nhật mỗi 1 phút)
                     </div>
+                </div>
+
+                <div style="margin-top: 12px;">
                     <button class="btn btn-danger" onclick="sendEmergencyRequest()"
-                        style="padding: 10px; font-size: 13px;">
-                        🆘 Gửi yêu cầu hỗ trợ khẩn cấp
+                        style="padding: 10px; font-size: 13px; width: 100%;">
+                        🆘 Gửi yêu cầu hỗ trợ khẩn cấp (Kèm định vị)
                     </button>
+                    <div id="emergency-gps-status"
+                        style="font-size: 11px; color: var(--gray-500); text-align: center; margin-top: 6px;">
+                        ⚠️ Sẽ tự động lấy vị trí khi gửi
+                    </div>
                 </div>
             </div>
 
@@ -2304,13 +2525,73 @@
                     báo thủy điện →</div>
             </div>
 
-            <!-- Volunteer Convoy Info - Collapsible -->
+            <!-- Rescue Teams Arriving - MOVED UP & ADDED CONTACT -->
+            <div class="section-header" onclick="toggleSection('rescue-section')">
+                <span class="section-title" style="margin: 0;">🚨 Đoàn cứu hộ đang đến</span>
+                <span class="section-toggle" id="rescue-section-toggle">▼</span>
+            </div>
+            <div id="rescue-section" class="collapsible-section">
+                <!-- Rescue Team 1 -->
+                <div class="convoy-card"
+                    style="border-left: 4px solid var(--red-500); background: linear-gradient(135deg, #fef2f2, #fee2e2);">
+                    <div class="convoy-header">
+                        <div class="convoy-name" style="color: var(--red-700);">🚒 Đội PCCC Khánh Hòa</div>
+                        <div class="convoy-badge" style="background: var(--red-500); color: white;">🚨 KHẨN CẤP</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Đang hướng đến: P. Vĩnh Hải - Khu vực ngập nặng
+                    </div>
+                    <div class="convoy-details">
+                        <span>🚒 3 xe cứu hộ</span>
+                        <span>👥 25 người</span>
+                        <span>🛟 Thiết bị cứu hộ</span>
+                    </div>
+                    <div class="convoy-eta" style="color: var(--red-600);">⏱️ Dự kiến đến: 15 phút</div>
+                    <!-- Contact Button Added -->
+                    <div style="margin-top: 10px;">
+                        <a href="tel:114" class="btn"
+                            style="background: var(--red-600); color: white; padding: 8px 16px; text-decoration: none; font-size: 11px; display: block; text-align: center;">
+                            📞 Liên hệ cứu hộ
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Rescue Team 2 -->
+                <div class="convoy-card"
+                    style="border-left: 4px solid var(--yellow-500); background: linear-gradient(135deg, #fffbeb, #fef3c7);">
+
+                    <div class="convoy-header">
+                        <div class="convoy-name" style="color: var(--yellow-800);">🚑 Đội Y Tế Cứu Hộ</div>
+                        <div class="convoy-badge" style="background: var(--yellow-500); color: black;">🏥 Y TẾ</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
+                        📍 Đang hướng đến: P. Lộc Thọ - Hỗ trợ y tế
+                    </div>
+                    <div class="convoy-details">
+                        <span>🚑 2 xe cứu thương</span>
+                        <span>👨‍⚕️ 8 bác sĩ</span>
+                        <span>💊 Thuốc & vật tư</span>
+                    </div>
+                    <div class="convoy-eta">⏱️ Dự kiến đến: 25 phút</div>
+                    <!-- Contact Button Added -->
+                    <div style="margin-top: 10px;">
+                        <a href="tel:115" class="btn"
+                            style="background: var(--yellow-500); color: black; border: 2px solid var(--yellow-600); padding: 8px 16px; text-decoration: none; font-size: 11px; display: block; text-align: center; font-weight: 600;">
+                            📞 Liên hệ Y tế
+                        </a>
+                    </div>
+                </div>
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn cứu hộ...')">Xem tất cả đoàn
+                    cứu hộ →</div>
+            </div>
+
+            <!-- Volunteer Convoys - MERGED & REMOVED CONTACT -->
             <div class="section-header" onclick="toggleSection('convoy-section')">
-                <span class="section-title" style="margin: 0;">🚛 Đoàn thiện nguyện đã đến</span>
+                <span class="section-title" style="margin: 0;">🚛 Đoàn thiện nguyện (Đã đến & Đang đến)</span>
                 <span class="section-toggle" id="convoy-section-toggle">▼</span>
             </div>
             <div id="convoy-section" class="collapsible-section">
-                <!-- Nearest convoy - BIGGER card, Arrived -->
+                <!-- Nearest convoy - Arrived -->
                 <div class="convoy-card"
                     style="border-left: 5px solid var(--green-500); background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -2340,13 +2621,7 @@
                         <span>📦 200 phần quà</span>
                         <span>🕐 Đã đến 15 phút trước</span>
                     </div>
-                    <!-- Contact Button -->
-                    <div style="margin-top: 12px; display: flex; gap: 8px;">
-                        <a href="tel:0342381843" class="btn"
-                            style="background: var(--green-600); color: white; flex: 1; text-align: center; padding: 10px; text-decoration: none; font-size: 12px;">
-                            📞 Liên hệ đoàn
-                        </a>
-                    </div>
+                    <!-- Contact Button REMOVED -->
                 </div>
 
                 <!-- Second arrived convoy -->
@@ -2363,72 +2638,14 @@
                         <span>📦 300 phần quà</span>
                         <span>🕐 Đã đến 45 phút trước</span>
                     </div>
-                    <div style="margin-top: 10px;">
-                        <a href="tel:0923456789" class="btn"
-                            style="background: var(--green-600); color: white; padding: 8px 16px; text-decoration: none; font-size: 11px;">
-                            📞 Liên hệ đoàn
-                        </a>
-                    </div>
-                </div>
-                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn đã đến...')">Xem tất cả đoàn
-                    đã đến →</div>
-            </div>
-
-            <!-- Rescue Teams Arriving - NEW SECTION -->
-            <div class="section-header" onclick="toggleSection('rescue-section')">
-                <span class="section-title" style="margin: 0;">🚨 Đoàn cứu hộ đang đến</span>
-                <span class="section-toggle" id="rescue-section-toggle">▼</span>
-            </div>
-            <div id="rescue-section" class="collapsible-section">
-                <!-- Rescue Team 1 -->
-                <div class="convoy-card"
-                    style="border-left: 4px solid var(--red-500); background: linear-gradient(135deg, #fef2f2, #fee2e2);">
-                    <div class="convoy-header">
-                        <div class="convoy-name" style="color: var(--red-700);">🚒 Đội PCCC Khánh Hòa</div>
-                        <div class="convoy-badge" style="background: var(--red-500); color: white;">🚨 KHẨN CẤP</div>
-                    </div>
-                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
-                        📍 Đang hướng đến: P. Vĩnh Hải - Khu vực ngập nặng
-                    </div>
-                    <div class="convoy-details">
-                        <span>🚒 3 xe cứu hộ</span>
-                        <span>👥 25 người</span>
-                        <span>🛟 Thiết bị cứu hộ</span>
-                    </div>
-                    <div class="convoy-eta" style="color: var(--red-600);">⏱️ Dự kiến đến: 15 phút</div>
+                    <!-- Contact Button REMOVED -->
                 </div>
 
-                <!-- Rescue Team 2 -->
-                <div class="convoy-card" style="border-left: 4px solid var(--orange-500);">
-                    <div class="convoy-header">
-                        <div class="convoy-name">🚑 Đội Y tế lưu động</div>
-                        <div class="convoy-badge" style="background: var(--orange-500); color: white;">🔄 ĐANG ĐẾN</div>
-                    </div>
-                    <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
-                        📍 Đang hướng đến: P. Lộc Thọ - Hỗ trợ y tế
-                    </div>
-                    <div class="convoy-details">
-                        <span>🚑 2 xe cứu thương</span>
-                        <span>👨‍⚕️ 8 bác sĩ</span>
-                        <span>💊 Thuốc & vật tư</span>
-                    </div>
-                    <div class="convoy-eta">⏱️ Dự kiến đến: 25 phút</div>
-                </div>
-                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn cứu hộ...')">Xem tất cả đoàn
-                    cứu hộ →</div>
-            </div>
-
-            <!-- Volunteer Convoy Moving - Collapsible -->
-            <div class="section-header" onclick="toggleSection('moving-convoy-section')">
-                <span class="section-title" style="margin: 0;">🚚 Đoàn thiện nguyện đang đến</span>
-                <span class="section-toggle" id="moving-convoy-section-toggle">▼</span>
-            </div>
-            <div id="moving-convoy-section" class="collapsible-section">
-                <!-- Moving convoy -->
-                <div class="convoy-card" style="border-left-color: var(--blue-500);">
+                <!-- Moving convoy 1 -->
+                <div class="convoy-card" style="border-left-color: var(--yellow-500);">
                     <div class="convoy-header">
                         <div class="convoy-name">Đoàn Đà Nẵng - Nha Trang #3</div>
-                        <div class="convoy-badge enroute">🚚 ĐANG DI CHUYỂN</div>
+                        <div class="convoy-badge enroute" style="background: var(--yellow-500);">🚚 ĐANG DI CHUYỂN</div>
                     </div>
                     <div style="font-size: 12px; color: var(--gray-600); margin: 6px 0;">
                         📍 Đang hướng đến: Số 123, Đường 2 Tháng 4, Phường Vĩnh Hải, TP. Nha Trang
@@ -2437,10 +2654,11 @@
                         <span>👥 12 người</span>
                         <span>📦 150 phần quà</span>
                     </div>
-                    <div class="convoy-eta">⏱️ Dự kiến đến: 30 phút</div>
+                    <div class="convoy-eta" style="color: var(--yellow-700);">⏱️ Dự kiến đến: 30 phút</div>
+                    <!-- Contact Button REMOVED -->
                 </div>
 
-                <!-- Another moving convoy -->
+                <!-- Moving convoy 2 -->
                 <div class="convoy-card" style="border-left-color: var(--blue-500);">
                     <div class="convoy-header">
                         <div class="convoy-name">Đoàn Cần Thơ - Nha Trang #4</div>
@@ -2455,9 +2673,11 @@
                         <span>💊 Thuốc y tế</span>
                     </div>
                     <div class="convoy-eta">⏱️ Dự kiến đến: 1 giờ 30 phút</div>
+                    <!-- Contact Button REMOVED -->
                 </div>
-                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn đang đến...')">Xem tất cả
-                    đoàn đang đến →</div>
+
+                <div class="see-more-btn" onclick="showToast('Đang tải thêm thông tin đoàn thiện nguyện...')">Xem tất cả
+                    đoàn thiện nguyện →</div>
             </div>
 
             <!-- News and Announcements Section - Collapsible -->
@@ -2917,10 +3137,30 @@
                 <div
                     style="background: var(--gray-100); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px;">
                     <div style="font-size: 48px; margin-bottom: 8px;">🎥</div>
+
+                    <!-- Location Status for Video -->
+                    <div
+                        style="background: white; border-radius: 8px; padding: 8px; margin-bottom: 12px; border: 1px solid var(--gray-200);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--gray-600);">📍 Vị trí hiện
+                                tại:</span>
+                            <button onclick="refreshVideoLocation()"
+                                style="border: none; background: none; color: var(--blue-500); font-weight: 600; font-size: 11px; cursor: pointer;">🔄
+                                Làm mới</button>
+                        </div>
+                        <div id="video-location-text"
+                            style="font-size: 12px; font-weight: 700; color: var(--blue-600); min-height: 18px;">Đang
+                            lấy vị trí...</div>
+                        <div style="font-size: 10px; color: var(--gray-400); margin-top: 2px;">(Tự động cập nhật 1
+                            phút/lần)</div>
+                    </div>
+
                     <div style="font-size: 13px; color: var(--gray-600); margin-bottom: 12px;">Nhấn để bắt đầu quay
                         video</div>
                     <label
                         style="display: inline-block; padding: 14px 24px; background: var(--red-500); color: white; border-radius: 50px; font-weight: 600; cursor: pointer;">
+                        onclick="handleVideoUploadWrapper(this)">
                         <input type="file" accept="video/*" capture="environment" style="display: none;"
                             onchange="handleVideoUpload(this)">
                         ⏺️ Bắt đầu quay
@@ -2954,6 +3194,45 @@
                     người thân</div>
 
                 <div style="max-height: 50vh; overflow-y: auto;">
+                    <!-- Coordinator Notification (Redirection) -->
+                    <div
+                        style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-left: 4px solid var(--orange-500); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 600; font-size: 13px; color: var(--orange-800);">📡 Điều phối
+                                viên</span>
+                            <span style="font-size: 10px; color: var(--gray-500);">Vừa xong</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-800); margin-bottom: 6px;">⚠️ <strong>CHÚ Ý ĐIỀU
+                                PHỐI:</strong></div>
+                        <div style="font-size: 12px; color: var(--gray-700);">Khu vực <strong>P. Vĩnh Hải</strong> hiện
+                            đã có <span style="font-weight: 700;">10 đoàn</span> (quá tải).</div>
+                        <div style="font-size: 12px; color: var(--gray-700); margin-top: 4px; font-weight: 600;">📍 Chọn
+                            địa điểm để chuyển hướng:</div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                            <button onclick="showToast('✅ Đã xác nhận đến Phước Hải!')"
+                                style="padding: 12px; background: white; border: 2px solid var(--orange-500); color: var(--orange-700); border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                                <span>1️⃣ Phường Phước Hải</span>
+                                <span
+                                    style="font-size: 11px; background: var(--orange-100); padding: 2px 6px; border-radius: 4px;">Ít
+                                    đoàn</span>
+                            </button>
+                            <button onclick="showToast('✅ Đã xác nhận đến Phước Hòa!')"
+                                style="padding: 12px; background: white; border: 2px solid var(--orange-500); color: var(--orange-700); border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                                <span>2️⃣ Phường Phước Hòa</span>
+                                <span
+                                    style="font-size: 11px; background: var(--orange-100); padding: 2px 6px; border-radius: 4px;">Cần
+                                    hỗ trợ</span>
+                            </button>
+                            <button onclick="showToast('✅ Đã xác nhận đến Vĩnh Lương!')"
+                                style="padding: 12px; background: white; border: 2px solid var(--orange-500); color: var(--orange-700); border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                                <span>3️⃣ Xã Vĩnh Lương</span>
+                                <span
+                                    style="font-size: 11px; background: var(--orange-100); padding: 2px 6px; border-radius: 4px;">Khẩn
+                                    cấp</span>
+                            </button>
+                        </div>
+                    </div>
                     <!-- Medical Team Notification -->
                     <div
                         style="background: linear-gradient(135deg, #fef2f2, #fee2e2); border-left: 4px solid var(--red-500); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
@@ -3270,7 +3549,7 @@
                     📋 Sao chép tọa độ hoặc mở Google Maps để điều hướng
                 </div>
             </div>
-            <div class="alert-banner">⚠️ Cảnh báo: Khu vực P. Lộc Thọ đang quá tải (5 đoàn đang đến)</div>
+
             <div id="map"></div>
             <div class="map-legend">
                 <div style="font-weight: 600; margin-bottom: 4px;">Phân vùng nguy cấp</div>
@@ -3280,9 +3559,7 @@
                 <div class="legend-item">
                     <div class="legend-dot" style="background: var(--yellow-500)"></div> Vùng Vàng - Cần Y tế/Thuốc
                 </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: var(--green-500)"></div> Vùng Xanh - Đã đủ hỗ trợ
-                </div>
+
                 <div class="legend-item">
                     <div class="legend-dot" style="background: var(--blue-500)"></div> Đoàn thiện nguyện
                 </div>
@@ -3311,8 +3588,71 @@
                         class="form-input" placeholder="TP.HCM → Cam Ranh → Nha Trang"></div>
                 <div class="form-group"><label class="form-label">Thời gian dự kiến đến</label><input
                         type="datetime-local" class="form-input"></div>
-                <button class="btn btn-primary" onclick="registerVolunteer()" style="margin-bottom: 16px;">📝 Đăng ký lộ
-                    trình</button>
+
+                <!-- Equitable Routing Opt-in -->
+                <div class="form-group"
+                    style="background: var(--blue-50); padding: 10px; border-radius: 8px; border: 1px solid var(--blue-200); margin-bottom: 12px;">
+                    <label class="checkbox-label"
+                        style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="volunteer-routing-optin" style="margin-top: 2px;">
+                        <div>
+                            <div style="font-weight: 600; font-size: 13px; color: var(--blue-800);">🔄 Nhận điều phối
+                                cứu trợ</div>
+                            <div style="font-size: 11px; color: var(--blue-600); line-height: 1.3;">
+                                Tôi đồng ý để hệ thống điều hướng đến các khu vực đang thiếu nguồn lực nhất (tránh trùng
+                                lặp). Hệ thống sẽ gửi địa điểm đề xuất ngay sau khi đăng ký.
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Relief Station Registration -->
+                <div class="form-group"
+                    style="margin-bottom: 16px; border-top: 1px dashed var(--gray-300); padding-top: 12px;">
+                    <label class="checkbox-label"
+                        style="display: flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 8px; cursor: pointer;">
+                        <input type="checkbox" id="register-station-toggle"
+                            onchange="document.getElementById('station-fields').style.display = this.checked ? 'block' : 'none'">
+                        🏠 Đăng ký Điểm Cung cấp Cứu trợ (Cố định)
+                    </label>
+                    <div style="font-size: 11px; color: var(--gray-500); margin-bottom: 10px; margin-left: 20px;">
+                        Dành cho đơn vị muốn lập chốt phát quà, nước, chỗ ở miễn phí tại chỗ.
+                    </div>
+
+                    <div id="station-fields" style="display: none; margin-left: 20px;">
+                        <div style="margin-bottom: 8px; font-weight: 600; font-size: 12px;">Loại hình hỗ trợ:</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                                <input type="checkbox" name="station-type" value="shelter"> 🏠 Chỗ ở
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                                <input type="checkbox" name="station-type" value="water"> 💧 Nước uống
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                                <input type="checkbox" name="station-type" value="food"> 🍲 Đồ ăn
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                                <input type="checkbox" name="station-type" value="medical"> 💊 Y tế
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 12px;">
+                                <input type="checkbox" name="station-type" value="charge"> ⚡ Sạc điện
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12px;">Địa chỉ điểm cung cấp <span
+                                    style="color: red">*</span></label>
+                            <textarea class="form-input" rows="2"
+                                placeholder="Số nhà, đường, thôn/xã... (Ghi rõ địa điểm)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12px;">Khả năng đáp ứng</label>
+                            <input type="text" class="form-input" placeholder="VD: 50 người ở, 1000 suất ăn/ngày...">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="registerVolunteer()" style="margin-bottom: 16px;">📝 Đăng ký
+                    Hoạt động</button>
 
                 <!-- GPS Check-in Section -->
                 <div
@@ -3476,8 +3816,8 @@
         <!-- Add Case Screen -->
         <div class="screen" id="screen-add">
             <div
-                style="background: linear-gradient(135deg, var(--red-500), var(--red-600)); color: white; padding: 16px; margin: 16px; border-radius: 14px;">
-                <div style="font-size: 28px; margin-bottom: 6px;">🆘</div>
+                style="background: linear-gradient(135deg, var(--red-500), var(--red-600)); color: white; padding: 16px; margin: 16px; border-radius: 14px; display: flex; align-items: center; gap: 12px;">
+                <div style="font-size: 28px;">🆘</div>
                 <div style="font-size: 18px; font-weight: 700;">Báo cáo ca cứu trợ</div>
             </div>
             <div style="padding: 0 16px 16px;">
@@ -3489,14 +3829,52 @@
                     <label class="form-label">Số điện thoại <span style="color: var(--red-500);">*</span></label>
                     <input type="tel" id="case-phone" class="form-input" placeholder="0912 345 678">
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Địa chỉ <span style="color: var(--red-500);">*</span></label>
-                    <textarea id="case-address" class="form-input" rows="2" placeholder="Thôn, xã, huyện..."></textarea>
-                    <button type="button" class="btn btn-outline"
-                        style="margin-top: 8px; padding: 10px; font-size: 12px;" onclick="getGPSLocation()">
-                        📍 Lấy vị trí GPS hiện tại
-                    </button>
-                    <div id="gps-status" style="font-size: 11px; color: var(--gray-500); margin-top: 6px;"></div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <button id="btn-addr-me" onclick="toggleCaseAddressMode('me')" class="btn"
+                            style="flex: 1; background: var(--blue-500); color: white; padding: 8px; font-size: 12px;">👤
+                            Cho mình (GPS)</button>
+                        <button id="btn-addr-relative" onclick="toggleCaseAddressMode('relative')" class="btn"
+                            style="flex: 1; background: white; border: 1px solid var(--gray-300); color: var(--gray-700); padding: 8px; font-size: 12px;">👥
+                            Cho người thân</button>
+                    </div>
+
+                    <!-- Mode: Me (GPS) -->
+                    <div id="addr-mode-me" style="display: block;">
+                        <textarea id="case-address" class="form-input" rows="2" placeholder="Đang lấy vị trí..."
+                            readonly style="background: #f3f4f6; color: #666;"></textarea>
+                        <div id="gps-status" style="font-size: 11px; color: var(--blue-500); margin-top: 6px;">📍 Đang
+                            tự động lấy vị trí...</div>
+                    </div>
+
+                    <!-- Mode: Relative (Structured) -->
+                    <div id="addr-mode-relative"
+                        style="display: none; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                        <input type="hidden" id="case-address-final">
+                        <!-- Store combined address here if in relative mode -->
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <label style="font-size: 11px; color: #666;">Tỉnh / Thành phố</label>
+                            <input type="text" id="addr-province" class="form-input" placeholder="Khánh Hòa"
+                                oninput="updateCaseAddressFromFields()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <label style="font-size: 11px; color: #666;">Quận / Huyện</label>
+                            <input type="text" id="addr-district" class="form-input" placeholder="TP. Nha Trang"
+                                oninput="updateCaseAddressFromFields()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <label style="font-size: 11px; color: #666;">Phường / Xã</label>
+                            <input type="text" id="addr-ward" class="form-input" placeholder="P. Lộc Thọ"
+                                oninput="updateCaseAddressFromFields()">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="font-size: 11px; color: #666;">Số nhà / Đường</label>
+                            <input type="text" id="addr-street" class="form-input" placeholder="Số 15, Đường Trần Phú"
+                                oninput="updateCaseAddressFromFields()">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nguồn thông tin <span style="color: var(--red-500);">*</span></label>
@@ -3547,81 +3925,200 @@
             </div>
         </div>
 
-        <!-- Case List Screen - 4 Regions -->
+        <!-- Tra cứu (Lookup) Screen - 10 Nha Trang Locations -->
         <div class="screen" id="screen-case-list">
             <div class="header-small">
                 <button class="back-btn" onclick="showScreen('home')">←</button>
-                <h2>Danh sách các ca báo cáo</h2>
+                <h2>🔍 Tra cứu Hộ dân</h2>
             </div>
             <div class="card">
-                <div class="card-title">📍 Chọn khu vực để xem danh sách hộ</div>
-                <p style="font-size: 12px; color: var(--gray-600);">Các ca được chia theo 4 khu vực, màu sắc thể hiện
-                    mức độ khẩn cấp.</p>
+                <div class="card-title">📍 Chọn khu vực tại Nha Trang</div>
+                <p style="font-size: 12px; color: var(--gray-600);">10 khu vực được sắp xếp theo mức độ khẩn cấp. Bấm
+                    vào để xem danh sách hộ dân.</p>
             </div>
 
             <!-- Region 1: Critical -->
-            <div class="region-card critical" onclick="showRegionDetail('xa-ha')">
+            <div class="region-card critical" onclick="showRegionDetail('vinh-luong')">
                 <div class="region-header">
-                    <div class="region-name">🔴 Xã Hạ</div>
+                    <div class="region-name">🔴 Xã Vĩnh Lương</div>
                     <div class="region-badge critical">Cực kỳ khẩn cấp</div>
                 </div>
                 <div class="region-stats">
-                    <div class="region-stat">👥 <span>10 hộ</span></div>
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
                     <div class="region-stat">🚨 <span>Chưa có đoàn</span></div>
+                    <div class="region-stat">💧 <span>Ngập 2.5m</span></div>
+                </div>
+            </div>
+
+            <!-- Region 2: Critical -->
+            <div class="region-card critical" onclick="showRegionDetail('vinh-hai')">
+                <div class="region-header">
+                    <div class="region-name">🔴 Phường Vĩnh Hải</div>
+                    <div class="region-badge critical">Cực kỳ khẩn cấp</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">🚒 <span>1 đoàn cứu hộ</span></div>
                     <div class="region-stat">💧 <span>Ngập 2m</span></div>
                 </div>
             </div>
 
-            <!-- Region 2: High -->
-            <div class="region-card high" onclick="showRegionDetail('xa-thuong')">
+            <!-- Region 3: High -->
+            <div class="region-card high" onclick="showRegionDetail('vinh-ngoc')">
                 <div class="region-header">
-                    <div class="region-name">🟠 Xã Thượng</div>
+                    <div class="region-name">🟠 Phường Vĩnh Ngọc</div>
                     <div class="region-badge high">Khẩn cấp cao</div>
                 </div>
                 <div class="region-stats">
-                    <div class="region-stat">👥 <span>10 hộ</span></div>
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
                     <div class="region-stat">🚛 <span>1 đoàn đang đến</span></div>
                     <div class="region-stat">💧 <span>Ngập 1.5m</span></div>
                 </div>
             </div>
 
-            <!-- Region 3: Medium -->
-            <div class="region-card medium" onclick="showRegionDetail('xa-dong')">
+            <!-- Region 4: High -->
+            <div class="region-card high" onclick="showRegionDetail('vinh-tho')">
                 <div class="region-header">
-                    <div class="region-name">🟡 Xã Đông</div>
+                    <div class="region-name">🟠 Phường Vĩnh Thọ</div>
+                    <div class="region-badge high">Khẩn cấp cao</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">🏥 <span>Cần thuốc y tế</span></div>
+                    <div class="region-stat">💧 <span>Ngập 1.2m</span></div>
+                </div>
+            </div>
+
+            <!-- Region 5: Medium -->
+            <div class="region-card medium" onclick="showRegionDetail('phuoc-hai')">
+                <div class="region-header">
+                    <div class="region-name">🟡 Phường Phước Hải</div>
                     <div class="region-badge medium">Cần hỗ trợ</div>
                 </div>
                 <div class="region-stats">
-                    <div class="region-stat">👥 <span>10 hộ</span></div>
-                    <div class="region-stat">🏥 <span>Thiếu thuốc</span></div>
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">🍲 <span>Thiếu lương thực</span></div>
                     <div class="region-stat">💧 <span>Ngập 1m</span></div>
                 </div>
             </div>
 
-            <!-- Region 4: Low -->
-            <div class="region-card low" onclick="showRegionDetail('xa-tay')">
+            <!-- Region 6: Medium -->
+            <div class="region-card medium" onclick="showRegionDetail('loc-tho')">
                 <div class="region-header">
-                    <div class="region-name">🟢 Xã Tây</div>
-                    <div class="region-badge low">Ổn định</div>
+                    <div class="region-name">🟡 Phường Lộc Thọ</div>
+                    <div class="region-badge medium">Cần hỗ trợ</div>
                 </div>
                 <div class="region-stats">
-                    <div class="region-stat">👥 <span>10 hộ</span></div>
-                    <div class="region-stat">✅ <span>Đã được hỗ trợ</span></div>
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">🚛 <span>2 đoàn đã đến</span></div>
+                    <div class="region-stat">💧 <span>Ngập 0.8m</span></div>
+                </div>
+            </div>
+
+            <!-- Region 7: Low -->
+            <div class="region-card low" onclick="showRegionDetail('phuoc-long')">
+                <div class="region-header">
+                    <div class="region-name">🟢 Phường Phước Long</div>
+                    <div class="region-badge low">Đang theo dõi</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">✅ <span>Đã hỗ trợ một phần</span></div>
+                    <div class="region-stat">💧 <span>Nước rút dần</span></div>
+                </div>
+            </div>
+
+            <!-- Region 8: Low -->
+            <div class="region-card low" onclick="showRegionDetail('vinh-nguyen')">
+                <div class="region-header">
+                    <div class="region-name">🟢 Phường Vĩnh Nguyên</div>
+                    <div class="region-badge low">Đang theo dõi</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">✅ <span>Đã hỗ trợ đầy đủ</span></div>
                     <div class="region-stat">💧 <span>Nước rút</span></div>
+                </div>
+            </div>
+
+            <!-- Region 9: Safe -->
+            <div class="region-card safe" onclick="showRegionDetail('phuoc-tien')">
+                <div class="region-header">
+                    <div class="region-name">🔵 Phường Phước Tiến</div>
+                    <div class="region-badge safe">An toàn</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">✅ <span>Đã ổn định</span></div>
+                    <div class="region-stat">💧 <span>Không ngập</span></div>
+                </div>
+            </div>
+
+            <!-- Region 10: Safe -->
+            <div class="region-card safe" onclick="showRegionDetail('tan-lap')">
+                <div class="region-header">
+                    <div class="region-name">🔵 Phường Tân Lập</div>
+                    <div class="region-badge safe">An toàn</div>
+                </div>
+                <div class="region-stats">
+                    <div class="region-stat">👥 <span>20 hộ</span></div>
+                    <div class="region-stat">✅ <span>Hoàn toàn ổn định</span></div>
+                    <div class="region-stat">💧 <span>Không ngập</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- Household Detail Screen -->
+        <!-- Household Detail Screen with Search -->
         <div class="screen" id="screen-household-detail">
             <div class="header-small">
                 <button class="back-btn" onclick="showScreen('case-list')">←</button>
                 <h2 id="region-detail-title">Danh sách hộ dân</h2>
             </div>
-            <div class="card" id="region-summary">
+
+            <!-- Search Bar -->
+            <div
+                style="padding: 12px 16px; background: white; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 10;">
+                <div style="position: relative;">
+                    <input type="text" id="household-search" class="form-input"
+                        placeholder="🔍 Tìm kiếm tên người thân..." oninput="filterHouseholds(this.value)"
+                        style="padding-left: 16px; padding-right: 40px;">
+                    <button onclick="document.getElementById('household-search').value=''; filterHouseholds('');"
+                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 16px; cursor: pointer; color: var(--gray-400);">✕</button>
+                </div>
+                <div id="search-result-count"
+                    style="font-size: 11px; color: var(--gray-500); margin-top: 6px; text-align: center;"></div>
+            </div>
+
+            <!-- Region Summary Card -->
+            <div class="card" id="region-summary" style="margin-top: 8px;">
                 <!-- Populated by JS -->
             </div>
-            <div class="section-title">📋 Danh sách 10 hộ trong khu vực</div>
+
+            <!-- Stats Summary -->
+            <div
+                style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 0 16px; margin-bottom: 12px;">
+                <div id="stat-pending"
+                    style="text-align: center; padding: 8px; background: #fef2f2; border-radius: 8px;">
+                    <div style="font-size: 18px; font-weight: 700; color: #dc2626;">0</div>
+                    <div style="font-size: 9px; color: #dc2626;">Chưa cứu</div>
+                </div>
+                <div id="stat-inprogress"
+                    style="text-align: center; padding: 8px; background: #fef3c7; border-radius: 8px;">
+                    <div style="font-size: 18px; font-weight: 700; color: #d97706;">0</div>
+                    <div style="font-size: 9px; color: #d97706;">Đang cứu</div>
+                </div>
+                <div id="stat-rescued"
+                    style="text-align: center; padding: 8px; background: #f0fdf4; border-radius: 8px;">
+                    <div style="font-size: 18px; font-weight: 700; color: #16a34a;">0</div>
+                    <div style="font-size: 9px; color: #16a34a;">Đã cứu</div>
+                </div>
+                <div id="stat-safe" style="text-align: center; padding: 8px; background: #dbeafe; border-radius: 8px;">
+                    <div style="font-size: 18px; font-weight: 700; color: #2563eb;">0</div>
+                    <div style="font-size: 9px; color: #2563eb;">An toàn</div>
+                </div>
+            </div>
+
+            <div class="section-title">📋 Danh sách 20 hộ trong khu vực</div>
             <div style="padding: 0 16px;" id="household-list">
                 <!-- Populated by JS -->
             </div>
@@ -3823,6 +4320,180 @@
             </div>
         </div>
 
+        <!-- Notification Panel Modal -->
+        <div id="notification-modal" class="modal-overlay" style="display: none;">
+            <div
+                style="background: white; border-radius: 20px 20px 0 0; position: absolute; bottom: 0; left: 0; right: 0; max-height: 85vh; overflow-y: auto; animation: slideUp 0.3s ease;">
+                <div
+                    style="padding: 16px; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 10;">
+                    <div>
+                        <div style="font-weight: 700; font-size: 16px; color: var(--gray-800);">🔔 Thông báo</div>
+                        <div style="font-size: 11px; color: var(--gray-500);">8 thông báo mới</div>
+                    </div>
+                    <button onclick="closeNotificationPanel()"
+                        style="background: var(--gray-100); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px;">✕</button>
+                </div>
+
+                <div style="padding: 16px;">
+                    <!-- Header: For Convoy Teams -->
+                    <div style="font-weight: 600; font-size: 13px; color: var(--gray-700); margin-bottom: 12px;">🚛
+                        Thông báo cho Đoàn cứu trợ/cứu hộ</div>
+
+                    <!-- Critical: Area Overload Alert -->
+                    <div
+                        style="background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 2px solid var(--red-500); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 20px;">🚨</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 700; font-size: 13px; color: var(--red-700);">KHU VỰC QUÁ TẢI
+                                </div>
+                                <div style="font-size: 10px; color: var(--red-600);">2 phút trước</div>
+                            </div>
+                        </div>
+                        <div style="background: white; border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                            <div style="font-size: 12px; color: var(--gray-700); line-height: 1.6;">
+                                <strong style="color: var(--red-600);">P. Lộc Thọ</strong> hiện đã có <strong>10
+                                    đoàn</strong> đang hoạt động.<br>
+                                👉 Đề nghị chuyển hướng đến <strong style="color: var(--green-600);">P. Vĩnh
+                                    Hải</strong> hoặc <strong style="color: var(--green-600);">Xã Vĩnh Lương</strong>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="showScreen('map'); closeNotificationPanel();"
+                                style="background: var(--blue-500); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                🗺️ Xem bản đồ
+                            </button>
+                            <button onclick="showToast('✅ Đã xác nhận chuyển hướng'); closeNotificationPanel();"
+                                style="background: var(--green-500); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                ✅ Đã hiểu
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Area Status Summary Card -->
+                    <div
+                        style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+                        <div style="font-weight: 600; font-size: 13px; color: #1e40af; margin-bottom: 10px;">📊 Thống kê
+                            phân bổ đoàn theo khu vực</div>
+
+                        <!-- Area 1 - Overloaded -->
+                        <div
+                            style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 12px; color: var(--gray-800);">P. Lộc Thọ</div>
+                                <div style="font-size: 10px; color: var(--red-500);">🔴 Đã quá tải</div>
+                            </div>
+                            <div
+                                style="background: var(--red-100); color: var(--red-600); padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: 700;">
+                                10 đoàn</div>
+                        </div>
+
+                        <!-- Area 2 - Need more -->
+                        <div
+                            style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 12px; color: var(--gray-800);">P. Vĩnh Hải
+                                </div>
+                                <div style="font-size: 10px; color: var(--yellow-600);">🟡 Cần thêm hỗ trợ</div>
+                            </div>
+                            <div
+                                style="background: var(--yellow-100); color: var(--yellow-700); padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: 700;">
+                                2 đoàn</div>
+                        </div>
+
+                        <!-- Area 3 - Urgent -->
+                        <div
+                            style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--green-500);">
+                            <div>
+                                <div style="font-weight: 600; font-size: 12px; color: var(--gray-800);">Xã Vĩnh Lương
+                                </div>
+                                <div style="font-size: 10px; color: var(--green-600);">🟢 ƯU TIÊN ĐẾN ĐÂY</div>
+                            </div>
+                            <div
+                                style="background: var(--green-500); color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: 700;">
+                                0 đoàn</div>
+                        </div>
+
+                        <!-- Area 4 -->
+                        <div
+                            style="background: white; border-radius: 8px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 12px; color: var(--gray-800);">P. Phước Hải
+                                </div>
+                                <div style="font-size: 10px; color: var(--gray-500);">Đủ hỗ trợ</div>
+                            </div>
+                            <div
+                                style="background: var(--gray-100); color: var(--gray-600); padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: 700;">
+                                5 đoàn</div>
+                        </div>
+                    </div>
+
+                    <!-- Routing Suggestion -->
+                    <div
+                        style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 2px solid var(--green-500); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 20px;">🧭</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 700; font-size: 13px; color: var(--green-700);">ĐỀ XUẤT LỘ
+                                    TRÌNH TỐI ƯU</div>
+                                <div style="font-size: 10px; color: var(--green-600);">5 phút trước</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray-700); line-height: 1.6;">
+                            Đoàn đang ở <strong>P. Lộc Thọ</strong>? Hãy di chuyển đến:<br><br>
+                            📍 <strong>Xã Vĩnh Lương</strong> - 12km về phía Bắc<br>
+                            <span style="font-size: 11px; color: var(--gray-500);">40 hộ chưa được hỗ trợ, ngập
+                                1.5m</span>
+                        </div>
+                        <button onclick="showScreen('map'); closeNotificationPanel();"
+                            style="width: 100%; background: var(--green-600); color: white; border: none; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px;">
+                            🗺️ Xem đường đi trên bản đồ
+                        </button>
+                    </div>
+
+                    <!-- Other Notifications -->
+                    <div style="font-weight: 600; font-size: 13px; color: var(--gray-700); margin: 16px 0 12px;">📢
+                        Thông báo khác</div>
+
+                    <div
+                        style="background: white; border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <span style="font-size: 16px;">🚛</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--blue-600);">Đoàn Hà Nội đã
+                                    đến P. Vĩnh Nguyên</div>
+                                <div style="font-size: 10px; color: var(--gray-500);">15 phút trước</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: white; border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <span style="font-size: 16px;">⚡</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--red-600);">Đập Sông Cái đang
+                                    xả lũ</div>
+                                <div style="font-size: 10px; color: var(--gray-500);">30 phút trước</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: white; border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <span style="font-size: 16px;">🏥</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--green-600);">Trạm y tế P.
+                                    Vĩnh Nguyên hoạt động 24/7</div>
+                                <div style="font-size: 10px; color: var(--gray-500);">1 giờ trước</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Bottom Navigation -->
         <div class="bottom-nav" id="bottom-nav">
             <button class="nav-item active" onclick="navTo('home')"><span class="icon">🏠</span><span>Trang
@@ -3842,8 +4513,18 @@
             { id: 1, name: 'Hộ Nguyễn Văn A', phone: '0912345678', address: 'Số 15, Đường Trần Phú, P. Lộc Thọ, Nha Trang', people: 5, status: 'sos', source: 'Facebook', lat: 12.2450, lng: 109.1950 },
             { id: 2, name: 'Hộ Trần Thị B', phone: '0923456789', address: 'Số 78, Đường Yersin, P. Vĩnh Nguyên, Nha Trang', people: 3, status: 'medical', source: 'Zalo', lat: 12.2380, lng: 109.1920 },
             { id: 3, name: 'Hộ Lê Văn C', phone: '0934567890', address: 'Số 123, Đường 2 Tháng 4, P. Vĩnh Hải, Nha Trang', people: 4, status: 'sos', source: 'Địa phương', lat: 12.2520, lng: 109.1880 },
-            { id: 4, name: 'Hộ Phạm Văn D', phone: '0945678901', address: 'Số 56, Đường Lê Hồng Phong, P. Phước Hải, Nha Trang', people: 6, status: 'safe', source: 'Facebook', lat: 12.2410, lng: 109.2010 },
             { id: 5, name: 'Hộ Hoàng Thị E', phone: '0956789012', address: 'Số 89, Đường Nguyễn Thiện Thuật, P. Tân Lập, Nha Trang', people: 2, status: 'sos', source: 'Zalo', lat: 12.2350, lng: 109.1980 },
+            // 10 New Mainland Markers (Blue, Red, Yellow)
+            { id: 6, name: 'Hộ Phạm Văn F', phone: '0967890123', address: 'Thôn Vĩnh Châu, Xã Vĩnh Hiệp', people: 6, status: 'blue', source: 'Zalo', lat: 12.2480, lng: 109.1750 },
+            { id: 7, name: 'Hộ Ngô Thị G', phone: '0978901234', address: 'Thôn Vĩnh Điềm, Xã Vĩnh Ngọc', people: 3, status: 'medical', source: 'Khu phố', lat: 12.2550, lng: 109.1720 },
+            { id: 8, name: 'Hộ Bùi Văn H', phone: '0989012345', address: 'Xã Vĩnh Thạnh, Nha Trang', people: 5, status: 'sos', source: 'Facebook', lat: 12.2600, lng: 109.1680 },
+            { id: 9, name: 'Hộ Vũ Thị I', phone: '0990123456', address: 'Hương lộ 45, Xã Vĩnh Ngọc', people: 4, status: 'blue', source: 'Zalo', lat: 12.2510, lng: 109.1650 },
+            { id: 10, name: 'Hộ Đặng Văn K', phone: '0901234567', address: 'Cầu Bè, Xã Vĩnh Thạnh', people: 2, status: 'medical', source: 'Call', lat: 12.2580, lng: 109.1700 },
+            { id: 11, name: 'Hộ Lý Thị L', phone: '0912345670', address: 'Thôn Phú Nông, Xã Vĩnh Ngọc', people: 7, status: 'sos', source: 'Facebook', lat: 12.2530, lng: 109.1780 },
+            { id: 12, name: 'Hộ Trương Văn M', phone: '0923456781', address: 'Đường 23/10, Xã Vĩnh Hiệp', people: 3, status: 'blue', source: 'Zalo', lat: 12.2460, lng: 109.1600 },
+            { id: 13, name: 'Hộ Đỗ Thị N', phone: '0934567892', address: 'Thôn Vĩnh Xuân, Xã Vĩnh Trung', people: 5, status: 'medical', source: 'Khu phố', lat: 12.2420, lng: 109.1550 },
+            { id: 14, name: 'Hộ Phan Văn P', phone: '0945678903', address: 'Xã Vĩnh Phương, Nha Trang', people: 8, status: 'sos', source: 'Call', lat: 12.2700, lng: 109.1500 },
+            { id: 15, name: 'Hộ Hà Thị Q', phone: '0956789014', address: 'Thôn Đắc Lộc, Xã Vĩnh Phương', people: 4, status: 'blue', source: 'Facebook', lat: 12.2650, lng: 109.1450 }
         ];
         const giftHistory = [
             { name: 'Nguyễn Thị Lan', cccd: '012345678901', time: '10:30', count: 2, priority: 'Người già' },
@@ -3951,6 +4632,28 @@
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
             showScreen(screen);
+        }
+
+        // Notification Panel Functions
+        function openNotificationPanel() {
+            document.getElementById('notification-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            // Update badge to show notifications were viewed
+            document.getElementById('notification-badge').textContent = '8';
+        }
+
+        function closeNotificationPanel() {
+            document.getElementById('notification-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Show toast message
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--gray-800); color: white; padding: 12px 20px; border-radius: 25px; font-size: 13px; z-index: 2000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); max-width: 90%;';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
 
         function submitRegistration() {
@@ -4529,7 +5232,23 @@ Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
             resetScan();
             showScreen('home');
         }
-        function registerVolunteer() { showToast('📝 Đã đăng ký lộ trình thành công!'); showScreen('home'); }
+        function registerVolunteer() {
+            const isRouting = document.getElementById('volunteer-routing-optin')?.checked;
+            const isStation = document.getElementById('register-station-toggle')?.checked;
+
+            if (isStation) {
+                showToast('🏠 Đã đăng ký Điểm Cung cấp Cứu trợ thành công!');
+            } else if (isRouting) {
+                showToast('✅ Đã đăng ký. Hệ thống sẽ gửi gợi ý điều phối ngay!');
+                setTimeout(() => {
+                    // Simulate system routing suggestion
+                    showToast('🔔 GỢI Ý ĐIỀU PHỐI: Mời đoàn đến Xã Vĩnh Lương (Đang thiếu lương thực)');
+                }, 2000);
+            } else {
+                showToast('📝 Đã đăng ký lộ trình thành công!');
+            }
+            showScreen('home');
+        }
         function submitCase() { showToast('🆘 Đã gửi báo cáo!'); showScreen('home'); }
 
         function initMap() {
@@ -4537,8 +5256,8 @@ Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
             map = L.map('map').setView([12.2450, 109.1950], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
-            const colors = { sos: '#ef4444', medical: '#eab308', safe: '#22c55e' };
-            const statusLabels = { sos: '🔴 KHẨN CẤP', medical: '🟡 CẦN HỖ TRỢ', safe: '🟢 ĐÃ AN TOÀN' };
+            const colors = { sos: '#ef4444', medical: '#eab308', blue: '#3b82f6' };
+            const statusLabels = { sos: '🔴 KHẨN CẤP', medical: '🟡 CẦN HỖ TRỢ', blue: '🔵 ĐOÀN THIỆN NGUYỆN' };
 
             cases.forEach(c => {
                 const popupContent = `
@@ -4736,31 +5455,26 @@ Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
         }
 
         // Send emergency request function
+        // Send emergency request function - UPDATED
         function sendEmergencyRequest() {
-            const address = document.getElementById('emergency-address').value.trim();
-            const phone = document.getElementById('emergency-phone').value.trim();
-
-            if (!address) {
-                showToast('⚠️ Vui lòng nhập địa chỉ hiện tại');
-                return;
+            // Auto get GPS if not already
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const gps = `${pos.coords.latitude}, ${pos.coords.longitude}`;
+                    submitEmergency(gps);
+                }, err => {
+                    submitEmergency("Không lấy được GPS");
+                });
+            } else {
+                submitEmergency("Không hỗ trợ GPS");
             }
+        }
 
-            if (!phone) {
-                showToast('⚠️ Vui lòng nhập số điện thoại liên hệ');
-                return;
-            }
-
-            // Check if phone is valid Vietnamese format
-            if (!/^[0-9]{10,11}$/.test(phone.replace(/\s/g, ''))) {
-                showToast('⚠️ Số điện thoại không hợp lệ');
-                return;
-            }
-
+        function submitEmergency(locationInfo) {
             // Build emergency request message
             let message = '🆘 YÊU CẦU HỖ TRỢ KHẨN CẤP\n';
             message += '━━━━━━━━━━━━━━━━━━━━\n';
-            message += '📍 Địa chỉ: ' + address + '\n';
-            message += '📞 SĐT: ' + phone + '\n';
+            message += '📍 Vị trí: ' + locationInfo + '\n';
             message += '🕐 Thời gian: ' + new Date().toLocaleString('vi-VN') + '\n\n';
 
             if (window.selectedSymptoms && window.selectedSymptoms.length > 0) {
@@ -4778,21 +5492,105 @@ Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
                 });
             }
 
-            // Log the message (in real app, this would be sent to server)
             console.log(message);
+            showToast('✅ Đã gửi yêu cầu hỗ trợ!');
 
-            // Show success message
-            showToast('✅ Đã gửi yêu cầu hỗ trợ khẩn cấp!');
-
-            // Clear form
-            document.getElementById('emergency-address').value = '';
-            document.getElementById('emergency-phone').value = '';
-            window.selectedSymptoms = [];
-            window.selectedItems = [];
-
-            // Show confirmation alert
-            alert('🆘 ĐÃ GỬI YÊU CẦU HỖ TRỢ!\n\nThông tin đã được ghi nhận. Đội cứu trợ sẽ liên hệ bạn trong thời gian sớm nhất.\n\n' + message);
+            // Close all modals
+            closeSymptomModal();
+            closeItemsModal();
         }
+
+        // New Functions for Video Location & Add Case Smart Address
+        let videoLocInterval;
+        function openVideoRecording() {
+            document.getElementById('video-modal').classList.add('show');
+            refreshVideoLocation(); // Initial fetch
+            videoLocInterval = setInterval(refreshVideoLocation, 60000); // Update every minute
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.remove('show');
+            if (videoLocInterval) clearInterval(videoLocInterval);
+        }
+
+        function refreshVideoLocation() {
+            const statusEl = document.getElementById('video-location-text');
+            statusEl.innerHTML = '<span style="color: var(--orange-500);">⏳ Đang cập nhật...</span>';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=vi`);
+                        const data = await response.json();
+                        statusEl.innerHTML = data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    } catch (e) {
+                        statusEl.innerHTML = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    }
+                }, () => {
+                    statusEl.innerHTML = '❌ Không thể lấy vị trí';
+                });
+            } else {
+                statusEl.innerHTML = '❌ GPS không được hỗ trợ';
+            }
+        }
+
+        // Add Case Logic
+        let caseAddrMode = 'me';
+        function toggleCaseAddressMode(mode) {
+            caseAddrMode = mode;
+            const btnMe = document.getElementById('btn-addr-me');
+            const btnRel = document.getElementById('btn-addr-relative');
+            const divMe = document.getElementById('addr-mode-me');
+            const divRel = document.getElementById('addr-mode-relative');
+            const textarea = document.getElementById('case-address');
+
+            if (mode === 'me') {
+                btnMe.style.background = 'var(--blue-500)';
+                btnMe.style.color = 'white';
+                btnMe.style.border = 'none';
+                btnRel.style.background = 'white';
+                btnRel.style.color = 'var(--gray-700)';
+                btnRel.style.border = '1px solid var(--gray-300)';
+
+                divMe.style.display = 'block';
+                divRel.style.display = 'none';
+
+                textarea.readOnly = true;
+                textarea.style.background = '#f3f4f6';
+                getGPSLocation(); // Trigger GPS
+            } else {
+                btnRel.style.background = 'var(--blue-500)';
+                btnRel.style.color = 'white';
+                btnRel.style.border = 'none';
+                btnMe.style.background = 'white';
+                btnMe.style.color = 'var(--gray-700)';
+                btnMe.style.border = '1px solid var(--gray-300)';
+
+                divMe.style.display = 'none';
+                divRel.style.display = 'block';
+
+                textarea.readOnly = false; // Actually we use hidden input logic but let's just use updateCaseAddressFromFields to sync to textarea
+                updateCaseAddressFromFields();
+            }
+        }
+
+        function updateCaseAddressFromFields() {
+            const p = document.getElementById('addr-province').value.trim();
+            const d = document.getElementById('addr-district').value.trim();
+            const w = document.getElementById('addr-ward').value.trim();
+            const s = document.getElementById('addr-street').value.trim();
+
+            const parts = [s, w, d, p].filter(x => x);
+            document.getElementById('case-address').value = parts.join(', ');
+        }
+
+        // Wrapper for video upload button to just trigger the input
+        function handleVideoUploadWrapper() {
+            // Label triggers input automatically
+        }
+
 
         // Convoy photo upload handler
         function handleConvoyPhotoUpload(input, convoyId) {
@@ -5015,6 +5813,184 @@ Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
                 statusDiv.innerHTML = '<span style="color: var(--red-500);">❌ Không hỗ trợ GPS</span>';
             }
         }
+
+        // --- NEW: Household Lookup Logic ---
+
+        // Dummy data generator for households
+        function generateHouseholds(regionName) {
+            const familyNames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Huỳnh', 'Hoàng', 'Phan', 'Vũ', 'Võ', 'Đặng'];
+            const middleNames = ['Văn', 'Thị', 'Đức', 'Thành', 'Minh', 'Ngọc', 'Quốc', 'Hữu'];
+            const lastNames = ['An', 'Bình', 'Cường', 'Dũng', 'Em', 'Giang', 'Hùng', 'Huy', 'Khánh', 'Lan', 'Nam', 'Nghĩa', 'Phúc', 'Quân', 'Sơn', 'Tâm', 'Thảo', 'Tùng', 'Việt', 'Yến'];
+            const statuses = [
+                { type: 'pending', label: 'Chưa cứu', color: 'red', icon: '🆘' },
+                { type: 'inprogress', label: 'Đang cứu', color: 'orange', icon: '🔄' },
+                { type: 'rescued', label: 'Đã cứu', color: 'green', icon: '✅' },
+                { type: 'safe', label: 'An toàn', color: 'blue', icon: '🔵' }
+            ];
+            const healthConditions = ['Bình thường', 'Bị thương nhẹ', 'Sốt cao', 'Kiệt sức', 'Cần thuốc gấp', 'Có người già yếu'];
+
+            let households = [];
+            for (let i = 1; i <= 20; i++) {
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                const randomHealth = healthConditions[Math.floor(Math.random() * healthConditions.length)];
+                const isRescued = randomStatus.type === 'rescued' || randomStatus.type === 'safe';
+
+                households.push({
+                    id: i,
+                    name: `${familyNames[Math.floor(Math.random() * familyNames.length)]} ${middleNames[Math.floor(Math.random() * middleNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+                    address: `Số nhà ${Math.floor(Math.random() * 100) + 1}, ${regionName}`,
+                    phone: `09${Math.floor(Math.random() * 90000000 + 10000000)}`,
+                    people: Math.floor(Math.random() * 4) + 2, // 2-6 people
+                    status: randomStatus,
+                    health: randomHealth,
+                    rescuedTime: isRescued ? `${Math.floor(Math.random() * 24)} giờ trước` : null,
+                    note: isRescued ? 'Đã được đưa về nơi an toàn' : 'Nước ngập sâu, cần hỗ trợ gấp'
+                });
+            }
+            return households;
+        }
+
+        let currentHouseholds = [];
+
+        function showRegionDetail(regionId) {
+            // Map region IDs to Names
+            const regionNames = {
+                'vinh-luong': 'Xã Vĩnh Lương',
+                'vinh-hai': 'Phường Vĩnh Hải',
+                'vinh-ngoc': 'Phường Vĩnh Ngọc',
+                'vinh-tho': 'Phường Vĩnh Thọ',
+                'phuoc-hai': 'Phường Phước Hải',
+                'loc-tho': 'Phường Lộc Thọ',
+                'phuoc-long': 'Phường Phước Long',
+                'vinh-nguyen': 'Phường Vĩnh Nguyên',
+                'phuoc-tien': 'Phường Phước Tiến',
+                'tan-lap': 'Phường Phước Tân Lập'
+            };
+
+            const name = regionNames[regionId] || 'Khu vực chưa xác định';
+
+            // Generate dummy data
+            currentHouseholds = generateHouseholds(name);
+
+            // Update Title
+            const titleEl = document.getElementById('region-detail-title');
+            if (titleEl) titleEl.textContent = name;
+
+            // Render Stats
+            updateRegionStats();
+
+            // Render List
+            renderHouseholdList(currentHouseholds);
+
+            // Show screen
+            showScreen('household-detail');
+        }
+
+        function updateRegionStats() {
+            let pending = 0, inprogress = 0, rescued = 0, safe = 0;
+            currentHouseholds.forEach(h => {
+                if (h.status.type === 'pending') pending++;
+                else if (h.status.type === 'inprogress') inprogress++;
+                else if (h.status.type === 'rescued') rescued++;
+                else if (h.status.type === 'safe') safe++;
+            });
+
+            document.querySelector('#stat-pending div:first-child').textContent = pending;
+            document.querySelector('#stat-inprogress div:first-child').textContent = inprogress;
+            document.querySelector('#stat-rescued div:first-child').textContent = rescued;
+            document.querySelector('#stat-safe div:first-child').textContent = safe;
+        }
+
+        function renderHouseholdList(list) {
+            const container = document.getElementById('household-list');
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--gray-500); padding: 20px;">Không tìm thấy kết quả</div>';
+                return;
+            }
+
+            list.forEach(h => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.padding = '12px';
+                card.style.marginBottom = '10px';
+                card.style.borderLeft = `4px solid var(--${h.status.color}-500)`;
+
+                let details = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                        <div style="font-weight: 700; font-size: 15px; color: var(--gray-800);">${h.name}</div>
+                        <div style="font-size: 11px; font-weight: 600; background: var(--${h.status.color}-100); color: var(--${h.status.color}-600); padding: 4px 8px; border-radius: 12px; white-space: nowrap;">
+                            ${h.status.icon} ${h.status.label}
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; color: var(--gray-600); margin-bottom: 4px;">📍 ${h.address}</div>
+                    <div style="font-size: 13px; color: var(--gray-600); margin-bottom: 4px;">👥 Gia đình: ${h.people} người</div>
+                    <div style="font-size: 13px; color: var(--gray-600); margin-bottom: 4px;">🏥 Sức khỏe: <span style="font-weight: 600;">${h.health}</span></div>
+                `;
+
+                if (h.rescuedTime) {
+                    details += `<div style="font-size: 12px; color: var(--green-600); margin-top: 6px;">🕒 Đã cứu lúc: ${h.rescuedTime}</div>`;
+                } else {
+                    details += `<div style="font-size: 12px; color: var(--red-600); margin-top: 6px;">⚠️ ${h.note}</div>`;
+                }
+
+                card.innerHTML = details;
+                container.appendChild(card);
+            });
+
+            // Update search count
+            const countEl = document.getElementById('search-result-count');
+            if (countEl) countEl.textContent = `Hiển thị ${list.length} hộ dân`;
+        }
+
+        function filterHouseholds(query) {
+            if (!query) {
+                renderHouseholdList(currentHouseholds);
+                return;
+            }
+            const lowerInfo = query.toLowerCase();
+            const filtered = currentHouseholds.filter(h =>
+                h.name.toLowerCase().includes(lowerInfo) ||
+                h.address.toLowerCase().includes(lowerInfo)
+            );
+            renderHouseholdList(filtered);
+        }
+        // Home Screen Location Tracking works
+        let homeLocInterval;
+
+        function initHomeLocation() {
+            refreshHomeLocation();
+            homeLocInterval = setInterval(refreshHomeLocation, 60000); // 1 minute
+        }
+
+        function refreshHomeLocation() {
+            const statusEl = document.getElementById('home-location-text');
+            if (!statusEl) return;
+
+            statusEl.innerHTML = '<span style="color: var(--orange-500);">⏳ Đang cập nhật...</span>';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=vi`);
+                        const data = await response.json();
+                        statusEl.innerHTML = data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    } catch (e) {
+                        statusEl.innerHTML = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    }
+                }, () => {
+                    statusEl.innerHTML = '❌ Không thể lấy vị trí';
+                });
+            } else {
+                statusEl.innerHTML = '❌ GPS không được hỗ trợ';
+            }
+        }
+
+        // Start on load
+        window.addEventListener('load', initHomeLocation);
     </script>
 </body>
 
