@@ -1870,12 +1870,19 @@
     <div class="phone-frame">
         <!-- Login Screen -->
         <div class="screen active" id="screen-login">
-            <div class="login-header">
+            <div class="login-header" style="position: relative;">
+                <!-- Language Toggle Button -->
+                <button id="lang-toggle-login" onclick="toggleLanguage()"
+                    style="position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border-radius: 50%; background: white; border: 2px solid var(--green-500); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.15); font-size: 22px; z-index: 10;">
+                    <span id="lang-flag-login">🇻🇳</span>
+                </button>
                 <div class="logo-placeholder" style="margin-bottom: 16px;">
                     <img src="https://i.postimg.cc/g0fMQWGQ/Anh-chup-man-hinh-2026-01-28-072615.png" alt="Logo">
                 </div>
-                <div class="login-title">Xác Minh & Điều Phối</div>
-                <div class="login-subtitle">Cứu Trợ Khẩn Cấp</div>
+                <div class="login-title"><span class="lang-vi">Xác Minh & Điều Phối</span><span class="lang-en"
+                        style="display:none;">Verification & Coordination</span></div>
+                <div class="login-subtitle"><span class="lang-vi">Cứu Trợ Khẩn Cấp</span><span class="lang-en"
+                        style="display:none;">Emergency Relief</span></div>
             </div>
             <div class="login-form">
                 <div class="form-group">
@@ -1889,22 +1896,36 @@
                 <button class="btn btn-primary" onclick="showScreen('home')">Đăng nhập</button>
             </div>
 
-            <!-- VNeID Login Section -->
+            <!-- VNeID Login Section & Emergency Button -->
             <div style="padding: 0 24px;">
                 <div style="display: flex; align-items: center; gap: 12px; margin: 16px 0;">
                     <div style="flex: 1; height: 1px; background: var(--gray-300);"></div>
-                    <span style="font-size: 12px; color: var(--gray-500);">hoặc</span>
+                    <span style="font-size: 12px; color: var(--gray-500);"><span class="lang-vi">hoặc</span><span
+                            class="lang-en" style="display:none;">or</span></span>
                     <div style="flex: 1; height: 1px; background: var(--gray-300);"></div>
                 </div>
 
-                <button onclick="showScreen('vneid')"
-                    style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: linear-gradient(135deg, #dc2626, #ef4444); border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);">
-                    <img src="https://cdn.tgdd.vn/2023/07/GameApp/vneid-200x200.jpg" alt="VNeID"
-                        style="width: 28px; height: 28px; border-radius: 6px; object-fit: cover;">
-                    <span>Đăng nhập bằng VNeID</span>
-                </button>
+                <div style="display: flex; gap: 10px;">
+                    <!-- VNeID (2/3 width) -->
+                    <button onclick="showScreen('vneid')"
+                        style="flex: 2; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: linear-gradient(135deg, #dc2626, #ef4444); border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);">
+                        <img src="https://cdn.tgdd.vn/2023/07/GameApp/vneid-200x200.jpg" alt="VNeID"
+                            style="width: 26px; height: 26px; border-radius: 6px; object-fit: cover;">
+                        <span><span class="lang-vi">Đăng nhập VNeID</span><span class="lang-en"
+                                style="display:none;">VNeID Login</span></span>
+                    </button>
+                    <!-- Emergency Button (1/3 width) -->
+                    <button onclick="toggleSOSOverlay(true)"
+                        style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 14px 8px; background: linear-gradient(135deg, #f97316, #ea580c); border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 11px; cursor: pointer; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);">
+                        <span style="font-size: 20px;">🆘</span>
+                        <span><span class="lang-vi">Khẩn cấp</span><span class="lang-en"
+                                style="display:none;">Emergency</span></span>
+                    </button>
+                </div>
                 <p style="font-size: 10px; color: var(--gray-500); text-align: center; margin-top: 8px;">
-                    Định danh điện tử Quốc gia - Xác thực nhanh chóng và an toàn
+                    <span class="lang-vi">Định danh điện tử Quốc gia - Xác thực nhanh chóng và an toàn</span>
+                    <span class="lang-en" style="display:none;">National Digital ID - Fast and secure
+                        authentication</span>
                 </p>
             </div>
 
@@ -1948,6 +1969,164 @@
                 </div>
             </div>
         </div>
+
+        <!-- SOS Emergency Overlay -->
+        <div id="sos-overlay"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+            <!-- Close Button -->
+            <button onclick="toggleSOSOverlay(false)"
+                style="position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+
+            <!-- SOS Title -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 24px; font-weight: 700; color: white; margin-bottom: 8px;">
+                    <span class="lang-vi">🆘 CHẾ ĐỘ KHẨN CẤP</span>
+                    <span class="lang-en" style="display:none;">🆘 EMERGENCY MODE</span>
+                </div>
+                <div style="font-size: 14px; color: rgba(255,255,255,0.7);">
+                    <span class="lang-vi">Giữ nút SOS trong 3 giây để cầu cứu</span>
+                    <span class="lang-en" style="display:none;">Hold SOS button for 3 seconds to call for help</span>
+                </div>
+            </div>
+
+            <!-- SOS Button with Progress Ring -->
+            <div id="sos-btn-container" style="position: relative; width: 160px; height: 160px; margin-bottom: 30px;">
+                <!-- Progress Ring (SVG) -->
+                <svg id="sos-progress-ring"
+                    style="position: absolute; top: 0; left: 0; width: 160px; height: 160px; transform: rotate(-90deg);">
+                    <circle cx="80" cy="80" r="74" stroke="rgba(255,255,255,0.2)" stroke-width="8" fill="none" />
+                    <circle id="sos-progress-circle" cx="80" cy="80" r="74" stroke="#ef4444" stroke-width="8"
+                        fill="none" stroke-dasharray="465" stroke-dashoffset="465" stroke-linecap="round"
+                        style="transition: stroke-dashoffset 0.1s linear;" />
+                </svg>
+                <!-- SOS Button -->
+                <button id="sos-btn"
+                    style="position: absolute; top: 8px; left: 8px; width: 144px; height: 144px; border-radius: 50%; background: linear-gradient(135deg, #ef4444, #dc2626); border: none; color: white; font-size: 48px; font-weight: 900; cursor: pointer; box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); animation: pulse-sos 2s infinite;">
+                    SOS
+                </button>
+            </div>
+
+            <!-- Victim Info Panel (Hidden by default, shown after 3s hold) -->
+            <div id="victim-info-panel"
+                style="display: none; width: 100%; max-width: 380px; background: white; border-radius: 16px; padding: 20px; max-height: 60vh; overflow-y: auto;">
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 48px; margin-bottom: 8px;">✅</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #16a34a;">
+                        <span class="lang-vi">ĐÃ KÍCH HOẠT CẦU CỨU!</span>
+                        <span class="lang-en" style="display:none;">HELP ACTIVATED!</span>
+                    </div>
+                </div>
+
+                <div
+                    style="font-weight: 700; font-size: 15px; color: var(--gray-800); margin-bottom: 12px; border-bottom: 2px solid var(--gray-200); padding-bottom: 8px;">
+                    <span class="lang-vi">📋 Thông tin nạn nhân</span>
+                    <span class="lang-en" style="display:none;">📋 Victim Information</span>
+                </div>
+
+                <!-- Victim Details -->
+                <div style="display: grid; gap: 10px; margin-bottom: 16px;">
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">👤</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);"><span class="lang-vi">Họ
+                                    tên</span><span class="lang-en" style="display:none;">Full name</span></div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--gray-800);">Nguyễn Trần Tiến
+                                Phúc</div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">🪪</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);">CCCD</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--gray-800);">012345678901</div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">📍</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);"><span class="lang-vi">Địa
+                                    chỉ</span><span class="lang-en" style="display:none;">Address</span></div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--gray-800);">123 Đường 2 Tháng 4,
+                                P. Vĩnh Hải, TP. Nha Trang</div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: var(--gray-50); border-radius: 8px;">
+                        <span style="font-size: 18px;">📞</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);"><span class="lang-vi">SĐT khẩn
+                                    cấp</span><span class="lang-en" style="display:none;">Emergency phone</span></div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--gray-800);">0342 381 843</div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: linear-gradient(135deg, #fef2f2, #fee2e2); border-radius: 8px; border-left: 4px solid #dc2626;">
+                        <span style="font-size: 18px;">🩸</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);"><span class="lang-vi">Nhóm
+                                    máu</span><span class="lang-en" style="display:none;">Blood type</span></div>
+                            <div style="font-size: 14px; font-weight: 700; color: #dc2626;">O+</div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        <span style="font-size: 18px;">⚠️</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);"><span class="lang-vi">Bệnh
+                                    nền</span><span class="lang-en" style="display:none;">Pre-existing conditions</span>
+                            </div>
+                            <div style="font-size: 13px; font-weight: 600; color: #92400e;">Tiểu đường type 2, Huyết áp
+                                cao</div>
+                        </div>
+                    </div>
+                    <div
+                        style="display: flex; gap: 10px; padding: 10px; background: linear-gradient(135deg, #fee2e2, #fecaca); border-radius: 8px; border-left: 4px solid #dc2626;">
+                        <span style="font-size: 18px;">🚫</span>
+                        <div>
+                            <div style="font-size: 11px; color: var(--gray-500);"><span class="lang-vi">Dị
+                                    ứng</span><span class="lang-en" style="display:none;">Allergies</span></div>
+                            <div style="font-size: 13px; font-weight: 600; color: #dc2626;">Penicillin, Hải sản (tôm,
+                                cua)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPS Location -->
+                <div
+                    style="padding: 12px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 10px; margin-bottom: 16px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #1e40af; margin-bottom: 4px;">📍 <span
+                            class="lang-vi">Tọa độ GPS hiện tại</span><span class="lang-en"
+                            style="display:none;">Current GPS coordinates</span></div>
+                    <div id="sos-gps-coords" style="font-size: 13px; color: #1e40af; font-family: monospace;">Đang lấy
+                        tọa độ...</div>
+                </div>
+
+                <!-- Quick SMS Button -->
+                <button id="quick-sms-btn" onclick="sendEmergencySMS()"
+                    style="width: 100%; padding: 16px; background: linear-gradient(135deg, #16a34a, #22c55e); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.4);">
+                    <span style="font-size: 24px;">📱</span>
+                    <span><span class="lang-vi">GỬI SMS NHANH</span><span class="lang-en" style="display:none;">QUICK
+                            SMS</span></span>
+                </button>
+            </div>
+        </div>
+
+        <style>
+            @keyframes pulse-sos {
+
+                0%,
+                100% {
+                    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+                }
+
+                50% {
+                    box-shadow: 0 0 50px rgba(239, 68, 68, 0.8);
+                }
+            }
+        </style>
 
         <!-- Register Screen -->
         <div class="screen" id="screen-register">
@@ -3169,7 +3348,7 @@
                         video</div>
                     <label
                         style="display: inline-block; padding: 14px 24px; background: var(--red-500); color: white; border-radius: 50px; font-weight: 600; cursor: pointer;">
-                        onclick="handleVideoUploadWrapper(this)">
+
                         <input type="file" accept="video/*" capture="environment" style="display: none;"
                             onchange="handleVideoUpload(this)">
                         ⏺️ Bắt đầu quay
@@ -3786,7 +3965,7 @@
                 <div class="description" id="already-received-detail">Mã này đã được nhận quà trước đó. Không thể nhận
                     thêm.</div>
                 <button class="btn" style="background: var(--gray-200); color: var(--gray-700); margin-top: 12px;"
-                    onclick="resetScan()">� Quét mã khác</button>
+                    onclick="resetScan()">  Quét mã khác</button>
             </div>
 
             <!-- Scan result for new recipients -->
@@ -3804,7 +3983,7 @@
 
             <!-- Gift receiving instructions -->
             <div class="card" style="margin-top: 16px;">
-                <div class="card-title">� Hướng dẫn nhận quà</div>
+                <div class="card-title">  Hướng dẫn nhận quà</div>
                 <div style="font-size: 12px; color: var(--gray-600); line-height: 1.6;">
                     <p style="margin-bottom: 8px;">1. Đưa mã QR trên CCCD/VNeID/BHYT vào khung quét</p>
                     <p style="margin-bottom: 8px;">2. Chờ hệ thống xác nhận mã hợp lệ</p>
@@ -6010,6 +6189,184 @@ Gửi từ App Cứu Trợ - ${new Date().toLocaleString('vi-VN')}`;
 
         // Start on load
         window.addEventListener('load', initHomeLocation);
+
+        // ========== LANGUAGE TOGGLE FUNCTIONALITY ==========
+        let currentLang = localStorage.getItem('appLanguage') || 'vi';
+
+        function applyLanguage() {
+            // Update flag icons
+            const newFlag = currentLang === 'vi' ? '🇻🇳' : '🇬🇧';
+            const loginFlag = document.getElementById('lang-flag-login');
+            if (loginFlag) loginFlag.textContent = newFlag;
+
+            // Toggle visibility of language spans
+            document.querySelectorAll('.lang-vi').forEach(el => {
+                el.style.display = currentLang === 'vi' ? '' : 'none';
+            });
+            document.querySelectorAll('.lang-en').forEach(el => {
+                el.style.display = currentLang === 'en' ? '' : 'none';
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'vi' ? 'en' : 'vi';
+            localStorage.setItem('appLanguage', currentLang);
+            applyLanguage();
+            showToast(currentLang === 'vi' ? '🇻🇳 Đã chuyển sang Tiếng Việt' : '🇬🇧 Switched to English');
+        }
+
+        // Apply language on load
+        window.addEventListener('DOMContentLoaded', applyLanguage);
+
+        // ========== SOS FUNCTIONALITY ==========
+        let sosTimer = null;
+        let sosProgress = 0;
+        let sosInterval = null;
+        let sosGpsLat = null;
+        let sosGpsLng = null;
+
+        function toggleSOSOverlay(show) {
+            const overlay = document.getElementById('sos-overlay');
+            const victimPanel = document.getElementById('victim-info-panel');
+            const btnContainer = document.getElementById('sos-btn-container');
+
+            if (show) {
+                overlay.style.display = 'flex';
+                victimPanel.style.display = 'none';
+                btnContainer.style.display = 'block';
+                resetSOSProgress();
+                initSOS();
+                getSOSLocation();
+            } else {
+                overlay.style.display = 'none';
+                cancelSOS();
+            }
+        }
+
+        function initSOS() {
+            const btn = document.getElementById('sos-btn');
+            if (!btn) return;
+
+            // Remove old listeners
+            btn.replaceWith(btn.cloneNode(true));
+            const newBtn = document.getElementById('sos-btn');
+
+            // Mouse events
+            newBtn.addEventListener('mousedown', startSOS);
+            newBtn.addEventListener('mouseup', cancelSOS);
+            newBtn.addEventListener('mouseleave', cancelSOS);
+
+            // Touch events
+            newBtn.addEventListener('touchstart', startSOS);
+            newBtn.addEventListener('touchend', cancelSOS);
+            newBtn.addEventListener('touchcancel', cancelSOS);
+        }
+
+        function startSOS(e) {
+            e.preventDefault();
+            sosProgress = 0;
+            updateProgressRing(0);
+
+            sosInterval = setInterval(() => {
+                sosProgress += 3.33; // 3 seconds = 100%
+                updateProgressRing(sosProgress);
+
+                if (sosProgress >= 100) {
+                    clearInterval(sosInterval);
+                    activateSOS();
+                }
+            }, 100);
+        }
+
+        function cancelSOS() {
+            if (sosInterval) {
+                clearInterval(sosInterval);
+                sosInterval = null;
+            }
+            resetSOSProgress();
+        }
+
+        function resetSOSProgress() {
+            sosProgress = 0;
+            updateProgressRing(0);
+        }
+
+        function updateProgressRing(percent) {
+            const circle = document.getElementById('sos-progress-circle');
+            if (!circle) return;
+            const circumference = 2 * Math.PI * 74; // r=74
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        function activateSOS() {
+            // Hide SOS button, show victim info
+            document.getElementById('sos-btn-container').style.display = 'none';
+            document.getElementById('victim-info-panel').style.display = 'block';
+
+            // Vibrate if supported
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
+
+            // Show toast
+            showToast(currentLang === 'vi' ? '🆘 Đã kích hoạt cầu cứu!' : '🆘 Emergency activated!');
+        }
+
+        function getSOSLocation() {
+            const coordsEl = document.getElementById('sos-gps-coords');
+            if (!coordsEl) return;
+
+            if (navigator.geolocation) {
+                coordsEl.textContent = currentLang === 'vi' ? 'Đang lấy tọa độ...' : 'Getting coordinates...';
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        sosGpsLat = position.coords.latitude;
+                        sosGpsLng = position.coords.longitude;
+                        coordsEl.textContent = `${sosGpsLat.toFixed(6)}, ${sosGpsLng.toFixed(6)}`;
+                    },
+                    () => {
+                        coordsEl.textContent = currentLang === 'vi' ? '❌ Không thể lấy vị trí' : '❌ Cannot get location';
+                    }
+                );
+            } else {
+                coordsEl.textContent = currentLang === 'vi' ? '❌ GPS không được hỗ trợ' : '❌ GPS not supported';
+            }
+        }
+
+        function sendEmergencySMS() {
+            // Victim information
+            const victimInfo = {
+                name: 'Nguyễn Trần Tiến Phúc',
+                cccd: '012345678901',
+                address: '123 Đường 2 Tháng 4, P. Vĩnh Hải, TP. Nha Trang',
+                phone: '0342381843',
+                bloodType: 'O+',
+                conditions: 'Tiểu đường type 2, Huyết áp cao',
+                allergies: 'Penicillin, Hải sản'
+            };
+
+            // Build SMS content
+            let smsBody = currentLang === 'vi'
+                ? `🆘 CẦU CỨU KHẨN CẤP!\n\n👤 Họ tên: ${victimInfo.name}\n🪪 CCCD: ${victimInfo.cccd}\n📍 Địa chỉ: ${victimInfo.address}\n📞 SĐT: ${victimInfo.phone}\n🩸 Nhóm máu: ${victimInfo.bloodType}\n⚠️ Bệnh nền: ${victimInfo.conditions}\n🚫 Dị ứng: ${victimInfo.allergies}`
+                : `🆘 EMERGENCY HELP!\n\n👤 Name: ${victimInfo.name}\n🪪 ID: ${victimInfo.cccd}\n📍 Address: ${victimInfo.address}\n📞 Phone: ${victimInfo.phone}\n🩸 Blood: ${victimInfo.bloodType}\n⚠️ Conditions: ${victimInfo.conditions}\n🚫 Allergies: ${victimInfo.allergies}`;
+
+            // Add GPS if available
+            if (sosGpsLat && sosGpsLng) {
+                const gpsText = currentLang === 'vi' ? 'Tọa độ GPS' : 'GPS Location';
+                smsBody += `\n\n📍 ${gpsText}: ${sosGpsLat.toFixed(6)}, ${sosGpsLng.toFixed(6)}`;
+                smsBody += `\n🗺️ Google Maps: https://maps.google.com/?q=${sosGpsLat},${sosGpsLng}`;
+            }
+
+            // Emergency number (can be customized)
+            const emergencyNumber = '113';
+
+            // Create SMS URI
+            const smsUri = `sms:${emergencyNumber}?body=${encodeURIComponent(smsBody)}`;
+
+            // Open SMS app
+            window.location.href = smsUri;
+        }
     </script>
 </body>
 
